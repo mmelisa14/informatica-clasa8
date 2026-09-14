@@ -61,9 +61,10 @@
   .func-card .ex{ font-size:.88rem; color:var(--ink); background:#fff; border:1px dashed var(--line); border-radius:8px; padding:8px 12px; margin-top:6px; }
   .func-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
   .formula-box{ background:var(--ink); color:#eafff9; font-family:'Courier New',monospace; padding:14px 18px; border-radius:10px; font-size:.95rem; margin:14px 0; overflow-x:auto; }
-  .chart-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius-l); padding:22px; box-shadow:var(--shadow-card); margin-bottom:26px; }
-  .chart-card h4{ font-family:'Baloo 2',sans-serif; color:var(--teal-dark); margin-bottom:4px; }
-  .chart-card .interp{ background:var(--amber-tint); border-radius:10px; padding:12px 16px; margin-top:14px; font-size:.9rem; color:#6b4e1a; }
+  .chart-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius-l); padding:16px 18px; box-shadow:var(--shadow-card); margin-bottom:18px; max-width:520px; }
+  .chart-card h4{ font-family:'Baloo 2',sans-serif; color:var(--teal-dark); margin-bottom:4px; font-size:1rem; }
+  .chart-card canvas{ max-height:160px !important; }
+  .chart-card .interp{ background:var(--amber-tint); border-radius:10px; padding:10px 14px; margin-top:10px; font-size:.85rem; color:#6b4e1a; }
   .chart-when{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; margin:20px 0 10px; }
   .chart-when .cw{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius-m); padding:16px 18px; box-shadow:var(--shadow-card); }
   .chart-when .cw h5{ font-family:'Baloo 2',sans-serif; color:var(--teal-dark); margin-bottom:6px; }
@@ -617,7 +618,7 @@
       <div class="cw"><h5>⚫ Puncte (Scatter)</h5><p>Verifici dacă există o <b>legătură</b> (corelație) între două seturi de valori numerice.</p></div>
     </div>
 
-    <h3 style="margin:30px 0 10px;">Exemple interactive (generate live, nu din manual)</h3>
+    <h3 style="margin:30px 0 10px;">Exemple interactive</h3>
     <p>Iată patru situații reale, cu grafice construite direct pe pagină — apasă și explorează, apoi citește interpretarea.</p>
 
     <div class="chart-card">
