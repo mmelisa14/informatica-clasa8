@@ -61,7 +61,7 @@
   .func-card .ex{ font-size:.88rem; color:var(--ink); background:#fff; border:1px dashed var(--line); border-radius:8px; padding:8px 12px; margin-top:6px; }
   .func-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
   .formula-box{ background:var(--ink); color:#eafff9; font-family:'Courier New',monospace; padding:14px 18px; border-radius:10px; font-size:.95rem; margin:14px 0; overflow-x:auto; }
-  .chart-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius-l); padding:16px 18px; box-shadow:var(--shadow-card); margin-bottom:18px; max-width:520px; }
+    .chart-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius-l); padding:16px 18px; box-shadow:var(--shadow-card); margin:0 auto 18px; max-width:520px; }
   .chart-card h4{ font-family:'Baloo 2',sans-serif; color:var(--teal-dark); margin-bottom:4px; font-size:1rem; }
   .chart-card canvas{ max-height:160px !important; }
   .chart-card .interp{ background:var(--amber-tint); border-radius:10px; padding:10px 14px; margin-top:10px; font-size:.85rem; color:#6b4e1a; }
@@ -623,25 +623,25 @@
 
     <div class="chart-card">
       <h4>📊 Genuri de cărți împrumutate din biblioteca școlii</h4>
-      <canvas id="chartBar" height="120"></canvas>
+      <canvas id="chartBar" height="180"></canvas>
       <div class="interp"><b>Interpretare:</b> Aventura și Fantasy domină clar împrumuturile, cu peste 40 de cărți fiecare, în timp ce Poezia abia trece de 10. O diagramă bară arată instant ce genuri ar trebui achiziționate în plus la următoarea comandă de cărți.</div>
     </div>
 
     <div class="chart-card">
       <h4>📉 Vizitatori pe site-ul clasei, într-o săptămână</h4>
-      <canvas id="chartLine" height="120"></canvas>
+      <canvas id="chartLine" height="180"></canvas>
       <div class="interp"><b>Interpretare:</b> Traficul crește constant spre weekend, cu un vârf sâmbătă. Un grafic cu linii scoate în evidență <b>tendința</b> — aici, faptul că elevii accesează site-ul mai ales când nu au ore.</div>
     </div>
 
     <div class="chart-card">
       <h4>🥧 Cum își împarte Andrei timpul liber într-o zi obișnuită</h4>
-      <canvas id="chartPie" height="120"></canvas>
+      <canvas id="chartPie" height="180"></canvas>
       <div class="interp"><b>Interpretare:</b> Ecranele (telefon + calculator) ocupă aproape o treime din timpul liber — mai mult decât sportul și hobby-urile la un loc. O diagramă radială face vizibil acest dezechilibru mult mai rapid decât un tabel cu procente.</div>
     </div>
 
     <div class="chart-card">
       <h4>⚫ Legătura dintre orele de studiu și nota obținută</h4>
-      <canvas id="chartScatter" height="120"></canvas>
+      <canvas id="chartScatter" height="180"></canvas>
       <div class="interp"><b>Interpretare:</b> Punctele urcă de la stânga la dreapta — cu cât un elev a studiat mai multe ore pentru test, cu atât nota a fost mai mare. Nu e o regulă perfectă (vezi punctul izolat de la 5 ore/nota 6), dar <b>tendința generală</b> e clară. Acesta e un tip de grafic pe care manualul nu îl arată explicit, dar Excel îl oferă la categoria „Puncte (XY Scatter)", exact pentru astfel de analize.</div>
     </div>
   </div>
