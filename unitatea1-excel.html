@@ -711,7 +711,241 @@
   <p style="color:var(--ink-soft); font-size:.9rem;">Material realizat pentru orele de Informatică — clasa a VIII-a · Unitatea 1: Utilizarea foilor de calcul tabelar</p>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+  // ---- Tab switch for exercise requirements ----
+  function showReq(i){
+    document.querySelectorAll('.sheet-tabs button').forEach((b,idx)=>b.classList.toggle('active', idx===i));
+    document.querySelectorAll('.req-panel').forEach((p,idx)=>p.classList.toggle('active', idx===i));
+  }
+
+  // ---- Charts (safe: never block the quiz) ----
+  const tealPalette = ['#1e7b6e','#e08a3e','#3f6fb5','#c0546f','#6ba43a','#8a5fb0','#c9a227','#4a8f9c'];
+
+  function initCharts(){
+    if (typeof Chart === 'undefined') {
+      document.querySelectorAll('.chart-card canvas').forEach(function(c){
+        var msg = document.createElement('p');
+        msg.style.cssText = 'text-align:center;color:#5a6570;padding:24px;margin:0;font-family:Nunito,sans-serif;';
+        msg.textContent = 'Graficul nu s-a putut încărca (verifică conexiunea la internet).';
+        c.parentNode.replaceChild(msg, c);
+      });
+      return;
+    }
+
+    try {
+      new Chart(document.getElementById('chartBar'), {
+        type: 'bar',
+        data: {
+          labels: ['Aventură','SF','Fantasy','Istorie','Poezie'],
+          datasets: [{ label:'Cărți împrumutate', data:[44, 27, 41, 19, 11], backgroundColor: tealPalette }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins:{ legend:{ display:false } },
+          scales:{ y:{ beginAtZero:true } }
+        }
+      });
+    } catch(e){ console.warn('chartBar', e); }
+
+    try {
+      new Chart(document.getElementById('chartLine'), {
+        type: 'line',
+        data: {
+          labels: ['Luni','Marți','Miercuri','Joi','Vineri','Sâmbătă','Duminică'],
+          datasets: [{
+            label:'Vizitatori',
+            data:[32,28,35,30,48,76,58],
+            borderColor:'#1e7b6e',
+            backgroundColor:'rgba(30,123,110,.15)',
+            fill:true,
+            tension:.35
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins:{ legend:{ display:false } },
+          scales:{ y:{ beginAtZero:true } }
+        }
+      });
+    } catch(e){ console.warn('chartLine', e); }
+
+    try {
+      new Chart(document.getElementById('chartPie'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Teme','Sport','Ecrane (telefon+PC)','Somn în plus','Hobby-uri'],
+          datasets: [{ data:[20, 18, 30, 12, 20], backgroundColor: tealPalette }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins:{ legend:{ position:'bottom' } }
+        }
+      });
+    } catch(e){ console.warn('chartPie', e); }
+
+    try {
+      new Chart(document.getElementById('chartScatter'), {
+        type: 'scatter',
+        data: {
+          datasets: [{
+            label:'Elevi',
+            data: [
+              {x:1,y:5},{x:1.5,y:5.5},{x:2,y:6},{x:2.5,y:6.5},{x:3,y:7},
+              {x:3.5,y:7},{x:4,y:8},{x:4.5,y:8.5},{x:5,y:6},{x:5,y:9},
+              {x:5.5,y:9.5},{x:6,y:10}
+            ],
+            backgroundColor:'#c0546f'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins:{ legend:{ display:false } },
+          scales:{
+            x:{ title:{ display:true, text:'Ore de studiu' } },
+            y:{ title:{ display:true, text:'Nota obținută' }, min:0, max:10 }
+          }
+        }
+      });
+    } catch(e){ console.warn('chartScatter', e); }
+  }
+
+  // ---- Quiz ----
+  const QUESTIONS = [
+    { q:"Cum se numește unitatea elementară a unui tabel, aflată la intersecția unui rând cu o coloană?", opts:["Zonă","Celulă","Registru","Foaie"], a:1 },
+    { q:"Ce simbol trebuie să înceapă întotdeauna o formulă în Excel?", opts:["+","#","=","@"], a:2 },
+    { q:"Care dintre următoarele NU poate fi extensia unui fișier creat cu MS Excel?", opts:[".xlsx",".xlsm",".docx",".xls"], a:2 },
+    { q:"Ce funcție calculează media aritmetică a unui grup de numere?", opts:["SUM","COUNT","MAX","AVERAGE"], a:3 },
+    { q:"Ce tip de diagramă alegi ca să arăți proporțiile unui întreg?", opts:["Linie","Radială / inelară","Coloană","Puncte (Scatter)"], a:1 },
+    { q:"Câte foi de calcul poate conține un registru Excel?", opts:["Exact una","Exact trei","Una sau mai multe","Maximum 5"], a:2 },
+    { q:"Ce funcție numără celulele dintr-o zonă care îndeplinesc o condiție?", opts:["COUNT","SUM","COUNTIF","AVERAGE"], a:2 },
+    { q:"Cum se numesc mai multe celule alăturate, adresate prin coordonatele colțurilor (ex: D1:E2)?", opts:["Zonă","Registru","Panglică","Celulă"], a:0 },
+    { q:"Din ce filă a panglicii inserezi o diagramă?", opts:["Pornire","Aspect pagină","Date","Inserare"], a:3 },
+    { q:"Ce combinație de taste salvează rapid registrul de calcul?", opts:["Ctrl+S","Ctrl+N","Ctrl+O","Ctrl+P"], a:0 }
+  ];
+
+  let qIdx = 0, qScore = 0, qLocked = false;
+  const stage = document.getElementById('quizStage');
+  const dotsWrap = document.getElementById('qDots');
+  const scoreEl = document.getElementById('qScore');
+  const totalEl = document.getElementById('qTotal');
+  if (totalEl) totalEl.textContent = QUESTIONS.length;
+
+  function renderDots(){
+    if (!dotsWrap) return;
+    dotsWrap.innerHTML = QUESTIONS.map(function(_,i){
+      return '<span class="' + (i < qIdx ? 'done' : '') + '"></span>';
+    }).join('');
+  }
+
+  function renderQuestion(){
+    qLocked = false;
+    renderDots();
+    if (!stage) return;
+
+    if (qIdx >= QUESTIONS.length){
+      stage.innerHTML =
+        '<div class="quiz-done">' +
+          '<div class="big">' + (qScore >= 8 ? '🏆' : qScore >= 5 ? '🎉' : '💡') + '</div>' +
+          '<p style="font-family:\'Baloo 2\',sans-serif; font-size:1.2rem; color:var(--teal-dark); font-weight:700;">Ai terminat! Scor final: ' + qScore + ' / ' + QUESTIONS.length + '</p>' +
+          '<p style="color:var(--ink-soft); max-width:44ch;">' +
+            (qScore >= 8 ? 'Stăpânești foarte bine noțiunile despre foile de calcul!' :
+             qScore >= 5 ? 'Bine, dar mai recitește o dată secțiunile unde ai greșit.' :
+             'Reia lecția pas cu pas — o să meargă mult mai bine a doua oară.') +
+          '</p>' +
+          '<button type="button" class="choice-btn" id="btnRestartQuiz">🔄 Ia quiz-ul din nou</button>' +
+        '</div>';
+      var btn = document.getElementById('btnRestartQuiz');
+      if (btn) btn.addEventListener('click', restartQuiz);
+      return;
+    }
+
+    var item = QUESTIONS[qIdx];
+    stage.innerHTML =
+      '<div class="q-card">' +
+        '<div class="q-type">Întrebarea ' + (qIdx+1) + ' din ' + QUESTIONS.length + '</div>' +
+        item.q +
+      '</div>' +
+      '<div class="choice-row" id="choiceRow"></div>' +
+      '<div class="feedback" id="qFeedback"></div>';
+
+    var row = document.getElementById('choiceRow');
+    item.opts.forEach(function(opt, i){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'choice-btn';
+      btn.textContent = opt;
+      btn.addEventListener('click', function(){ selectAnswer(i); });
+      row.appendChild(btn);
+    });
+  }
+
+  function selectAnswer(i){
+    if (qLocked) return;
+    qLocked = true;
+    var item = QUESTIONS[qIdx];
+    var buttons = document.querySelectorAll('#choiceRow .choice-btn');
+    var fb = document.getElementById('qFeedback');
+    if (i === item.a){
+      qScore++;
+      if (scoreEl) scoreEl.textContent = qScore;
+      buttons[i].style.background = '#1e7b6e';
+      buttons[i].style.color = '#fff';
+      if (fb){ fb.textContent = '✅ Corect!'; fb.className = 'feedback ok'; }
+    } else {
+      buttons[i].style.background = '#c0546f';
+      buttons[i].style.color = '#fff';
+      if (buttons[item.a]){
+        buttons[item.a].style.background = '#1e7b6e';
+        buttons[item.a].style.color = '#fff';
+      }
+      if (fb){ fb.textContent = '❌ Nu chiar — răspunsul corect e evidențiat.'; fb.className = 'feedback bad'; }
+    }
+    setTimeout(function(){ qIdx++; renderQuestion(); }, 1100);
+  }
+
+  function restartQuiz(){
+    qIdx = 0;
+    qScore = 0;
+    if (scoreEl) scoreEl.textContent = 0;
+    renderQuestion();
+  }
+  window.restartQuiz = restartQuiz;
+  window.showReq = showReq;
+
+  // ---- TOC scroll spy ----
+  function initToc(){
+    var tocLinks = document.querySelectorAll('.toc a');
+    var sections = Array.from(tocLinks).map(function(a){
+      return document.querySelector(a.getAttribute('href'));
+    });
+    window.addEventListener('scroll', function(){
+      var current = 0;
+      sections.forEach(function(sec, i){
+        if (sec && window.scrollY >= sec.offsetTop - 90) current = i;
+      });
+      tocLinks.forEach(function(a, i){
+        a.classList.toggle('active', i === current);
+      });
+    });
+  }
+
+  function start(){
+    initCharts();
+    renderQuestion();
+    initToc();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    setTimeout(start, 50);
+  }
+</script>
 <script>
   // ---- Tab switch for exercise requirements ----
   function showReq(i){
