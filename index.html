@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informatică — Clasa a VIII-a | Materiale interactive</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .hero{
+    position: relative;
+    padding: 64px 0 90px;
+    overflow: hidden;
+    background:
+      radial-gradient(1100px 500px at 85% -10%, #12786f 0%, transparent 60%),
+      linear-gradient(180deg, var(--teal-dark), var(--teal) 65%);
+    color: #fff;
+  }
+  .hero .container{ position:relative; z-index:2; }
+  .hero .eyebrow{
+    font-family:'Baloo 2',sans-serif; font-weight:600; color:#cdeee8;
+    display:flex; align-items:center; gap:.6em; margin-bottom:14px; font-size:1.05rem;
+  }
+  .hero h1{ color:#fff; font-size: clamp(2.1rem, 5vw, 3.4rem); max-width: 18ch; }
+  .hero p.lead{ color:#dff2ee; max-width:52ch; font-size:1.1rem; margin-top:14px;}
+  .deck{
+    position:absolute; right: -30px; top: 34px; width: 340px; height:280px;
+    z-index:1; pointer-events:none;
+  }
+  .deck .slide{
+    position:absolute; width:230px; height:150px; border-radius:14px;
+    background:#fff; box-shadow: 0 20px 40px -14px rgba(0,0,0,.45);
+  }
+  .deck .slide.s1{ transform: rotate(-11deg); top:10px; left:60px; background:#e3f0da; }
+  .deck .slide.s2{ transform: rotate(4deg); top:60px; left:110px; background:#fbe6df; }
+  .deck .slide.s3{ transform: rotate(-3deg); top:112px; left:40px; background:#ffffff; }
+  .deck .slide.s3::before{
+    content:""; position:absolute; left:18px; top:20px; right:18px; height:10px; border-radius:6px; background:#dce7e4;
+  }
+  .deck .slide.s3::after{
+    content:""; position:absolute; left:18px; top:42px; width:60%; height:8px; border-radius:6px; background:#c8e0d8;
+  }
+  .stage{ padding: 46px 0 90px; }
+  .crumbs{
+    display:flex; align-items:center; flex-wrap:wrap; gap:.4em;
+    font-family:'Baloo 2',sans-serif; font-weight:600; color: var(--ink-soft);
+    margin-bottom: 30px; font-size:1.02rem;
+  }
+  .crumbs button{
+    background:none; border:none; cursor:pointer; font: inherit; color: var(--teal);
+    padding: .2em .3em;
+  }
+  .crumbs button:disabled{ color: var(--ink); cursor:default; }
+  .crumbs .sep{ color:#c9c0a6; }
+  .panel{ display:none; }
+  .panel.active{ display:block; animation: fade .35s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+  .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:22px; }
+  .tile{
+    background: var(--card); border:1px solid var(--line); border-radius: var(--radius-l);
+    padding: 26px 24px; box-shadow: var(--shadow-card);
+    cursor:pointer; text-align:left; font: inherit; color: inherit;
+    display:flex; flex-direction:column; gap:14px; min-height: 168px;
+    transition: transform .18s ease, box-shadow .18s ease;
+    position: relative;
+  }
+  .tile:not(.locked):hover{ transform: translateY(-4px); box-shadow: 0 20px 34px -18px rgba(28,36,48,.4); }
+  .tile .icon{
+    width:46px;height:46px;border-radius:12px; display:flex;align-items:center;justify-content:center;
+    background: var(--teal-tint); color:var(--teal); font-size:1.4rem;
+  }
+  .tile h3{ font-size:1.2rem; color: var(--ink); }
+  .tile p{ font-size:.92rem; color: var(--ink-soft); margin:0; }
+  .tile .go{ margin-top:auto; font-family:'Baloo 2',sans-serif; font-weight:600; color: var(--teal); font-size:.92rem; display:flex; align-items:center; gap:.4em;}
+  .tile.locked{ opacity:.55; cursor:not-allowed; }
+  .tile.locked .icon{ background:#eee6d3; color:#a99c78; }
+  .tile.locked .badge-soon{
+    position:absolute; top:16px; right:16px; font-family:'Baloo 2',sans-serif; font-size:.72rem;
+    background:#eee6d3; color:#7a6d4d; padding:.25em .7em; border-radius:999px; font-weight:600;
+  }
+  .section-title{ margin-bottom: 8px; }
+  .section-sub{ color: var(--ink-soft); margin-bottom: 28px; }
+  footer{ padding: 30px 0 50px; text-align:center; color: var(--ink-soft); font-size:.88rem; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <div class="eyebrow">📊 Informatică &amp; TIC · Clasa a VIII-a</div>
+    <h1>Materiale interactive de informatică</h1>
+    <p class="lead">Alege unitatea și lecția pe care vrei să o parcurgi — foi de calcul tabelar, MS Excel, formule, funcții și grafice, explicate pas cu pas.</p>
+  </div>
+  <div class="deck" aria-hidden="true">
+    <div class="slide s1"></div>
+    <div class="slide s2"></div>
+    <div class="slide s3"></div>
+  </div>
+</header>
+
+<main class="stage">
+  <div class="container">
+    <nav class="crumbs" id="crumbs"></nav>
+
+    <section class="panel active" id="panel-units">
+      <h2 class="section-title">Unități de învățare</h2>
+      <p class="section-sub">Alege unitatea pentru a vedea lecțiile disponibile.</p>
+      <div class="grid" id="grid-units"></div>
+    </section>
+
+    <section class="panel" id="panel-lessons">
+      <h2 class="section-title" id="lessons-title">Lecții</h2>
+      <p class="section-sub">Deschide prezentarea interactivă a lecției.</p>
+      <div class="grid" id="grid-lessons"></div>
+    </section>
+  </div>
+</main>
+
+<footer>Material realizat pentru orele de Informatică — clasa a VIII-a.</footer>
+
+<script>
+  const UNITS = [
+    {
+      id: "u1",
+      name: "Unitatea 1 — Utilizarea foilor de calcul tabelar",
+      icon: "📊",
+      desc: "Foi de calcul, MS Excel, interfață, panglică, formatare, tipuri de date, formule, funcții și grafice.",
+      ready: true,
+      lessons: [
+        {
+          id: "l1",
+          name: "Utilizarea foilor de calcul tabelar",
+          icon: "▶️",
+          desc: "De la ce este o foaie de calcul, la interfața MS Excel, formule, funcții și grafice — plus un exercițiu practic și un quiz.",
+          ready: true,
+          href: "unitatea1-excel.html"
+        },
+        { id: "l2", name: "Lecția următoare", icon: "🧩", desc: "Se adaugă în curând.", ready: false }
+      ]
+    },
+    { id: "u2", name: "Unitatea 2 — Pagini web", icon: "🌐", desc: "Se adaugă în curând.", ready: false, lessons: [] }
+  ];
+
+  let state = { unitId: null };
+  const crumbsEl = document.getElementById('crumbs');
+  const panelUnits = document.getElementById('panel-units');
+  const panelLessons = document.getElementById('panel-lessons');
+
+  function showPanel(name){
+    [panelUnits, panelLessons].forEach(p => p.classList.remove('active'));
+    if(name === 'units') panelUnits.classList.add('active');
+    if(name === 'lessons') panelLessons.classList.add('active');
+    renderCrumbs();
+    window.scrollTo({top: 0, behavior:'smooth'});
+  }
+
+  function renderCrumbs(){
+    const unit = UNITS.find(u => u.id === state.unitId);
+    let html = `<button ${!state.unitId ? 'disabled' : ''} onclick="goHome()">Acasă</button>`;
+    if(unit) html += `<span class="sep">›</span><button disabled>${unit.name}</button>`;
+    crumbsEl.innerHTML = html;
+  }
+
+  function tileHTML(item, onclickName, arg){
+    const locked = item.ready === false;
+    return `
+      <button class="tile ${locked ? 'locked' : ''}" ${locked ? 'disabled' : `onclick="${onclickName}('${arg}')"`}>
+        ${locked ? '<span class="badge-soon">în curând</span>' : ''}
+        <div class="icon">${item.icon || '📘'}</div>
+        <h3>${item.name}</h3>
+        <p>${item.desc || ''}</p>
+        ${!locked ? '<span class="go">Deschide →</span>' : ''}
+      </button>`;
+  }
+
+  function renderUnits(){
+    document.getElementById('grid-units').innerHTML =
+      UNITS.map(u => tileHTML(u, 'goUnit', u.id)).join('');
+  }
+
+  window.goHome = function(){ state = { unitId: null }; showPanel('units'); }
+
+  window.goUnit = function(unitId){
+    state.unitId = unitId;
+    const unit = UNITS.find(u => u.id === unitId);
+    document.getElementById('lessons-title').textContent = unit.name + ' — Lecții';
+    document.getElementById('grid-lessons').innerHTML =
+      (unit.lessons && unit.lessons.length)
+        ? unit.lessons.map(l => {
+            if(l.ready){
+              return `<a class="tile" href="${l.href}">
+                <div class="icon">${l.icon || '▶️'}</div>
+                <h3>${l.name}</h3>
+                <p>${l.desc || ''}</p>
+                <span class="go">Deschide lecția →</span>
+              </a>`;
+            }
+            return tileHTML(l, '', '');
+          }).join('')
+        : `<p>Lecțiile pentru această unitate se adaugă în curând.</p>`;
+    showPanel('lessons');
+  }
+
+  renderUnits();
+  renderCrumbs();
+</script>
+</body>
+</html>

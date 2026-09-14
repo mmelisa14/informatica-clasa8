@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unitatea 1 — Utilizarea foilor de calcul tabelar | Informatică, clasa a VIII-a</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .topbar{ position: sticky; top:0; z-index: 50; background: rgba(250,246,236,.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .topbar .row{ display:flex; align-items:center; gap:18px; padding: 12px clamp(18px,4vw,48px); }
+  .topbar a.back{ font-family:'Baloo 2',sans-serif; font-weight:600; color:var(--teal); text-decoration:none; white-space:nowrap; display:flex; gap:.4em; align-items:center; }
+  .toc{ display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; }
+  .toc::-webkit-scrollbar{ display:none; }
+  .toc a{ font-family:'Baloo 2',sans-serif; font-size:.85rem; font-weight:600; white-space:nowrap; padding: .5em 1em; border-radius:999px; text-decoration:none; color: var(--ink-soft); }
+  .toc a.active, .toc a:hover{ background: var(--teal); color:#fff; }
+  .lesson-hero{ background: linear-gradient(180deg, var(--teal-dark), var(--teal)); color:#fff; padding: 54px 0 70px; }
+  .lesson-hero .eyebrow{ font-family:'Baloo 2',sans-serif; color:#cdeee8; margin-bottom:10px; font-weight:600;}
+  .lesson-hero h1{ color:#fff; font-size: clamp(1.9rem, 4.4vw, 3rem); max-width: 26ch; }
+  .lesson-hero p{ color:#e2f4f0; max-width:64ch; margin-top:14px; font-size:1.06rem; }
+  .section{ padding: 64px 0; border-bottom: 1px solid var(--line); }
+  .section.tint{ background: var(--paper-deep); }
+  .section > .container > .kicker{ display:inline-flex; align-items:center; gap:.5em; font-family:'Baloo 2',sans-serif; font-weight:700; color: var(--amber-dark); background: var(--amber-tint); padding:.35em 1em; border-radius:999px; font-size:.82rem; margin-bottom: 16px; }
+  .section h2{ font-size: clamp(1.5rem, 3vw, 2.1rem); max-width: 30ch; margin-bottom: 10px;}
+  .section .sub{ color: var(--ink-soft); font-size: 1.05rem; max-width: 66ch; margin-bottom: 30px;}
+  .two-col{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 34px; align-items:start; }
+  @media (max-width: 820px){ .two-col{ grid-template-columns: 1fr; } }
+  .three-col{ display:grid; grid-template-columns: repeat(3,1fr); gap:20px; }
+  @media (max-width: 820px){ .three-col{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px){ .three-col{ grid-template-columns: 1fr; } }
+  .mini-card{ background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m); padding: 18px; text-align:center; box-shadow: var(--shadow-card); }
+  .mini-card h4{ font-size:1.02rem; color:var(--teal-dark); margin-bottom:6px; }
+  .mini-card p{ font-size:.88rem; color:var(--ink-soft); margin:0; }
+  ul.check{ list-style:none; margin:0 0 1em; padding:0; }
+  ul.check li{ position:relative; padding-left:1.7em; margin-bottom:.7em; line-height:1.55; }
+  ul.check li::before{ content:"✓"; position:absolute; left:0; top:0; color: var(--teal); font-weight:700; }
+  ol.steps{ margin:0 0 1em; padding-left: 1.2em; }
+  ol.steps li{ margin-bottom:.6em; line-height:1.6; }
+  ol.steps li b{ color: var(--teal-dark); }
+  .apps{ display:flex; flex-wrap:wrap; gap:12px; margin: 18px 0; }
+  .apps span{ font-family:'Baloo 2',sans-serif; font-weight:600; font-size:.92rem; background:#fff; border:1px solid var(--line); padding:.55em 1.1em; border-radius:999px; box-shadow: var(--shadow-card); }
+  .figure{ background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m); padding: 14px; box-shadow: var(--shadow-card); margin: 18px 0; }
+  .figure img{ border-radius: 8px; max-width:100%; height:auto; display:block; margin:0 auto; }
+  .figure figcaption{ font-size: .86rem; color: var(--ink-soft); margin-top: 10px; padding: 0 4px; text-align:center; }
+  .ribbon-shot{ background: var(--card); border:1px solid var(--line); border-radius:12px; padding:10px; margin:12px 0 18px; box-shadow: var(--shadow-card); overflow:hidden; }
+  .ribbon-shot img{ width:100%; height:auto; display:block; border-radius:6px; }
+  .ribbon-shot .cap{ font-size:.84rem; color:var(--ink-soft); margin-top:8px; text-align:center; }
+  .zones{ margin: 6px 0 26px; display:flex; flex-direction:column; gap:2px; }
+  .zones .zone{ display:flex; gap:14px; padding:10px 2px; border-bottom:1px dashed var(--line); align-items:flex-start; }
+  .zones .zone:last-child{ border-bottom:none; }
+  .zones .zone .num{ flex:0 0 auto; width:28px; height:28px; border-radius:50%; background:var(--amber-tint); color:var(--amber-dark); font-family:'Baloo 2',sans-serif; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:.88rem; margin-top:1px; }
+  .zones .zone .txt{ font-size:.94rem; color:var(--ink-soft); line-height:1.55; padding-top:3px; }
+  .zones .zone .txt b{ color:var(--ink); }
+  .ribbon-groups{ display:grid; grid-template-columns: repeat(auto-fill, minmax(210px,1fr)); gap:12px; margin:14px 0 26px; }
+  .ribbon-groups .grp{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius-m); padding:14px 16px; box-shadow:var(--shadow-card); }
+  .ribbon-groups .grp h5{ font-family:'Baloo 2',sans-serif; color:var(--teal-dark); font-size:.95rem; margin-bottom:6px; display:flex; align-items:center; gap:.4em; }
+  .ribbon-groups .grp p{ font-size:.86rem; color:var(--ink-soft); margin:0; line-height:1.5; }
+  .func-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius-m); padding:18px 20px; margin-bottom:14px; box-shadow:var(--shadow-card); }
+  .func-card h4{ font-family:'Baloo 2',sans-serif; color:var(--teal-dark); font-size:1.05rem; margin-bottom:4px; }
+  .func-card .syntax{ font-family:'Courier New',monospace; background:var(--teal-tint); color:var(--teal-dark); display:inline-block; padding:.3em .8em; border-radius:8px; font-size:.92rem; margin:8px 0; font-weight:700; }
+  .func-card p{ margin:6px 0; font-size:.92rem; color:var(--ink-soft); line-height:1.5; }
+  .func-card .ex{ font-size:.88rem; color:var(--ink); background:#fff; border:1px dashed var(--line); border-radius:8px; padding:8px 12px; margin-top:6px; }
+  .func-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+  .formula-box{ background:var(--ink); color:#eafff9; font-family:'Courier New',monospace; padding:14px 18px; border-radius:10px; font-size:.95rem; margin:14px 0; overflow-x:auto; }
+  .chart-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius-l); padding:22px; box-shadow:var(--shadow-card); margin-bottom:26px; }
+  .chart-card h4{ font-family:'Baloo 2',sans-serif; color:var(--teal-dark); margin-bottom:4px; }
+  .chart-card .interp{ background:var(--amber-tint); border-radius:10px; padding:12px 16px; margin-top:14px; font-size:.9rem; color:#6b4e1a; }
+  .chart-when{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; margin:20px 0 10px; }
+  .chart-when .cw{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius-m); padding:16px 18px; box-shadow:var(--shadow-card); }
+  .chart-when .cw h5{ font-family:'Baloo 2',sans-serif; color:var(--teal-dark); margin-bottom:6px; }
+  .chart-when .cw p{ font-size:.88rem; color:var(--ink-soft); margin:0; }
+  .xlsx-download{ background: linear-gradient(135deg,#1e7b6e,#12786f); border-radius:var(--radius-l); padding:28px 30px; display:flex; align-items:center; gap:22px; flex-wrap:wrap; color:#fff; margin-bottom:28px; }
+  .xlsx-download .icon{ font-size:2.6rem; }
+  .xlsx-download .txt h4{ color:#fff; font-family:'Baloo 2',sans-serif; font-size:1.15rem; margin-bottom:4px; }
+  .xlsx-download .txt p{ color:#dff2ee; margin:0; font-size:.92rem; }
+  .xlsx-download .btn-dl{ margin-left:auto; font-family:'Baloo 2',sans-serif; font-weight:700; background:#fff; color:var(--teal-dark); padding:.7em 1.5em; border-radius:999px; text-decoration:none; white-space:nowrap; box-shadow:0 8px 18px -8px rgba(0,0,0,.35); }
+  .sheet-tabs{ display:flex; gap:8px; margin-bottom:18px; }
+  .sheet-tabs button{ font-family:'Baloo 2',sans-serif; font-weight:700; font-size:.92rem; padding:.6em 1.3em; border-radius:10px 10px 0 0; border:1px solid var(--line); border-bottom:none; background:#f0ece0; color:var(--ink-soft); cursor:pointer; }
+  .sheet-tabs button.active{ background:var(--card); color:var(--teal-dark); }
+  .req-panel{ display:none; }
+  .req-panel.active{ display:block; }
+  .req-list{ counter-reset: req; list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
+  .req-list li{ counter-increment: req; background:var(--card); border:1px solid var(--line); border-radius:var(--radius-m); padding:16px 18px 16px 52px; position:relative; box-shadow:var(--shadow-card); font-size:.92rem; color:var(--ink-soft); line-height:1.5; }
+  .req-list li::before{ content: counter(req); position:absolute; left:16px; top:16px; width:26px; height:26px; border-radius:50%; background:var(--teal); color:#fff; font-family:'Baloo 2',sans-serif; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:.85rem; }
+  .req-list li b{ color:var(--ink); }
+  .quiz-wrap{ background: var(--card); border:1px solid var(--line); border-radius: var(--radius-l); padding: 28px; box-shadow: var(--shadow-card); }
+  .quiz-top{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom: 18px;}
+  .quiz-score{ font-family:'Baloo 2',sans-serif; font-weight:700; color: var(--teal-dark); font-size:1.05rem; }
+  .quiz-stage{ min-height: 260px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; }
+  .q-card{ max-width: 640px; width:100%; background: var(--paper); border:2px solid var(--line); border-radius: var(--radius-m); padding: 22px 24px; text-align:center; font-family:'Baloo 2',sans-serif; font-size:1.08rem; color: var(--ink); font-weight:600; }
+  .q-type{ font-size:.78rem; font-weight:700; color: var(--amber-dark); background: var(--amber-tint); display:inline-block; padding:.2em .7em; border-radius:999px; margin-bottom:10px; }
+  .choice-row{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; max-width:640px; }
+  .choice-btn{ font-family:'Baloo 2',sans-serif; font-weight:700; font-size:.95rem; padding: .7em 1.3em; border-radius: 999px; border:2px solid transparent; cursor:pointer; background: var(--teal-tint); color: var(--teal-dark); }
+  .choice-btn:hover{ background: var(--teal); color:#fff; }
+  .feedback{ min-height:28px; font-family:'Baloo 2',sans-serif; font-weight:700; text-align:center; font-size:1.02rem; }
+  .feedback.ok{ color: var(--teal-dark); }
+  .feedback.bad{ color: var(--coral-dark); }
+  .quiz-done{ text-align:center; }
+  .quiz-done .big{ font-size:2.4rem; }
+  .progress-dots{ display:flex; gap:6px; justify-content:center; margin-top:6px; }
+  .progress-dots span{ width:8px;height:8px;border-radius:50%; background:var(--line); }
+  .progress-dots span.done{ background: var(--teal); }
+  footer.end{ padding: 50px 0 70px; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="row">
+    <a class="back" href="index.html">← Acasă</a>
+    <nav class="toc" id="toc">
+      <a href="#intro">Foi de calcul</a>
+      <a href="#excel">MS Excel</a>
+      <a href="#interfata">Interfață</a>
+      <a href="#panglica">Panglica</a>
+      <a href="#operatii">Operații registru</a>
+      <a href="#formatare">Formatare</a>
+      <a href="#tipuri">Tipuri de date</a>
+      <a href="#formule">Formule</a>
+      <a href="#grafice">Grafice</a>
+      <a href="#exercitiu">Exercițiu</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+  </div>
+</div>
+
+<header class="lesson-hero">
+  <div class="container">
+    <div class="eyebrow">📊 U1 · Informatică, clasa a VIII-a</div>
+    <h1>Utilizarea foilor de calcul tabelar</h1>
+    <p>Descoperă ce este o foaie de calcul, cum arată interfața Microsoft Excel, ce poți face cu formule și funcții, cum construiești grafice sugestive — și exersează pe un fișier Excel pregătit special pentru tine.</p>
+  </div>
+</header>
+
+<!-- 1. CE E O FOAIE DE CALCUL -->
+<section class="section" id="intro">
+  <div class="container">
+    <span class="kicker">🔎 Descoperă</span>
+    <h2>Ce este o foaie de calcul electronică?</h2>
+    <p class="sub">O modalitate de a gestiona date organizate sub formă de tabel — numele vine chiar din contabilitate, unde se foloseau formulare de hârtie de mari dimensiuni, liniate orizontal și vertical.</p>
+
+    <div class="two-col">
+      <div>
+        <p>Utilizarea calculatorului a adus avantaje uriașe față de foaia de hârtie:</p>
+        <ul class="check">
+          <li>construirea ușoară a tabelului — poți insera sau șterge oricând rânduri și coloane;</li>
+          <li>pe lângă valorile scrise, poți adăuga <b>formule de calcul</b> care se actualizează automat;</li>
+          <li>poți controla exact cum se afișează valorile (monedă, procent, dată etc.).</li>
+        </ul>
+        <p>De exemplu: ai un tabel cu 15 materii și 5 note la fiecare. Dacă media fiecărei materii e calculată printr-o <b>formulă</b>, iar tu schimbi o singură notă, media acelei materii — și media generală — se recalculează instant, fără niciun calcul manual.</p>
+      </div>
+      <div class="figure">
+        <img src="assets/example_table.png" alt="Exemplu tabel cu materii și note">
+        <figcaption>Notează cele două „rigle" ca la șah: numere pe rânduri, litere pe coloane. Căsuța cu „TIC" este A14, iar media generală e în G18.</figcaption>
+      </div>
+    </div>
+
+    <h3 style="margin:32px 0 12px;">Programe de calcul tabelar</h3>
+    <p>Aplicațiile dedicate lucrului cu foi de calcul se numesc <b>programe de calcul tabelar</b>. Cele mai populare:</p>
+    <div class="apps">
+      <span>📗 MS Excel / Excel Online</span>
+      <span>📘 LibreOffice Calc</span>
+      <span>📙 OpenOffice Calc</span>
+      <span>📕 WPS Spreadsheets</span>
+      <span>📓 Ashampoo PlanMaker</span>
+      <span>📈 Google Sheets</span>
+    </div>
+    <div class="two-col" style="margin-top:6px;">
+      <div class="figure">
+        <img src="assets/libreoffice_calc.png" alt="LibreOffice Calc">
+        <figcaption>LibreOffice Calc — gratuit, instalat local, disponibil și în română.</figcaption>
+      </div>
+      <div class="figure">
+        <img src="assets/openoffice_calc.png" alt="OpenOffice Calc">
+        <figcaption>OpenOffice Calc — parte din suita gratuită Apache OpenOffice.</figcaption>
+      </div>
+    </div>
+    <p>Fiecare are avantaje și dezavantaje: <b>MS Excel</b> e cel mai popular, deci găsești ușor ajutor; <b>Calc</b> și <b>Spreadsheets</b> sunt gratuite; unele se instalează pe calculator (merg și fără internet), altele sunt online (nu ocupă spațiu de stocare, dar au nevoie de conexiune la internet).</p>
+  </div>
+</section>
+
+<!-- 2. MS EXCEL -->
+<section class="section tint" id="excel">
+  <div class="container">
+    <span class="kicker">📗 Reține</span>
+    <h2>Microsoft Excel</h2>
+    <div class="two-col">
+      <div>
+        <p><b>MS Excel</b> (sau, simplu, <b>Excel</b>) este cel mai cunoscut program de calcul tabelar, componentă a pachetului Microsoft Office. Un fișier lucrat în Excel poate avea una dintre extensiile: <b>.xls</b>, <b>.xlsx</b>, <b>.xlsm</b>.</p>
+        <p>Pornirea aplicației se face la fel ca la Word: <b>Start → All Apps → Excel</b>, sau tastezi „Excel" în bara de căutare Windows și apeși Enter. La deschidere apare un ecran de start de unde poți alege:</p>
+        <ol class="steps">
+          <li><b>Registru de lucru necompletat</b> — pornești de la zero;</li>
+          <li>un <b>șablon predefinit</b> — un model gata format;</li>
+          <li><b>deschiderea</b> unui registru realizat anterior — din lista recentă sau din cloud (OneDrive).</li>
+        </ol>
+      </div>
+      <div class="figure" style="max-width:320px; margin:0 auto;">
+        <img src="assets/excel_logo.png" alt="Sigla Microsoft Excel">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. STRUCTURA + INTERFATA -->
+<section class="section" id="interfata">
+  <div class="container">
+    <span class="kicker">🧱 Reține</span>
+    <h2>Structura unui registru de calcul</h2>
+    <p class="sub">Foaie de calcul, coloană, rând, celulă, zonă, registru — noțiunile de bază pe care le folosești tot timpul în Excel.</p>
+
+    <div class="three-col" style="margin-bottom:10px;">
+      <div class="mini-card">
+        <h4>📄 Foaie de calcul</h4>
+        <p>Un singur tabel, numit și <b>foaie de lucru</b> (worksheet). Are rânduri etichetate cu numere (1, 2, ...) și coloane etichetate cu litere (A, B, ...) — până la <b>1 048 576</b> de rânduri și <b>16 384</b> de coloane.</p>
+      </div>
+      <div class="mini-card">
+        <h4>🔲 Celulă</h4>
+        <p>Unitatea elementară a tabelului, aflată la intersecția unui rând cu o coloană. Se accesează prin eticheta coloanei + rândului: de exemplu, <b>B2</b>.</p>
+      </div>
+      <div class="mini-card">
+        <h4>🗂️ Registru de calcul</h4>
+        <p>Fișierul creat cu Excel (numit și <b>registru de lucru</b> / workbook), format din una sau mai multe foi de calcul.</p>
+      </div>
+    </div>
+    <div class="mini-card" style="margin-bottom:10px;">
+      <h4>🔳 Zonă</h4>
+      <p>Mai multe celule adiacente (alăturate) formează o <b>zonă</b> — se prelucrează simultan, în același mod. Se adresează prin coordonatele colțurilor stânga-sus și dreapta-jos, despărțite prin „<b>:</b>". De exemplu, <b>D1:E2</b> sau <b>G2:I2</b>.</p>
+    </div>
+
+    <h3 style="margin:32px 0 14px;">Elementele interfeței MS Excel</h3>
+    <p>Când deschizi un registru nou, necompletat, acesta e denumit automat <b>„Registru1"</b>, nesalvat încă. Iată din ce e alcătuită fereastra:</p>
+    <div class="figure">
+      <img src="assets/excel_interface.png" alt="Interfața completă Microsoft Excel cu zonele A-K">
+    </div>
+    <div class="zones">
+      <div class="zone"><span class="num">A</span><span class="txt"><b>Bara de titlu</b> — numele registrului, căutare Microsoft, contul de utilizator, butoanele de minimizare/maximizare/închidere.</span></div>
+      <div class="zone"><span class="num">B</span><span class="txt"><b>Panglica</b> — toate comenzile Excel, grupate pe file.</span></div>
+      <div class="zone"><span class="num">C</span><span class="txt"><b>Caseta de nume</b> (Name Box) — afișează numele celulei în care ești poziționat (aici, B2, marcată cu chenar verde).</span></div>
+      <div class="zone"><span class="num">D</span><span class="txt"><b>Bara de formule</b> (Formula Bar) — arată conținutul real al celulei selectate (text, număr sau formulă).</span></div>
+      <div class="zone"><span class="num">E</span><span class="txt"><b>Zona de lucru</b> — foaia de calcul propriu-zisă, cu rânduri și coloane.</span></div>
+      <div class="zone"><span class="num">F</span><span class="txt"><b>Eticheta foii de calcul</b> — numele foii curente (implicit „Foaie1"); un registru poate avea mai multe foi.</span></div>
+      <div class="zone"><span class="num">G</span><span class="txt">Buton de <b>adăugare a unei foi noi</b> de calcul în registru.</span></div>
+      <div class="zone"><span class="num">H</span><span class="txt">Modul de vizualizare: <b>Normal</b>, <b>Aspect pagină</b> sau <b>Examinare sfârșit de pagină</b>.</span></div>
+      <div class="zone"><span class="num">I</span><span class="txt">Bara de defilare <b>verticală</b>.</span></div>
+      <div class="zone"><span class="num">J</span><span class="txt">Bara de defilare <b>orizontală</b>.</span></div>
+      <div class="zone"><span class="num">K</span><span class="txt"><b>Panoramare (Zoom)</b> — butoane +/−, potențiometru și procentul curent de mărire.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. PANGLICA -->
+<section class="section tint" id="panglica">
+  <div class="container">
+    <span class="kicker">🎛️ Reține</span>
+    <h2>Panglica (Ribbon)</h2>
+    <p class="sub">Include toate comenzile Excel, grupate pe file, pe tipuri de acțiuni. O filă are grupuri logice de comenzi, iar fiecare grup are butoane individuale.</p>
+
+    <div class="ribbon-shot">
+      <img src="assets/ribbon_detail.png" alt="Detalierea panglicii Excel">
+    </div>
+    <div class="zones">
+      <div class="zone"><span class="num">1</span><span class="txt">Filele panglicii: Fișier, Pornire, Inserare, Aspect pagină etc.</span></div>
+      <div class="zone"><span class="num">2</span><span class="txt">Comenzi (butoane) individuale.</span></div>
+      <div class="zone"><span class="num">3</span><span class="txt">Grupuri logice de comenzi — dacă au o săgeată în colțul din dreapta-jos, apăsarea deschide mai multe opțiuni.</span></div>
+      <div class="zone"><span class="num">4</span><span class="txt">Butonul de afișare a panglicii: <b>Mod ecran complet</b>, <b>Afișați numai filele</b> sau <b>Afișați întotdeauna Panglica</b>.</span></div>
+    </div>
+
+    <h3 style="margin:30px 0 6px;">Fila Fișier — Backstage</h3>
+    <p>La selectarea filei Fișier, se deschide o vizualizare specială numită <b>Backstage</b>, cu toate acțiunile asupra fișierului: creare, deschidere, salvare, export, partajare, tipărire, închidere.</p>
+    <div class="figure" style="max-width:420px; margin:14px auto;">
+      <img src="assets/excel_backstage.png" alt="Backstage Excel">
+    </div>
+
+    <h3 style="margin:30px 0 6px;">Fila Pornire</h3>
+    <p>Comenzile de bază pentru editarea și formatarea celulelor unui tabel.</p>
+    <div class="ribbon-shot">
+      <img src="assets/fila_pornire.png" alt="Fila Pornire Excel">
+    </div>
+    <div class="ribbon-groups">
+      <div class="grp"><h5>📋 Clipboard</h5><p>Lipire, Copiere, Decupare — și Descriptor de formate, pentru a copia formatarea unei celule pe altă celulă.</p></div>
+      <div class="grp"><h5>🔤 Font</h5><p>Tip și dimensiune literă, Bold/Italic/Underline, culoare text, <b>Culoare de umplere</b> a celulei, borduri.</p></div>
+      <div class="grp"><h5>↔️ Aliniere</h5><p>Aliniere orizontală/verticală, încadrare text pe mai multe linii, îmbinare celule.</p></div>
+      <div class="grp"><h5>#️⃣ Număr</h5><p>Formatul celulei: General, Monedă, Procent, zecimale — vezi secțiunea „Tipuri de date".</p></div>
+      <div class="grp"><h5>🎨 Stiluri</h5><p><b>Formatare condiționată</b> (evidențiază automat valorile după o regulă), Formatare ca tabel, Stiluri de celule predefinite.</p></div>
+      <div class="grp"><h5>🔲 Celule</h5><p>Inserare/Ștergere rânduri și coloane, Format (înălțime rând, lățime coloană).</p></div>
+      <div class="grp"><h5>✏️ Editare</h5><p><b>Sumă automată</b> (Σ), Umplere, Sortare și filtrare rapidă, Găsire și selectare.</p></div>
+      <div class="grp"><h5>➕ Programe de completare</h5><p>Suplimente/extensii instalate pentru Excel.</p></div>
+    </div>
+
+    <h3 style="margin:30px 0 6px;">Fila Inserare</h3>
+    <p>Adaugă elemente noi de conținut într-o foaie de calcul.</p>
+    <div class="ribbon-shot">
+      <img src="assets/fila_inserare.png" alt="Fila Inserare Excel">
+    </div>
+    <div class="ribbon-groups">
+      <div class="grp"><h5>▦ Tabele</h5><p>PivotTable / PivotTable recomandate (tabele centralizatoare interactive), Tabel simplu.</p></div>
+      <div class="grp"><h5>🖼️ Controale</h5><p>Ilustrații (imagini, forme, pictograme), Checkbox pentru liste bifabile.</p></div>
+      <div class="grp"><h5>📊 Diagrame</h5><p>Diagrame recomandate, toate tipurile de grafice, Hărți, PivotChart — vezi secțiunea „Grafice".</p></div>
+      <div class="grp"><h5>📈 Diagrame sparkline</h5><p>Mini-grafice („Linie", „Coloană", „Câștig/pierdere") care încap într-o singură celulă.</p></div>
+      <div class="grp"><h5>🔗 Linkuri / Filtre</h5><p>Hiperlinkuri către pagini web sau alte foi; segmente de filtrare (Filtre).</p></div>
+      <div class="grp"><h5>🅰️ Text / Ω Simboluri</h5><p>Casetă text, WordArt; simboluri și caractere speciale.</p></div>
+    </div>
+
+    <h3 style="margin:30px 0 6px;">Fila Desenare</h3>
+    <p>Instrumente de desen, subliniere, notițe scrise de mână — utile mai ales pe ecrane tactile. Butonul <b>Cerneală în expresie matematică</b> recunoaște automat o formulă scrisă de mână și o transformă în text.</p>
+    <div class="ribbon-shot">
+      <img src="assets/fila_desenare.png" alt="Fila Desenare Excel">
+    </div>
+    <div class="ribbon-groups">
+      <div class="grp"><h5>✏️ Instrumente de desen</h5><p>Diverse markere colorate și instrument de selecție pentru desen liber.</p></div>
+      <div class="grp"><h5>🔄 Conversie</h5><p>Cerneală în formă / Cerneală în expresie matematică — transformă scrisul de mână în forme sau formule curate.</p></div>
+      <div class="grp"><h5>▶️ Reproducere / Ajutor</h5><p>Redă pas cu pas desenul; ajutor pentru instrumentele de cerneală.</p></div>
+    </div>
+
+    <h3 style="margin:30px 0 6px;">Fila Aspect pagină</h3>
+    <p>Configurarea aspectului paginilor și a modului în care se aranjează tabelele foarte mari la tipărire.</p>
+    <div class="ribbon-shot">
+      <img src="assets/fila_aspect_pagina.png" alt="Fila Aspect pagina Excel">
+    </div>
+    <div class="ribbon-groups">
+      <div class="grp"><h5>🎭 Teme</h5><p>Culori, Fonturi și Efecte armonizate, aplicate registrului dintr-un click.</p></div>
+      <div class="grp"><h5>📄 Inițializare pagină</h5><p>Margini, Orientare (Portret/Vedere), Dimensiune, Zonă de imprimare, Întreruperi, Fundal, Imprimare titluri.</p></div>
+      <div class="grp"><h5>📐 Scalare pentru a se potrivi</h5><p>Lățime, Înălțime și Scară — utile ca tabelul mare să încapă pe o singură pagină tipărită.</p></div>
+      <div class="grp"><h5>🔳 Opțiuni de foaie</h5><p>Linii de grilă și Titluri (rânduri/coloane) — vizualizare și/sau imprimare.</p></div>
+      <div class="grp"><h5>📍 Aranjare</h5><p>Poziționarea obiectelor (imagini, forme) față de celulele cu conținut.</p></div>
+    </div>
+
+    <h3 style="margin:30px 0 6px;">Fila Formule</h3>
+    <p>Toate uneltele pentru scrierea și verificarea formulelor de calcul.</p>
+    <div class="ribbon-shot">
+      <img src="assets/fila_formule.png" alt="Fila Formule Excel">
+    </div>
+    <div class="ribbon-groups">
+      <div class="grp"><h5>ƒx Bibliotecă de funcții</h5><p>Inserare funcție, funcții Financiare, Logice, Text, Dată și oră — grupate pe categorii.</p></div>
+      <div class="grp"><h5>🏷️ Nume definite</h5><p>Poți da un <b>nume</b> unei celule/zone (ex. „TVA") și îl folosești direct în formule, în loc de adresa celulei.</p></div>
+      <div class="grp"><h5>🔍 Audit formule</h5><p><b>Trasare precedente</b> — arată ce celule afectează celula curentă. <b>Trasare dependențe</b> — arată ce celule sunt afectate de ea. Foarte utile ca să înțelegi/depanezi un tabel complex.</p></div>
+      <div class="grp"><h5>⚙️ Calcul</h5><p>Opțiuni de calcul — automat sau manual, pentru registre foarte mari.</p></div>
+    </div>
+
+    <h3 style="margin:30px 0 6px;">Fila Date</h3>
+    <p>Lucrul cu datele din foaia de calcul: sortare, filtrare, scindare de text în coloane.</p>
+    <div class="ribbon-shot">
+      <img src="assets/fila_date.png" alt="Fila Date Excel">
+    </div>
+    <div class="ribbon-groups">
+      <div class="grp"><h5>🌐 Obțineți și transformați date</h5><p>Importă date din alte fișiere sau surse externe.</p></div>
+      <div class="grp"><h5>🔗 Interogări și conexiuni</h5><p>Gestionează legăturile către alte registre de lucru.</p></div>
+      <div class="grp"><h5>↕️ Sortare și filtrare</h5><p><b>Sortare</b> crescătoare/descrescătoare (după unul sau mai multe criterii), <b>Filtrare</b> pentru a afișa doar anumite rânduri.</p></div>
+      <div class="grp"><h5>🧰 Instrumente de date</h5><p><b>Text în coloane</b> — desparte o coloană (ex. nume complet) în mai multe coloane (nume + prenume).</p></div>
+      <div class="grp"><h5>🔮 Prognoză / Schiță</h5><p>Analiză circumstanțială, Foaie de prognoză — estimează valori viitoare pe baza datelor existente.</p></div>
+    </div>
+
+    <h3 style="margin:30px 0 6px;">Fila Revizuire</h3>
+    <p>Verificare ortografică, comentarii, protejare prin parolă.</p>
+    <div class="ribbon-shot">
+      <img src="assets/fila_revizuire.png" alt="Fila Revizuire Excel">
+    </div>
+    <div class="ribbon-groups">
+      <div class="grp"><h5>✔️ Verificare</h5><p>Corectare ortografică, Lexicon, Statistici registru de lucru.</p></div>
+      <div class="grp"><h5>♿ Accesibilitate / 🔎 Detalii</h5><p>Verifică ușurința în utilizare a registrului; Căutare inteligentă pe internet.</p></div>
+      <div class="grp"><h5>🌐 Limbă</h5><p>Traducere a textului din celule.</p></div>
+      <div class="grp"><h5>💬 Comentarii / Note</h5><p>Adaugă observații pe marginea celulelor, vizibile pentru colaboratori.</p></div>
+      <div class="grp"><h5>🔒 Cerneală</h5><p>Protejare prin parolă a foii/registrului; Ascundere cerneală (adnotările de mână).</p></div>
+    </div>
+
+    <h3 style="margin:30px 0 6px;">Fila Vizualizare</h3>
+    <p>Cum afișezi foaia de calcul pe ecran.</p>
+    <div class="ribbon-shot">
+      <img src="assets/fila_vizualizare.png" alt="Fila Vizualizare Excel">
+    </div>
+    <div class="ribbon-groups">
+      <div class="grp"><h5>👁️ Vizualizări registre</h5><p><b>Normal</b>, <b>Aspect pagină</b>, <b>Examinare sfârșit de pagină</b> (utilă înainte de tipărire).</p></div>
+      <div class="grp"><h5>🖥️ Afișare</h5><p>Riglă, Linii de grilă, Bara de formule, Titluri — arată/ascunde instrumente ajutătoare.</p></div>
+      <div class="grp"><h5>🔎 Zoom</h5><p>Mărește/micșorează zona vizibilă a tabelului; Zoom la selecție.</p></div>
+      <div class="grp"><h5>🗔 Fereastră</h5><p>Fereastră nouă, Aranjați tot, <b>Înghețare panouri</b> (păstrează antetul vizibil la derulare), Comutare ferestre.</p></div>
+      <div class="grp"><h5>⚙️ Macrocomenzi</h5><p>Automatizează acțiuni repetitive înregistrate ca o secvență de pași.</p></div>
+    </div>
+
+    <h3 style="margin:30px 0 6px;">Fila Ajutor</h3>
+    <p>Ultima filă din panglică — căutare de informații despre utilizarea programului și trimitere de feedback către Microsoft.</p>
+    <div class="ribbon-shot">
+      <img src="assets/fila_ajutor.png" alt="Fila Ajutor Excel">
+    </div>
+    <div class="ribbon-groups">
+      <div class="grp"><h5>❓ Ajutor</h5><p>Ajutor, Feedback, Afișați instruirea, Noutăți — util când nu știi cum se face ceva în Excel.</p></div>
+    </div>
+
+    <p style="margin-top:6px;">În plus, fila <b>Partajați</b> (dreapta-sus) permite lucrul colaborativ pe același registru, dacă acesta e salvat în cloud.</p>
+  </div>
+</section>
+
+<!-- 5. OPERATII REGISTRU -->
+<section class="section" id="operatii">
+  <div class="container">
+    <span class="kicker">📁 Reține</span>
+    <h2>Operații elementare cu un registru de calcul</h2>
+    <p class="sub">La fel ca în orice aplicație de birou — creare, deschidere, salvare, tipărire, închidere.</p>
+    <div class="three-col">
+      <div class="mini-card">
+        <h4>Creare</h4>
+        <p>Registru necompletat din ecranul de start, sau <b>Fișier → Nou</b>, sau <b>Ctrl+N</b>.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Deschidere</h4>
+        <p><b>Fișier → Deschidere</b> sau <b>Ctrl+O</b>.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Salvare</h4>
+        <p><b>Salvare</b> (Ctrl+S) păstrează numele/formatul; <b>Salvare ca</b> (F12) schimbă numele, tipul sau locația.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Vizualizare</h4>
+        <p><b>Normal</b>, <b>Aspect pagină</b> sau <b>Examinare sfârșit de pagină</b>, din fila Vizualizare.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Imprimare</h4>
+        <p><b>Fișier → Imprimare</b> — la o imprimantă reală sau într-un fișier .pdf.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Închidere</h4>
+        <p><b>Fișier → Închidere</b> sau butonul din colțul din dreapta-sus.</p>
+      </div>
+    </div>
+
+    <h3 style="margin:30px 0 12px;">Operații cu foile de calcul dintr-un registru</h3>
+    <ul class="check">
+      <li><b>Redenumire</b> — dublu clic pe eticheta foii, apoi scrii noul nume.</li>
+      <li><b>Creare (inserare) foaie nouă</b> — butonul „+" de lângă etichetele foilor.</li>
+      <li><b>Accesare</b> — un simplu clic pe eticheta foii dorite.</li>
+      <li><b>Schimbarea ordinii</b> — tragi eticheta foii (drag & drop) la locul dorit.</li>
+      <li><b>Ștergere</b> — clic dreapta pe etichetă → Ștergere.</li>
+      <li><b>Mutare sau copiere...</b> — clic dreapta pe etichetă; poți alege și registrul, și poziția, și dacă vrei o copie.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 6. FORMATARE -->
+<section class="section tint" id="formatare">
+  <div class="container">
+    <span class="kicker">🎨 Reține</span>
+    <h2>Formatarea unui registru de calcul</h2>
+    <p class="sub">Poți formata atât rândurile și coloanele, cât și celulele — în funcție de informația pe care o conțin.</p>
+
+    <h3 style="margin-bottom:12px;">a. Formatarea rândurilor și coloanelor</h3>
+    <p>Poziționezi mouse-ul pe linia dintre literele care etichetează două coloane alăturate. Cursorul devine o linie verticală cu două săgeți — ții apăsat și tragi, micșorând sau mărind lățimea coloanei din stânga cursorului. <b>Dublu clic</b> pe acea linie ajustează automat lățimea la mărimea minimă necesară textului. La fel procedezi și pentru înălțimea rândurilor, pe linia dintre etichetele numerice.</p>
+    <div class="figure">
+      <img src="assets/column_width.png" alt="Comparație lățimi de coloană">
+      <figcaption>Aceeași tablă a înmulțirii cu 6: coloane implicite, coloane micșorate, și rânduri cu înălțime mărită.</figcaption>
+    </div>
+
+    <h3 style="margin:30px 0 12px;">b. Formatarea celulelor</h3>
+    <p>Excel oferă <b>stiluri de celule</b> predefinite (fila Pornire → grupul Stiluri → Stiluri de celule), dar poți și să-ți creezi propria formatare. Clic-dreapta pe o celulă → <b>Formatare celule...</b> deschide o fereastră cu mai multe file:</p>
+
+    <div class="two-col">
+      <div class="figure">
+        <img src="assets/format_alignment.png" alt="Formatare celule - Aliniere">
+        <figcaption>Fila Aliniere</figcaption>
+      </div>
+      <div class="figure">
+        <img src="assets/format_font.png" alt="Formatare celule - Font">
+        <figcaption>Fila Font</figcaption>
+      </div>
+    </div>
+    <div class="zones">
+      <div class="zone"><span class="num">1</span><span class="txt"><b>Aliniere orizontală/verticală</b> a textului (la stânga, centru, dreapta, sus, jos etc.).</span></div>
+      <div class="zone"><span class="num">2</span><span class="txt">Control text: <b>Încadrare text</b> (pe mai multe linii), <b>Potrivire prin reducere</b>, <b>Îmbinare celule</b>.</span></div>
+      <div class="zone"><span class="num">3</span><span class="txt"><b>Orientare</b> — textul poate fi orizontal, vertical sau oblic (unghi în grade).</span></div>
+      <div class="zone"><span class="num">4</span><span class="txt">Din fila Font: efecte — tăiat cu o linie, exponent, indice.</span></div>
+      <div class="zone"><span class="num">5</span><span class="txt">Fontul, stilul (obișnuit/cursiv/aldin), dimensiunea și culoarea textului.</span></div>
+    </div>
+
+    <div class="two-col">
+      <div class="figure">
+        <img src="assets/format_border.png" alt="Formatare celule - Bordură">
+        <figcaption>Fila Bordură — stil, culoare de linie și unde se aplică (contur/interior).</figcaption>
+      </div>
+      <div class="figure">
+        <img src="assets/format_fill.png" alt="Formatare celule - Umplere">
+        <figcaption>Fila Umplere — culoarea fundalului celulei, cu buton „Mai multe culori..." pentru nuanțe suplimentare.</figcaption>
+      </div>
+    </div>
+    <p>Poți combina liber toate aceste opțiuni: o celulă poate fi, în același timp, aldină, centrată, cu fundal galben și bordură dublă.</p>
+  </div>
+</section>
+
+<!-- 7. TIPURI DE DATE -->
+<section class="section" id="tipuri">
+  <div class="container">
+    <span class="kicker">🔢 Reține</span>
+    <h2>Tipuri de date: numeric, text, dată calendaristică și altele</h2>
+    <p class="sub">Poate cea mai importantă opțiune de formatare a unei celule, din punct de vedere practic, e faptul că îi poți configura conținutul să fie de un anumit tip.</p>
+    <div class="two-col">
+      <ul class="check">
+        <li><b>Număr</b> — poți configura separatorul de mii și numărul de zecimale afișate.</li>
+        <li><b>Monedă</b> — diferite monede, inclusiv RON.</li>
+        <li><b>Dată sau oră</b> — permite operații (adunări/scăderi) cu date și ore.</li>
+        <li><b>Procent</b> — valoarea 0.25 se afișează 25%.</li>
+        <li><b>Fracție</b> — dacă introduci „5.5", va apărea „5 1/2".</li>
+        <li><b>Text</b> — conținutul e tratat ca șir de caractere, nu ca număr.</li>
+      </ul>
+      <div class="figure">
+        <img src="assets/format_number.png" alt="Formatare celule - Număr">
+        <figcaption>Fila Număr din Formatare celule — categorii de tipuri de date.</figcaption>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. FORMULE -->
+<section class="section tint" id="formule">
+  <div class="container">
+    <span class="kicker">🧮 Reține</span>
+    <h2>Formule de calcul într-o foaie de calcul</h2>
+    <p class="sub">Menirea principală a unei foi de calcul este să obții rezultate calculate automat, pe baza unor formule.</p>
+
+    <div class="formula-box">O formulă începe întotdeauna cu semnul <b>=</b>. Exemplu: <b>=A1*B1</b> înmulțește conținutul celulei A1 cu al celulei B1.</div>
+
+    <h3 style="margin:26px 0 12px;">Operatori aritmetici</h3>
+    <div class="three-col">
+      <div class="mini-card"><h4>+ / −</h4><p>Adunare / scădere. Ex: <b>=A2+B2</b></p></div>
+      <div class="mini-card"><h4>* / /</h4><p>Înmulțire / împărțire. Ex: <b>=A8*B8</b></p></div>
+      <div class="mini-card"><h4>^</h4><p>Ridicare la putere. Se pot folosi și paranteze, cu aceeași prioritate ca la matematică.</p></div>
+    </div>
+    <p style="margin-top:14px;">Un avantaj esențial: dacă scrii formula cu <b>referințe de celule</b> (<b>=A1*B1</b>) în loc de valori fixe (<b>=1*6</b>), și apoi o copiezi în altă celulă, Excel adaptează automat formula la rândul nou. Poți chiar trage de colțul din dreapta-jos al celulei pentru a replica formula pe un întreg tabel.</p>
+    <p>Exemplu de expresie complexă, combinând operatori și paranteze: <span class="formula-box" style="display:inline-block; margin:6px 0;">=((A1+A2)*(A4-B4))/((A8*B8)+(A11/B11))</span></p>
+
+    <h3 style="margin:30px 0 14px;">Funcții de bază</h3>
+    <div class="func-grid">
+      <div class="func-card">
+        <h4>SUM — sumă</h4>
+        <div class="syntax">=SUM(număr1, [număr2], ...)</div>
+        <p>Adună valori individuale, celule sau zone întregi.</p>
+        <div class="ex">=SUM(A2:A10) → adună toate valorile de la A2 la A10</div>
+      </div>
+      <div class="func-card">
+        <h4>AVERAGE — medie aritmetică</h4>
+        <div class="syntax">=AVERAGE(număr1, [număr2], ...)</div>
+        <p>Calculează media aritmetică a unui grup de numere.</p>
+        <div class="ex">=AVERAGE(A2:A10) → media celulelor A2 la A10</div>
+      </div>
+      <div class="func-card">
+        <h4>MAX / MIN</h4>
+        <div class="syntax">=MAX(...) &nbsp;/&nbsp; =MIN(...)</div>
+        <p>Întorc valoarea cea mai mare, respectiv cea mai mică, dintr-un set de valori.</p>
+        <div class="ex">=MAX(A2:A10) → cea mai mare valoare din zonă</div>
+      </div>
+      <div class="func-card">
+        <h4>IF — decizie</h4>
+        <div class="syntax">=IF(test_logic, val_ADEVĂRAT, val_FALS)</div>
+        <p>Compară o valoare cu o condiție și întoarce unul dintre două rezultate posibile.</p>
+        <div class="ex">=IF(D4>=80,"PROMOVAT","RESPINS")</div>
+      </div>
+    </div>
+
+    <h3 style="margin:30px 0 14px;">Alte funcții foarte utile</h3>
+    <div class="func-grid">
+      <div class="func-card">
+        <h4>COUNT — numără celulele cu numere</h4>
+        <div class="syntax">=COUNT(zonă)</div>
+        <p>Numără câte celule dintr-o zonă conțin <b>numere</b> (ignoră textul și celulele goale).</p>
+        <div class="ex">=COUNT(C2:C11) → câte note sunt introduse</div>
+      </div>
+      <div class="func-card">
+        <h4>COUNTA — numără celulele completate</h4>
+        <div class="syntax">=COUNTA(zonă)</div>
+        <p>Numără câte celule dintr-o zonă <b>nu sunt goale</b> (text sau numere).</p>
+        <div class="ex">=COUNTA(A2:A20) → câți elevi sunt trecuți în listă</div>
+      </div>
+      <div class="func-card">
+        <h4>COUNTIF — numără condiționat</h4>
+        <div class="syntax">=COUNTIF(zonă, criteriu)</div>
+        <p>Numără câte celule dintr-o zonă îndeplinesc o condiție.</p>
+        <div class="ex">=COUNTIF(C2:C11,">=9") → câte note sunt ≥ 9</div>
+      </div>
+      <div class="func-card">
+        <h4>SUMIF — sumă condiționată</h4>
+        <div class="syntax">=SUMIF(zonă_test, criteriu, [zonă_sumă])</div>
+        <p>Adună doar valorile care îndeplinesc o condiție.</p>
+        <div class="ex">=SUMIF(B2:B11,"Lapte",D2:D11) → totalul cheltuit doar pe „Lapte"</div>
+      </div>
+      <div class="func-card">
+        <h4>ROUND — rotunjire</h4>
+        <div class="syntax">=ROUND(număr, nr_zecimale)</div>
+        <p>Rotunjește un număr la câte zecimale specifici.</p>
+        <div class="ex">=ROUND(9.847,1) → 9.8</div>
+      </div>
+      <div class="func-card">
+        <h4>MOD — restul împărțirii</h4>
+        <div class="syntax">=MOD(număr, împărțitor)</div>
+        <p>Întoarce restul unei împărțiri — util ca să testezi dacă un număr e par/impar sau divizibil cu ceva.</p>
+        <div class="ex">=MOD(10,3) → 1</div>
+      </div>
+    </div>
+
+    <div class="mini-card" style="margin-top:8px;">
+      <h4>💡 Funcțiile se pot combina</h4>
+      <p style="text-align:left;">Poți folosi mai multe funcții împreună cu operatorii aritmetici, pentru expresii mai complexe. Exemplu: <b>=SUM(B1,B2)*MIN(C1,C2,C3)/MAX(C4,C5)</b> — sau chiar <b>=IF(COUNTIF(C2:C11,"&lt;5")&gt;0,"Are corigențe","Toate notele sunt de trecere")</b>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 9. GRAFICE -->
+<section class="section" id="grafice">
+  <div class="container">
+    <span class="kicker">📈 Reține</span>
+    <h2>Modalități grafice de utilizare a registrelor de calcul</h2>
+    <p class="sub">O <b>diagramă</b> (grafic) te ajută să înțelegi dintr-o privire ceea ce ai în tabel. Se creează în 4 pași: faci tabelul cu date → îl selectezi → fila <b>Inserare</b> → grupul <b>Diagrame</b> → alegi tipul potrivit. O diagramă se actualizează automat dacă modifici datele din tabelul din care a fost generată.</p>
+
+    <div class="figure">
+      <img src="assets/chart_types.png" alt="Tipuri de diagrame in Excel">
+    </div>
+
+    <h3 style="margin:28px 0 8px;">Când alegi ce tip de grafic?</h3>
+    <div class="chart-when">
+      <div class="cw"><h5>📊 Coloană / Bară</h5><p>Compari valori între câteva categorii (ex. note pe materii, vânzări pe produs).</p></div>
+      <div class="cw"><h5>📉 Linie</h5><p>Arăți o tendință în timp sau pe etape (ex. evoluție, creștere, scădere).</p></div>
+      <div class="cw"><h5>🥧 Radial / Inelar</h5><p>Reprezinți proporțiile unui întreg — cât la sută reprezintă fiecare parte.</p></div>
+      <div class="cw"><h5>⚫ Puncte (Scatter)</h5><p>Verifici dacă există o <b>legătură</b> (corelație) între două seturi de valori numerice.</p></div>
+    </div>
+
+    <h3 style="margin:30px 0 10px;">Exemple interactive (generate live, nu din manual)</h3>
+    <p>Iată patru situații reale, cu grafice construite direct pe pagină — apasă și explorează, apoi citește interpretarea.</p>
+
+    <div class="chart-card">
+      <h4>📊 Genuri de cărți împrumutate din biblioteca școlii</h4>
+      <canvas id="chartBar" height="220"></canvas>
+      <div class="interp"><b>Interpretare:</b> Aventura și Fantasy domină clar împrumuturile, cu peste 40 de cărți fiecare, în timp ce Poezia abia trece de 10. O diagramă bară arată instant ce genuri ar trebui achiziționate în plus la următoarea comandă de cărți.</div>
+    </div>
+
+    <div class="chart-card">
+      <h4>📉 Vizitatori pe site-ul clasei, într-o săptămână</h4>
+      <canvas id="chartLine" height="220"></canvas>
+      <div class="interp"><b>Interpretare:</b> Traficul crește constant spre weekend, cu un vârf sâmbătă. Un grafic cu linii scoate în evidență <b>tendința</b> — aici, faptul că elevii accesează site-ul mai ales când nu au ore.</div>
+    </div>
+
+    <div class="chart-card">
+      <h4>🥧 Cum își împarte Andrei timpul liber într-o zi obișnuită</h4>
+      <canvas id="chartPie" height="220"></canvas>
+      <div class="interp"><b>Interpretare:</b> Ecranele (telefon + calculator) ocupă aproape o treime din timpul liber — mai mult decât sportul și hobby-urile la un loc. O diagramă radială face vizibil acest dezechilibru mult mai rapid decât un tabel cu procente.</div>
+    </div>
+
+    <div class="chart-card">
+      <h4>⚫ Legătura dintre orele de studiu și nota obținută</h4>
+      <canvas id="chartScatter" height="220"></canvas>
+      <div class="interp"><b>Interpretare:</b> Punctele urcă de la stânga la dreapta — cu cât un elev a studiat mai multe ore pentru test, cu atât nota a fost mai mare. Nu e o regulă perfectă (vezi punctul izolat de la 5 ore/nota 6), dar <b>tendința generală</b> e clară. Acesta e un tip de grafic pe care manualul nu îl arată explicit, dar Excel îl oferă la categoria „Puncte (XY Scatter)", exact pentru astfel de analize.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. EXERCITIU -->
+<section class="section tint" id="exercitiu">
+  <div class="container">
+    <span class="kicker">💪 Exersează</span>
+    <h2>Exercițiu practic — un registru pregătit pentru tine</h2>
+    <p class="sub">Descarcă fișierul de mai jos. Conține două foi de calcul, doar cu date brute — restul îl faci tu, urmând cerințele.</p>
+
+    <div class="xlsx-download">
+      <div class="icon">📗</div>
+      <div class="txt">
+        <h4>exercitiu_foi_calcul.xlsx</h4>
+        <p>2 foi de calcul · „Elevi" și „Papetărie" · gata de completat</p>
+      </div>
+      <a class="btn-dl" href="assets/exercitiu_foi_calcul.xlsx" download>⬇ Descarcă fișierul Excel</a>
+    </div>
+
+    <div class="sheet-tabs">
+      <button class="active" onclick="showReq(0)">📘 Foaia „Elevi"</button>
+      <button onclick="showReq(1)">📙 Foaia „Papetărie"</button>
+    </div>
+
+    <div class="req-panel active" id="req-0">
+      <ul class="req-list">
+        <li>Calculează <b>media</b> fiecărui elev (coloana „Media"), folosind funcția <b>AVERAGE</b> pe cele 4 note.</li>
+        <li>În coloana „Situație", folosește <b>IF</b> pentru a afișa „Promovat" dacă media e ≥ 5, altfel „Corigent".</li>
+        <li>Aplică <b>formatare condiționată</b> pe coloanele cu note: evidențiază cu verde notele ≥ 9 și cu roșu notele &lt; 5.</li>
+        <li>Sub ultimul elev, adaugă un rând „Media clasei" și calculează, cu <b>AVERAGE</b>, media clasei la fiecare materie.</li>
+        <li>În două celule separate, folosește <b>MAX</b> și <b>MIN</b> ca să afli cea mai mare și cea mai mică medie generală din clasă.</li>
+        <li>Într-o celulă dedicată, folosește <b>COUNTIF</b> ca să numeri câți elevi au media generală ≥ 8.</li>
+      </ul>
+    </div>
+    <div class="req-panel" id="req-1">
+      <ul class="req-list">
+        <li>TVA-ul este <b>19%</b>. Calculează în coloana „Preț unitar cu TVA" prețul cu TVA al fiecărui produs (preț fără TVA × 1.19).</li>
+        <li>Calculează în coloana „Valoare totală" cât costă toată cantitatea din fiecare produs (cantitate × preț cu TVA).</li>
+        <li>Într-o celulă separată, sub tabel, calculează cu <b>SUM</b> valoarea totală a întregului stoc din papetărie.</li>
+        <li>În coloana „Stoc", folosește <b>IF</b> pentru a afișa „Stoc redus" dacă cantitatea e sub 10 bucăți, altfel „OK".</li>
+        <li>Într-o celulă dedicată, folosește <b>COUNTIF</b> ca să numeri câte produse au stocul redus.</li>
+        <li>Aplică <b>formatare condiționată</b> pe coloana „Cantitate": evidențiază cu roșu valorile sub 10.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 11. QUIZ -->
+<section class="section" id="quiz">
+  <div class="container">
+    <span class="kicker">🎯 Recapitulare</span>
+    <h2>Quiz — cât ai reținut din lecție?</h2>
+    <p class="sub">10 întrebări rapide. Alege un răspuns și vezi imediat dacă e corect.</p>
+
+    <div class="quiz-wrap">
+      <div class="quiz-top">
+        <div class="quiz-score">Scor: <span id="qScore">0</span> / <span id="qTotal">10</span></div>
+        <div class="progress-dots" id="qDots"></div>
+      </div>
+      <div class="quiz-stage" id="quizStage"></div>
+    </div>
+  </div>
+</section>
+
+<footer class="end">
+  <p style="color:var(--ink-soft); font-size:.9rem;">Material realizat pentru orele de Informatică — clasa a VIII-a · Unitatea 1: Utilizarea foilor de calcul tabelar</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script>
+  // ---- Tab switch for exercise requirements ----
+  function showReq(i){
+    document.querySelectorAll('.sheet-tabs button').forEach((b,idx)=>b.classList.toggle('active', idx===i));
+    document.querySelectorAll('.req-panel').forEach((p,idx)=>p.classList.toggle('active', idx===i));
+  }
+
+  // ---- Charts ----
+  const tealPalette = ['#1e7b6e','#e08a3e','#3f6fb5','#c0546f','#6ba43a','#8a5fb0','#c9a227','#4a8f9c'];
+
+  new Chart(document.getElementById('chartBar'), {
+    type: 'bar',
+    data: {
+      labels: ['Aventură','SF','Fantasy','Istorie','Poezie'],
+      datasets: [{ label:'Cărți împrumutate', data:[44, 27, 41, 19, 11], backgroundColor: tealPalette }]
+    },
+    options: { plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true } } }
+  });
+
+  new Chart(document.getElementById('chartLine'), {
+    type: 'line',
+    data: {
+      labels: ['Luni','Marți','Miercuri','Joi','Vineri','Sâmbătă','Duminică'],
+      datasets: [{ label:'Vizitatori', data:[32,28,35,30,48,76,58], borderColor:'#1e7b6e', backgroundColor:'rgba(30,123,110,.15)', fill:true, tension:.35 }]
+    },
+    options: { plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true } } }
+  });
+
+  new Chart(document.getElementById('chartPie'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Teme','Sport','Ecrane (telefon+PC)','Somn în plus','Hobby-uri'],
+      datasets: [{ data:[20, 18, 30, 12, 20], backgroundColor: tealPalette }]
+    },
+    options: { plugins:{ legend:{ position:'bottom' } } }
+  });
+
+  new Chart(document.getElementById('chartScatter'), {
+    type: 'scatter',
+    data: {
+      datasets: [{
+        label:'Elevi',
+        data: [
+          {x:1,y:5},{x:1.5,y:5.5},{x:2,y:6},{x:2.5,y:6.5},{x:3,y:7},
+          {x:3.5,y:7},{x:4,y:8},{x:4.5,y:8.5},{x:5,y:6},{x:5,y:9},
+          {x:5.5,y:9.5},{x:6,y:10}
+        ],
+        backgroundColor:'#c0546f'
+      }]
+    },
+    options: {
+      plugins:{ legend:{ display:false } },
+      scales:{
+        x:{ title:{ display:true, text:'Ore de studiu' } },
+        y:{ title:{ display:true, text:'Nota obținută' }, min:0, max:10 }
+      }
+    }
+  });
+
+  // ---- Quiz ----
+  const QUESTIONS = [
+    { q:"Cum se numește unitatea elementară a unui tabel, aflată la intersecția unui rând cu o coloană?", opts:["Zonă","Celulă","Registru","Foaie"], a:1 },
+    { q:"Ce simbol trebuie să înceapă întotdeauna o formulă în Excel?", opts:["+","#","=","@"], a:2 },
+    { q:"Care dintre următoarele NU poate fi extensia unui fișier creat cu MS Excel?", opts:[".xlsx",".xlsm",".docx",".xls"], a:2 },
+    { q:"Ce funcție calculează media aritmetică a unui grup de numere?", opts:["SUM","COUNT","MAX","AVERAGE"], a:3 },
+    { q:"Ce tip de diagramă alegi ca să arăți proporțiile unui întreg?", opts:["Linie","Radială / inelară","Coloană","Puncte (Scatter)"], a:1 },
+    { q:"Câte foi de calcul poate conține un registru Excel?", opts:["Exact una","Exact trei","Una sau mai multe","Maximum 5"], a:2 },
+    { q:"Ce funcție numără celulele dintr-o zonă care îndeplinesc o condiție?", opts:["COUNT","SUM","COUNTIF","AVERAGE"], a:2 },
+    { q:"Cum se numesc mai multe celule alăturate, adresate prin coordonatele colțurilor (ex: D1:E2)?", opts:["Zonă","Registru","Panglică","Celulă"], a:0 },
+    { q:"Din ce filă a panglicii inserezi o diagramă?", opts:["Pornire","Aspect pagină","Date","Inserare"], a:3 },
+    { q:"Ce combinație de taste salvează rapid registrul de calcul?", opts:["Ctrl+S","Ctrl+N","Ctrl+O","Ctrl+P"], a:0 }
+  ];
+
+  let qIdx = 0, qScore = 0, qLocked = false;
+  const stage = document.getElementById('quizStage');
+  const dotsWrap = document.getElementById('qDots');
+  const scoreEl = document.getElementById('qScore');
+  document.getElementById('qTotal').textContent = QUESTIONS.length;
+
+  function renderDots(){
+    dotsWrap.innerHTML = QUESTIONS.map((_,i)=>`<span class="${i<qIdx?'done':''}"></span>`).join('');
+  }
+
+  function renderQuestion(){
+    qLocked = false;
+    renderDots();
+    if(qIdx >= QUESTIONS.length){
+      stage.innerHTML = `
+        <div class="quiz-done">
+          <div class="big">${qScore >= 8 ? '🏆' : qScore >= 5 ? '🎉' : '💡'}</div>
+          <p style="font-family:'Baloo 2',sans-serif; font-size:1.2rem; color:var(--teal-dark); font-weight:700;">Ai terminat! Scor final: ${qScore} / ${QUESTIONS.length}</p>
+          <p style="color:var(--ink-soft); max-width:44ch;">${qScore >= 8 ? 'Stăpânești foarte bine noțiunile despre foile de calcul!' : qScore >= 5 ? 'Bine, dar mai recitește o dată secțiunile unde ai greșit.' : 'Reia lecția pas cu pas — o să meargă mult mai bine a doua oară.'}</p>
+          <button class="choice-btn" onclick="restartQuiz()">🔄 Ia quiz-ul din nou</button>
+        </div>`;
+      return;
+    }
+    const item = QUESTIONS[qIdx];
+    stage.innerHTML = `
+      <div class="q-card">
+        <div class="q-type">Întrebarea ${qIdx+1} din ${QUESTIONS.length}</div>
+        ${item.q}
+      </div>
+      <div class="choice-row" id="choiceRow"></div>
+      <div class="feedback" id="qFeedback"></div>`;
+    const row = document.getElementById('choiceRow');
+    item.opts.forEach((opt, i)=>{
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = opt;
+      btn.onclick = () => selectAnswer(i);
+      row.appendChild(btn);
+    });
+  }
+
+  function selectAnswer(i){
+    if(qLocked) return;
+    qLocked = true;
+    const item = QUESTIONS[qIdx];
+    const buttons = document.querySelectorAll('#choiceRow .choice-btn');
+    const fb = document.getElementById('qFeedback');
+    if(i === item.a){
+      qScore++;
+      scoreEl.textContent = qScore;
+      buttons[i].style.background = '#1e7b6e';
+      buttons[i].style.color = '#fff';
+      fb.textContent = '✅ Corect!';
+      fb.className = 'feedback ok';
+    } else {
+      buttons[i].style.background = '#c0546f';
+      buttons[i].style.color = '#fff';
+      buttons[item.a].style.background = '#1e7b6e';
+      buttons[item.a].style.color = '#fff';
+      fb.textContent = '❌ Nu chiar — răspunsul corect e evidențiat.';
+      fb.className = 'feedback bad';
+    }
+    setTimeout(()=>{ qIdx++; renderQuestion(); }, 1100);
+  }
+
+  function restartQuiz(){ qIdx = 0; qScore = 0; scoreEl.textContent = 0; renderQuestion(); }
+
+  renderQuestion();
+
+  // ---- TOC scroll spy ----
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = Array.from(tocLinks).map(a => document.querySelector(a.getAttribute('href')));
+  window.addEventListener('scroll', () => {
+    let current = 0;
+    sections.forEach((sec, i) => { if(sec && window.scrollY >= sec.offsetTop - 90) current = i; });
+    tocLinks.forEach((a,i) => a.classList.toggle('active', i===current));
+  });
+</script>
+</body>
+</html>
