@@ -134,7 +134,14 @@
           ready: true,
           href: "unitatea1-excel.html"
         },
-        { id: "l2", name: "Lecția următoare", icon: "🧩", desc: "Se adaugă în curând.", ready: false }
+       {
+  id: "l2",
+  name: "Cerințe",
+  icon: "📝",
+  desc: "Exerciții de rezolvat pe foaia de calcul tabelar. Apasă pentru a descărca fișierul.",
+  ready: true,
+  href: "assets/exercitii.xlsx"
+}
       ]
     },
     { id: "u2", name: "Unitatea 2 — Pagini web", icon: "🌐", desc: "Se adaugă în curând.", ready: false, lessons: [] }
@@ -187,13 +194,14 @@
       (unit.lessons && unit.lessons.length)
         ? unit.lessons.map(l => {
             if(l.ready){
-              return `<a class="tile" href="${l.href}">
-                <div class="icon">${l.icon || '▶️'}</div>
-                <h3>${l.name}</h3>
-                <p>${l.desc || ''}</p>
-                <span class="go">Deschide lecția →</span>
-              </a>`;
-            }
+  const isDownload = l.href && l.href.endsWith('.xlsx');
+  return `<a class="tile" href="${l.href}" ${isDownload ? 'download="exercitii.xlsx"' : ''}>
+    <div class="icon">${l.icon || '▶️'}</div>
+    <h3>${l.name}</h3>
+    <p>${l.desc || ''}</p>
+    <span class="go">${isDownload ? 'Descarcă →' : 'Deschide lecția →'}</span>
+  </a>`;
+}
             return tileHTML(l, '', '');
           }).join('')
         : `<p>Lecțiile pentru această unitate se adaugă în curând.</p>`;
