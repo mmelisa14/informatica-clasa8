@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Unit 1 — Using Spreadsheets | ICT, Grade 8</title>
 <style>
 :root{--g:#1f6b3a;--g2:#2e9d57;--gl:#e4f2e9;--bg:#f3f8f4;--c:#fff;--t:#1d2b22;--b:#d5e3da;--sh:0 4px 18px rgba(31,107,58,.10);--tip:#fff8e1;--tipb:#f5c542}
@@ -36,144 +39,488 @@ ul{list-style:none;padding-left:4px}ul li{position:relative;padding-left:26px;ma
 a{color:var(--g)}
 #top{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:50%;border:0;background:var(--g);color:#fff;font-size:20px;cursor:pointer;box-shadow:var(--sh);opacity:0;transition:.3s}#top.show{opacity:1}
 footer{text-align:center;padding:26px;font-size:13px;color:#667}
-@media(prefers-color-scheme:dark){:root{--bg:#101813;--c:#1a2520;--t:#e6efe9;--b:#34493c;--gl:#26382d;--tip:#3a331a}header:after{background:var(--bg)}.card{background:#202d25}code{background:#243329;color:#9be3b5;border-color:#34493c}em.cap,footer{color:#aab}a{color:#7fd69c}h2,h3{color:#7fd69c}img{background:#fff}}
-</style></head><body>
-<nav><a href="#intro">Spreadsheets</a><a href="#excel">MS Excel</a><a href="#structure">Structure</a><a href="#ribbon">Ribbon</a><a href="#ops">Workbook operations</a><a href="#format">Formatting</a><a href="#types">Data types</a><a href="#formulas">Formulas</a><a href="#charts">Charts</a><a href="#exercise">⭐ Exercise</a></nav>
-<header><span class="big">📊</span><span class="pill">UNIT 1 · ICT · GRADE 8</span><h1>Using Spreadsheets</h1><p>Discover what a spreadsheet is, what the Microsoft Excel window looks like, what you can do with formulas and functions, how to build charts — and practise with a ready-made Excel file.</p></header>
+/* Chart cards */
+.chart-card{background:var(--c);border:1px solid var(--b);border-radius:14px;padding:18px 20px;box-shadow:var(--sh);margin:0 auto 22px;max-width:720px}
+.chart-card h4{color:var(--g);margin:0 0 8px;font-size:1.05rem}
+.chart-card canvas{max-height:180px!important;width:100%!important}
+.chart-card .interp{background:var(--tip);border-radius:10px;padding:12px 16px;margin-top:12px;font-size:.9rem;color:#5a4a1a;border-left:5px solid var(--tipb)}
+.chart-when{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:18px 0}
+.chart-when .cw{background:linear-gradient(180deg,#fafdfb,#f0f8f2);border:1px solid var(--b);border-radius:12px;padding:14px 16px}
+.chart-when .cw h5{margin:0 0 6px;color:var(--g);font-size:1rem}
+.chart-when .cw p{margin:0;font-size:.9rem;color:#445}
+@media(prefers-color-scheme:dark){:root{--bg:#101813;--c:#1a2520;--t:#e6efe9;--b:#34493c;--gl:#26382d;--tip:#3a331a}header:after{background:var(--bg)}.card{background:#202d25}code{background:#243329;color:#9be3b5;border-color:#34493c}em.cap,footer{color:#aab}a{color:#7fd69c}h2,h3{color:#7fd69c}img{background:#fff}.chart-card .interp{color:#e8d9a0}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="#intro">Spreadsheets</a>
+  <a href="#excel">MS Excel</a>
+  <a href="#structure">Structure</a>
+  <a href="#ribbon">Ribbon</a>
+  <a href="#ops">Workbook operations</a>
+  <a href="#format">Formatting</a>
+  <a href="#types">Data types</a>
+  <a href="#formulas">Formulas</a>
+  <a href="#charts">Charts</a>
+  <a href="#exercise">⭐ Exercise</a>
+</nav>
+
+<header>
+  <span class="big">📊</span>
+  <span class="pill">UNIT 1 · ICT · GRADE 8</span>
+  <h1>Using Spreadsheets</h1>
+  <p>Discover what a spreadsheet is, what the Microsoft Excel window looks like, what you can do with formulas and functions, how to build charts — and practise with a ready-made Excel file.</p>
+</header>
+
 <main>
 
-<section id="intro"><h2>🔎 What is an electronic spreadsheet?</h2>
-<p>A way to manage data organised as a table. The name comes from accounting, where large paper forms with horizontal and vertical lines were used.</p>
-<p>Computers brought huge advantages over paper:</p>
-<ul><li>you can easily build a table — insert or delete rows and columns at any time;</li><li>besides typed values, you can add <b>calculation formulas</b> that update automatically;</li><li>you control exactly how values are displayed (currency, percent, date, etc.).</li></ul>
-<p>Example: a table with 15 subjects and 5 grades each. If each subject's average is calculated by a <b>formula</b> and you change a single grade, that subject's average — and the overall average — recalculates instantly, with no manual work.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/example_table.png" alt="Example table with subjects and grades"><em class="cap">Notice the two "rulers", like in chess: numbers for rows, letters for columns. The cell with "TIC" is A14 and the overall average is in G18.</em>
-<h3>Spreadsheet programs</h3>
-<p>Applications made for working with spreadsheets are called <b>spreadsheet programs</b>. The most popular: 📗 MS Excel / Excel Online · 📘 LibreOffice Calc · 📙 OpenOffice Calc · 📕 WPS Spreadsheets · 📓 Ashampoo PlanMaker · 📈 Google Sheets</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/libreoffice_calc.png" alt="LibreOffice Calc"><em class="cap">LibreOffice Calc — free, installed locally, available in many languages.</em>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/openoffice_calc.png" alt="OpenOffice Calc"><em class="cap">OpenOffice Calc — part of the free Apache OpenOffice suite.</em>
-<p>Each has pros and cons: <b>MS Excel</b> is the most popular, so help is easy to find; <b>Calc</b> and <b>Spreadsheets</b> are free; some are installed on your computer (work offline), others are online (use no storage space, but need internet).</p></section>
+<section id="intro">
+  <h2>🔎 What is an electronic spreadsheet?</h2>
+  <p>A way to manage data organised as a table. The name comes from accounting, where large paper forms with horizontal and vertical lines were used.</p>
+  <p>Computers brought huge advantages over paper:</p>
+  <ul>
+    <li>you can easily build a table — insert or delete rows and columns at any time;</li>
+    <li>besides typed values, you can add <b>calculation formulas</b> that update automatically;</li>
+    <li>you control exactly how values are displayed (currency, percent, date, etc.).</li>
+  </ul>
+  <p>Example: a table with 15 subjects and 5 grades each. If each subject's average is calculated by a <b>formula</b> and you change a single grade, that subject's average — and the overall average — recalculates instantly, with no manual work.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/example_table.png" alt="Example table with subjects and grades">
+  <em class="cap">Notice the two "rulers", like in chess: numbers for rows, letters for columns. The cell with "TIC" is A14 and the overall average is in G18.</em>
 
-<section id="excel"><h2>📗 Microsoft Excel</h2>
-<p><b>MS Excel</b> (or simply <b>Excel</b>) is the best-known spreadsheet program, part of Microsoft Office. An Excel file can have the extension <b>.xls</b>, <b>.xlsx</b> or <b>.xlsm</b>.</p>
-<p>Start it like Word: <b>Start → All Apps → Excel</b>, or type "Excel" in the Windows search bar and press Enter. A start screen lets you choose:</p>
-<ol><li><b>Blank workbook</b> — start from scratch;</li><li>a <b>template</b> — a ready-made model;</li><li><b>open</b> an earlier workbook — from the recent list or from the cloud (OneDrive).</li></ol>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/excel_logo.png" alt="Microsoft Excel logo" style="max-width:160px"></section>
+  <h3>Spreadsheet programs</h3>
+  <p>Applications made for working with spreadsheets are called <b>spreadsheet programs</b>. The most popular: 📗 MS Excel / Excel Online · 📘 LibreOffice Calc · 📙 OpenOffice Calc · 📕 WPS Spreadsheets · 📓 Ashampoo PlanMaker · 📈 Google Sheets</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/libreoffice_calc.png" alt="LibreOffice Calc">
+  <em class="cap">LibreOffice Calc — free, installed locally, available in many languages.</em>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/openoffice_calc.png" alt="OpenOffice Calc">
+  <em class="cap">OpenOffice Calc — part of the free Apache OpenOffice suite.</em>
+  <p>Each has pros and cons: <b>MS Excel</b> is the most popular, so help is easy to find; <b>Calc</b> and <b>Spreadsheets</b> are free; some are installed on your computer (work offline), others are online (use no storage space, but need internet).</p>
+</section>
 
-<section id="structure"><h2>🧱 Structure of a workbook</h2>
-<div class="grid">
-<div class="card"><b>📄 Worksheet</b><br>One table. Rows are labelled with numbers (1, 2, ...) and columns with letters (A, B, ...) — up to <b>1,048,576</b> rows and <b>16,384</b> columns.</div>
-<div class="card"><b>🔲 Cell</b><br>The basic unit of the table, at the intersection of a row and a column. Its name is column + row, e.g. <b>B2</b>.</div>
-<div class="card"><b>🗂️ Workbook</b><br>The file created with Excel, made of one or more worksheets.</div>
-<div class="card"><b>🔳 Range</b><br>Several adjacent cells. It is written with the top-left and bottom-right corners separated by "<b>:</b>", e.g. <b>D1:E2</b> or <b>G2:I2</b>.</div></div>
-<h3>Parts of the Excel window</h3>
-<p>A new workbook is automatically named "Book1", not yet saved. The window has:</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/excel_interface.png" alt="Excel interface">
-<ul><li><b>A – Title bar</b> — workbook name, Microsoft search, user account, minimise/maximise/close buttons.</li><li><b>B – Ribbon</b> — all Excel commands, grouped in tabs.</li><li><b>C – Name Box</b> — shows the name of the current cell (here B2, with a green border).</li><li><b>D – Formula Bar</b> — shows the real content of the selected cell (text, number or formula).</li><li><b>E – Work area</b> — the worksheet itself, with rows and columns.</li><li><b>F – Sheet tab</b> — the name of the current sheet (default "Sheet1").</li><li><b>G – Add sheet</b> button.</li><li><b>H – View mode</b>: Normal, Page Layout or Page Break Preview.</li><li><b>I / J – Vertical / horizontal scroll bars.</b></li><li><b>K – Zoom</b> — +/− buttons, slider and current percentage.</li></ul></section>
+<section id="excel">
+  <h2>📗 Microsoft Excel</h2>
+  <p><b>MS Excel</b> (or simply <b>Excel</b>) is the best-known spreadsheet program, part of Microsoft Office. An Excel file can have the extension <b>.xls</b>, <b>.xlsx</b> or <b>.xlsm</b>.</p>
+  <p>Start it like Word: <b>Start → All Apps → Excel</b>, or type "Excel" in the Windows search bar and press Enter. A start screen lets you choose:</p>
+  <ol>
+    <li><b>Blank workbook</b> — start from scratch;</li>
+    <li>a <b>template</b> — a ready-made model;</li>
+    <li><b>open</b> an earlier workbook — from the recent list or from the cloud (OneDrive).</li>
+  </ol>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/excel_logo.png" alt="Microsoft Excel logo" style="max-width:160px">
+</section>
 
-<section id="ribbon"><h2>🎛️ The Ribbon</h2>
-<p>It holds all Excel commands, grouped in tabs by type of action. A tab has logical groups of commands, and each group has individual buttons. A small arrow in the bottom-right corner of a group opens more options.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/ribbon_detail.png" alt="Ribbon details">
-<p>1 – Ribbon tabs · 2 – individual commands · 3 – command groups · 4 – ribbon display options: <b>Full-screen mode</b>, <b>Show tabs only</b>, <b>Always show Ribbon</b>.</p>
-<h3>File tab — Backstage</h3><p>Opens the special <b>Backstage</b> view with all actions on the file: create, open, save, export, share, print, close.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/excel_backstage.png" alt="Backstage">
-<h3>Home tab</h3><p>Basic commands for editing and formatting cells.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_pornire.png" alt="Home tab">
-<ul><li><b>Clipboard</b> — Paste, Copy, Cut, and Format Painter (copies the format of one cell to another).</li><li><b>Font</b> — font type and size, Bold/Italic/Underline, text colour, <b>Fill Color</b>, borders.</li><li><b>Alignment</b> — horizontal/vertical alignment, wrap text, merge cells.</li><li><b>Number</b> — cell format: General, Currency, Percent, decimals (see "Data types").</li><li><b>Styles</b> — <b>Conditional Formatting</b> (highlights values automatically by a rule), Format as Table, Cell Styles.</li><li><b>Cells</b> — Insert/Delete rows and columns, Format (row height, column width).</li><li><b>Editing</b> — <b>AutoSum</b> (Σ), Fill, Sort &amp; Filter, Find &amp; Select.</li><li><b>Add-ins</b> — extensions installed for Excel.</li></ul>
-<h3>Insert tab</h3><p>Adds new content to a worksheet.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_inserare.png" alt="Insert tab">
-<ul><li><b>Tables</b> — PivotTable / Recommended PivotTables (interactive summary tables), simple Table.</li><li><b>Illustrations / Controls</b> — pictures, shapes, icons; Checkbox for tick lists.</li><li><b>Charts</b> — recommended charts, all chart types, Maps, PivotChart (see "Charts").</li><li><b>Sparklines</b> — mini-charts ("Line", "Column", "Win/Loss") that fit in a single cell.</li><li><b>Links / Filters</b> — hyperlinks to web pages or other sheets; slicers.</li><li><b>Text / Symbols</b> — text box, WordArt; special symbols and characters.</li></ul>
-<h3>Draw tab</h3><p>Drawing, highlighting and handwritten notes — mostly useful on touch screens. The <b>Ink to Math</b> button recognises a handwritten formula and turns it into text.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_desenare.png" alt="Draw tab">
-<h3>Page Layout tab</h3><p>Set up how pages look and how large tables are arranged when printed.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_aspect_pagina.png" alt="Page Layout tab">
-<ul><li><b>Themes</b> — matching Colours, Fonts and Effects in one click.</li><li><b>Page Setup</b> — Margins, Orientation (Portrait/Landscape), Size, Print Area, Breaks, Background, Print Titles.</li><li><b>Scale to Fit</b> — Width, Height and Scale: a big table can fit on one printed page.</li><li><b>Sheet Options</b> — Gridlines and Headings (view and/or print).</li><li><b>Arrange</b> — position objects (pictures, shapes) relative to cells.</li></ul>
-<h3>Formulas tab</h3><p>All the tools for writing and checking calculation formulas.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_formule.png" alt="Formulas tab">
-<ul><li><b>Function Library</b> — Insert Function, Financial, Logical, Text, Date &amp; Time functions, grouped by category.</li><li><b>Defined Names</b> — give a <b>name</b> to a cell/range (e.g. "VAT") and use it in formulas instead of the cell address.</li><li><b>Formula Auditing</b> — <b>Trace Precedents</b> shows which cells affect the current cell; <b>Trace Dependents</b> shows which cells it affects. Great for understanding or fixing a complex table.</li><li><b>Calculation</b> — automatic or manual calculation options, for very large workbooks.</li></ul>
-<h3>Data tab</h3><p>Working with the data in the sheet: sorting, filtering, splitting text into columns.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_date.png" alt="Data tab">
-<ul><li><b>Get &amp; Transform Data</b> — import data from other files or external sources.</li><li><b>Queries &amp; Connections</b> — manage links to other workbooks.</li><li><b>Sort &amp; Filter</b> — <b>Sort</b> ascending/descending (by one or more criteria), <b>Filter</b> to show only certain rows.</li><li><b>Data Tools</b> — <b>Text to Columns</b> splits one column (e.g. full name) into several (first name + last name).</li><li><b>Forecast</b> — What-If Analysis, Forecast Sheet: estimate future values from existing data.</li></ul>
-<h3>Review tab</h3><p>Spell check, comments, password protection.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_revizuire.png" alt="Review tab">
-<ul><li><b>Proofing</b> — Spelling, Thesaurus, Workbook Statistics.</li><li><b>Accessibility / Insights</b> — checks how easy the workbook is to use; Smart Lookup on the internet.</li><li><b>Language</b> — translate the text in cells.</li><li><b>Comments / Notes</b> — add remarks on cells, visible to collaborators.</li><li><b>Protect / Ink</b> — password-protect the sheet/workbook; hide ink annotations.</li></ul>
-<h3>View tab</h3><p>How the worksheet is displayed on screen.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_vizualizare.png" alt="View tab">
-<ul><li><b>Workbook Views</b> — <b>Normal</b>, <b>Page Layout</b>, <b>Page Break Preview</b> (useful before printing).</li><li><b>Show</b> — Ruler, Gridlines, Formula Bar, Headings: show/hide helper tools.</li><li><b>Zoom</b> — enlarge/shrink the visible area; Zoom to Selection.</li><li><b>Window</b> — New Window, Arrange All, <b>Freeze Panes</b> (keeps the header visible while scrolling), Switch Windows.</li><li><b>Macros</b> — automate repeated actions recorded as a sequence of steps.</li></ul>
-<h3>Help tab</h3><p>The last tab: find information on using the program and send feedback to Microsoft.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_ajutor.png" alt="Help tab">
-<p>Also, the <b>Share</b> tab (top-right) allows collaborative work on the same workbook if it is saved in the cloud.</p></section>
+<section id="structure">
+  <h2>🧱 Structure of a workbook</h2>
+  <div class="grid">
+    <div class="card"><b>📄 Worksheet</b><br>One table. Rows are labelled with numbers (1, 2, ...) and columns with letters (A, B, ...) — up to <b>1,048,576</b> rows and <b>16,384</b> columns.</div>
+    <div class="card"><b>🔲 Cell</b><br>The basic unit of the table, at the intersection of a row and a column. Its name is column + row, e.g. <b>B2</b>.</div>
+    <div class="card"><b>🗂️ Workbook</b><br>The file created with Excel, made of one or more worksheets.</div>
+    <div class="card"><b>🔳 Range</b><br>Several adjacent cells. It is written with the top-left and bottom-right corners separated by "<b>:</b>", e.g. <b>D1:E2</b> or <b>G2:I2</b>.</div>
+  </div>
+  <h3>Parts of the Excel window</h3>
+  <p>A new workbook is automatically named "Book1", not yet saved. The window has:</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/excel_interface.png" alt="Excel interface">
+  <ul>
+    <li><b>A – Title bar</b> — workbook name, Microsoft search, user account, minimise/maximise/close buttons.</li>
+    <li><b>B – Ribbon</b> — all Excel commands, grouped in tabs.</li>
+    <li><b>C – Name Box</b> — shows the name of the current cell (here B2, with a green border).</li>
+    <li><b>D – Formula Bar</b> — shows the real content of the selected cell (text, number or formula).</li>
+    <li><b>E – Work area</b> — the worksheet itself, with rows and columns.</li>
+    <li><b>F – Sheet tab</b> — the name of the current sheet (default "Sheet1").</li>
+    <li><b>G – Add sheet</b> button.</li>
+    <li><b>H – View mode</b>: Normal, Page Layout or Page Break Preview.</li>
+    <li><b>I / J – Vertical / horizontal scroll bars.</b></li>
+    <li><b>K – Zoom</b> — +/− buttons, slider and current percentage.</li>
+  </ul>
+</section>
 
-<section id="ops"><h2>📁 Basic operations with a workbook</h2>
-<p>Like in any office application — create, open, save, print, close.</p>
-<ul><li><b>Create</b> — Blank workbook from the start screen, or <b>File → New</b>, or <b>Ctrl+N</b>.</li><li><b>Open</b> — <b>File → Open</b> or <b>Ctrl+O</b>.</li><li><b>Save</b> — <b>Save</b> (Ctrl+S) keeps the name/format; <b>Save As</b> (F12) changes the name, type or location.</li><li><b>View</b> — Normal, Page Layout or Page Break Preview, from the View tab.</li><li><b>Print</b> — <b>File → Print</b>, on a real printer or into a .pdf file.</li><li><b>Close</b> — <b>File → Close</b> or the button in the top-right corner.</li></ul>
-<h3>Operations with worksheets</h3>
-<ul><li><b>Rename</b> — double-click the sheet tab, then type the new name.</li><li><b>Create (insert) a new sheet</b> — the "+" button next to the sheet tabs.</li><li><b>Go to a sheet</b> — a single click on its tab.</li><li><b>Change the order</b> — drag the tab to the place you want.</li><li><b>Delete</b> — right-click the tab → Delete.</li><li><b>Move or Copy...</b> — right-click the tab; you can choose the workbook, the position, and whether you want a copy.</li></ul></section>
+<section id="ribbon">
+  <h2>🎛️ The Ribbon</h2>
+  <p>It holds all Excel commands, grouped in tabs by type of action. A tab has logical groups of commands, and each group has individual buttons. A small arrow in the bottom-right corner of a group opens more options.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/ribbon_detail.png" alt="Ribbon details">
+  <p>1 – Ribbon tabs · 2 – individual commands · 3 – command groups · 4 – ribbon display options: <b>Full-screen mode</b>, <b>Show tabs only</b>, <b>Always show Ribbon</b>.</p>
 
-<section id="format"><h2>🎨 Formatting a workbook</h2>
-<p>You can format rows and columns, and also cells — depending on the information they contain.</p>
-<h3>a. Formatting rows and columns</h3>
-<p>Place the mouse on the line between two column letters. The cursor becomes a vertical line with two arrows — hold and drag to make the left column narrower or wider. <b>Double-click</b> that line to automatically fit the width to the text. Do the same for row height, on the line between the row numbers.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/column_width.png" alt="Column width comparison"><em class="cap">The same multiplication table by 6: default columns, narrower columns, and taller rows.</em>
-<h3>b. Formatting cells</h3>
-<p>Excel has predefined <b>cell styles</b> (Home → Styles → Cell Styles), but you can also create your own formatting. Right-click a cell → <b>Format Cells...</b> opens a window with several tabs:</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/format_alignment.png" alt="Alignment tab"><em class="cap">Alignment tab</em>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/format_font.png" alt="Font tab"><em class="cap">Font tab</em>
-<ol><li><b>Horizontal/vertical alignment</b> of text (left, centre, right, top, bottom, etc.).</li><li>Text control: <b>Wrap text</b> (on several lines), <b>Shrink to fit</b>, <b>Merge cells</b>.</li><li><b>Orientation</b> — text can be horizontal, vertical or slanted (angle in degrees).</li><li>From the Font tab: effects — strikethrough, superscript, subscript.</li><li>Font, style (regular/italic/bold), size and text colour.</li></ol>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/format_border.png" alt="Border tab"><em class="cap">Border tab — style, line colour and where it applies (outline/inside).</em>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/format_fill.png" alt="Fill tab"><em class="cap">Fill tab — the cell's background colour, with a "More Colors..." button for extra shades.</em>
-<p>You can freely combine all these options: a cell can be bold, centred, with a yellow background and a double border at the same time.</p></section>
+  <h3>File tab — Backstage</h3>
+  <p>Opens the special <b>Backstage</b> view with all actions on the file: create, open, save, export, share, print, close.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/excel_backstage.png" alt="Backstage">
 
-<section id="types"><h2>🔢 Data types: number, text, date and others</h2>
-<p class="tip">Maybe the most important formatting option in practice is that you can set a cell's content to be of a certain type.</p>
-<ul><li><b>Number</b> — set the thousands separator and the number of decimals shown.</li><li><b>Currency</b> — different currencies, including RON.</li><li><b>Date or time</b> — allows operations (adding/subtracting) with dates and times.</li><li><b>Percentage</b> — the value 0.25 is shown as 25%.</li><li><b>Fraction</b> — if you type "5.5", it shows "5 1/2".</li><li><b>Text</b> — the content is treated as a string of characters, not as a number.</li></ul>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/format_number.png" alt="Number tab"><em class="cap">Number tab in Format Cells — categories of data types.</em></section>
+  <h3>Home tab</h3>
+  <p>Basic commands for editing and formatting cells.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_pornire.png" alt="Home tab">
+  <ul>
+    <li><b>Clipboard</b> — Paste, Copy, Cut, and Format Painter (copies the format of one cell to another).</li>
+    <li><b>Font</b> — font type and size, Bold/Italic/Underline, text colour, <b>Fill Color</b>, borders.</li>
+    <li><b>Alignment</b> — horizontal/vertical alignment, wrap text, merge cells.</li>
+    <li><b>Number</b> — cell format: General, Currency, Percent, decimals (see "Data types").</li>
+    <li><b>Styles</b> — <b>Conditional Formatting</b> (highlights values automatically by a rule), Format as Table, Cell Styles.</li>
+    <li><b>Cells</b> — Insert/Delete rows and columns, Format (row height, column width).</li>
+    <li><b>Editing</b> — <b>AutoSum</b> (Σ), Fill, Sort &amp; Filter, Find &amp; Select.</li>
+    <li><b>Add-ins</b> — extensions installed for Excel.</li>
+  </ul>
 
-<section id="formulas"><h2>🧮 Calculation formulas</h2>
-<p>The main purpose of a spreadsheet is to get automatically calculated results, based on formulas. A formula <b>always starts with the = sign</b>. Example: <code>=A1*B1</code> multiplies the content of cell A1 by the content of B1.</p>
-<h3>Arithmetic operators</h3>
-<ul><li><b>+ and −</b> — add / subtract. Ex: <code>=A2+B2</code></li><li><b>*</b> and <b>/</b> — multiply / divide. Ex: <code>=A8*B8</code></li><li><b>^</b> — power. You can also use brackets, with the same priority as in maths.</li></ul>
-<p class="tip">A key advantage: if you write the formula with <b>cell references</b> (<code>=A1*B1</code>) instead of fixed values (<code>=1*6</code>) and copy it to another cell, Excel adapts the formula to the new row automatically. You can even drag the bottom-right corner of the cell to copy the formula over a whole table.</p>
-<p>Complex expression: <code>=((A1+A2)*(A4-B4))/((A8*B8)+(A11/B11))</code></p>
-<h3>Basic functions</h3>
-<div class="grid">
-<div class="card"><b>SUM — sum</b><br><code>=SUM(number1, [number2], ...)</code><br>Adds single values, cells or whole ranges.<br><code>=SUM(A2:A10)</code> → adds A2 to A10</div>
-<div class="card"><b>AVERAGE — arithmetic mean</b><br><code>=AVERAGE(number1, [number2], ...)</code><br><code>=AVERAGE(A2:A10)</code> → average of A2 to A10</div>
-<div class="card"><b>MAX / MIN</b><br><code>=MAX(...)</code> / <code>=MIN(...)</code><br>Return the largest / smallest value in a set.<br><code>=MAX(A2:A10)</code></div>
-<div class="card"><b>IF — decision</b><br><code>=IF(logical_test, value_if_TRUE, value_if_FALSE)</code><br>Compares a value with a condition and returns one of two results.<br><code>=IF(D4&gt;=80,"PASSED","FAILED")</code></div></div>
-<h3>Other very useful functions</h3>
-<div class="grid">
-<div class="card"><b>COUNT</b> — counts cells with numbers<br><code>=COUNT(range)</code> — ignores text and empty cells.<br><code>=COUNT(C2:C11)</code> → how many grades are entered</div>
-<div class="card"><b>COUNTA</b> — counts non-empty cells<br><code>=COUNTA(range)</code><br><code>=COUNTA(A2:A20)</code> → how many students are in the list</div>
-<div class="card"><b>COUNTIF</b> — counts with a condition<br><code>=COUNTIF(range, criteria)</code><br><code>=COUNTIF(C2:C11,"&gt;=9")</code> → how many grades are ≥ 9</div>
-<div class="card"><b>SUMIF</b> — sum with a condition<br><code>=SUMIF(test_range, criteria, [sum_range])</code><br><code>=SUMIF(B2:B11,"Milk",D2:D11)</code> → total spent only on "Milk"</div>
-<div class="card"><b>ROUND</b><br><code>=ROUND(number, decimals)</code><br><code>=ROUND(9.847,1)</code> → 9.8</div>
-<div class="card"><b>MOD</b> — remainder of a division<br><code>=MOD(number, divisor)</code><br>Useful to test if a number is even/odd or divisible. <code>=MOD(10,3)</code> → 1</div></div>
-<p class="tip"><b>Functions can be combined</b> with each other and with operators, e.g. <code>=SUM(B1,B2)*MIN(C1,C2,C3)/MAX(C4,C5)</code> or <code>=IF(COUNTIF(C2:C11,"&lt;5")&gt;0,"Has failing grades","All grades are passing")</code></p></section>
+  <h3>Insert tab</h3>
+  <p>Adds new content to a worksheet.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_inserare.png" alt="Insert tab">
+  <ul>
+    <li><b>Tables</b> — PivotTable / Recommended PivotTables (interactive summary tables), simple Table.</li>
+    <li><b>Illustrations / Controls</b> — pictures, shapes, icons; Checkbox for tick lists.</li>
+    <li><b>Charts</b> — recommended charts, all chart types, Maps, PivotChart (see "Charts").</li>
+    <li><b>Sparklines</b> — mini-charts ("Line", "Column", "Win/Loss") that fit in a single cell.</li>
+    <li><b>Links / Filters</b> — hyperlinks to web pages or other sheets; slicers.</li>
+    <li><b>Text / Symbols</b> — text box, WordArt; special symbols and characters.</li>
+  </ul>
 
-<section id="charts"><h2>📈 Charts</h2>
-<p>A <b>chart</b> helps you understand at a glance what is in your table. Make it in 4 steps: build the data table → select it → <b>Insert</b> tab → <b>Charts</b> group → choose the right type. A chart updates automatically if you change the data it was made from.</p>
-<img src="https://mmelisa14.github.io/informatica-clasa8/assets/chart_types.png" alt="Chart types in Excel">
-<h3>Which chart to choose?</h3>
-<ul><li>📊 <b>Column / Bar</b> — compare values between a few categories (grades per subject, sales per product).</li><li>📉 <b>Line</b> — show a trend over time or in stages (progress, growth, decline).</li><li>🥧 <b>Pie / Doughnut</b> — show the proportions of a whole: what percent each part represents.</li><li>⚫ <b>Scatter (XY)</b> — check whether there is a <b>connection</b> (correlation) between two sets of numbers.</li></ul>
-<h3>Examples and interpretation</h3>
-<ul><li><b>📊 Book genres borrowed from the school library:</b> Adventure and Fantasy clearly lead with over 40 books each, while Poetry barely passes 10. A bar chart instantly shows which genres to buy more of in the next order.</li><li><b>📉 Visitors on the class website in one week:</b> Traffic grows steadily towards the weekend, with a peak on Saturday. A line chart highlights the <b>trend</b> — students visit mostly when they have no classes.</li><li><b>🥧 How Andrei spends his free time on a normal day:</b> Screens (phone + computer) take almost a third of his free time — more than sports and hobbies together. A pie chart shows this imbalance much faster than a table of percentages.</li><li><b>⚫ Study hours vs. grade:</b> The points rise from left to right — the more a student studied, the higher the grade. It is not a perfect rule (see the isolated point at 5 hours / grade 6), but the <b>general trend</b> is clear. Excel offers this under "XY Scatter".</li></ul></section>
+  <h3>Draw tab</h3>
+  <p>Drawing, highlighting and handwritten notes — mostly useful on touch screens. The <b>Ink to Math</b> button recognises a handwritten formula and turns it into text.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_desenare.png" alt="Draw tab">
 
-<section id="exercise"><h2>💪 Practical exercise — a workbook prepared for you</h2>
-<p>Download the Excel file below. It has <b>3 worksheets</b>:</p>
-<div class="sheets"><div class="s1"><b>1 · Solved Exercises</b>The full solutions, with the formula and the steps explained next to every answer</div><div class="s2"><b>2 · Students</b>Grades table + tasks, with yellow answer boxes for you</div><div class="s3"><b>3 · Stationery</b>Stock table + tasks, with yellow answer boxes for you</div></div>
-<p class="tip">First solve the tasks yourself on sheets 2 and 3 (type your formulas in the <b>yellow cells</b>). Then open sheet 1 and compare your work with the solution.</p>
-<div class="dl"><div style="font-size:46px">📗</div><h3 style="border:0;padding:0;margin:.2em 0">excel_exercises_solved.xlsx</h3><p>3 worksheets · all in English · ready to use</p><a class="btn" href="excel_exercises_solved.xlsx" download>⬇ Download the Excel file</a></div>
-<h3>📘 Sheet "Students"</h3>
-<ul><li>Calculate the <b>Average</b> of each student (column "Average"), using <b>AVERAGE</b> on the 4 grades.</li><li>In the "Status" column, use <b>IF</b> to show "Passed" if the average is ≥ 5, otherwise "Failed".</li><li>Apply <b>conditional formatting</b> on the grade columns: green for grades ≥ 9 and red for grades &lt; 5.</li><li>Under the last student, add a "Class average" row and calculate, with <b>AVERAGE</b>, the class average for each subject.</li><li>Use <b>MAX</b> and <b>MIN</b> to find the highest and lowest overall average in the class.</li><li>Use <b>COUNTIF</b> to count how many students have an overall average ≥ 8.</li></ul>
-<h3>📙 Sheet "Stationery"</h3>
-<ul><li>VAT is <b>19%</b>. In the "Unit price incl. VAT" column, calculate the price with VAT of each product (price excl. VAT × 1.19).</li><li>In the "Total value" column, calculate the cost of the whole quantity of each product (quantity × price with VAT).</li><li>Use <b>SUM</b> to calculate the total value of the whole stock.</li><li>In the "Stock" column, use <b>IF</b> to show "Low stock" if the quantity is under 10 pieces, otherwise "OK".</li><li>Use <b>COUNTIF</b> to count how many products have low stock.</li><li>Apply <b>conditional formatting</b> on the "Quantity" column: highlight in red the values under 10.</li></ul></section>
+  <h3>Page Layout tab</h3>
+  <p>Set up how pages look and how large tables are arranged when printed.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_aspect_pagina.png" alt="Page Layout tab">
+  <ul>
+    <li><b>Themes</b> — matching Colours, Fonts and Effects in one click.</li>
+    <li><b>Page Setup</b> — Margins, Orientation (Portrait/Landscape), Size, Print Area, Breaks, Background, Print Titles.</li>
+    <li><b>Scale to Fit</b> — Width, Height and Scale: a big table can fit on one printed page.</li>
+    <li><b>Sheet Options</b> — Gridlines and Headings (view and/or print).</li>
+    <li><b>Arrange</b> — position objects (pictures, shapes) relative to cells.</li>
+  </ul>
+
+  <h3>Formulas tab</h3>
+  <p>All the tools for writing and checking calculation formulas.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_formule.png" alt="Formulas tab">
+  <ul>
+    <li><b>Function Library</b> — Insert Function, Financial, Logical, Text, Date &amp; Time functions, grouped by category.</li>
+    <li><b>Defined Names</b> — give a <b>name</b> to a cell/range (e.g. "VAT") and use it in formulas instead of the cell address.</li>
+    <li><b>Formula Auditing</b> — <b>Trace Precedents</b> shows which cells affect the current cell; <b>Trace Dependents</b> shows which cells it affects. Great for understanding or fixing a complex table.</li>
+    <li><b>Calculation</b> — automatic or manual calculation options, for very large workbooks.</li>
+  </ul>
+
+  <h3>Data tab</h3>
+  <p>Working with the data in the sheet: sorting, filtering, splitting text into columns.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_date.png" alt="Data tab">
+  <ul>
+    <li><b>Get &amp; Transform Data</b> — import data from other files or external sources.</li>
+    <li><b>Queries &amp; Connections</b> — manage links to other workbooks.</li>
+    <li><b>Sort &amp; Filter</b> — <b>Sort</b> ascending/descending (by one or more criteria), <b>Filter</b> to show only certain rows.</li>
+    <li><b>Data Tools</b> — <b>Text to Columns</b> splits one column (e.g. full name) into several (first name + last name).</li>
+    <li><b>Forecast</b> — What-If Analysis, Forecast Sheet: estimate future values from existing data.</li>
+  </ul>
+
+  <h3>Review tab</h3>
+  <p>Spell check, comments, password protection.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_revizuire.png" alt="Review tab">
+  <ul>
+    <li><b>Proofing</b> — Spelling, Thesaurus, Workbook Statistics.</li>
+    <li><b>Accessibility / Insights</b> — checks how easy the workbook is to use; Smart Lookup on the internet.</li>
+    <li><b>Language</b> — translate the text in cells.</li>
+    <li><b>Comments / Notes</b> — add remarks on cells, visible to collaborators.</li>
+    <li><b>Protect / Ink</b> — password-protect the sheet/workbook; hide ink annotations.</li>
+  </ul>
+
+  <h3>View tab</h3>
+  <p>How the worksheet is displayed on screen.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_vizualizare.png" alt="View tab">
+  <ul>
+    <li><b>Workbook Views</b> — <b>Normal</b>, <b>Page Layout</b>, <b>Page Break Preview</b> (useful before printing).</li>
+    <li><b>Show</b> — Ruler, Gridlines, Formula Bar, Headings: show/hide helper tools.</li>
+    <li><b>Zoom</b> — enlarge/shrink the visible area; Zoom to Selection.</li>
+    <li><b>Window</b> — New Window, Arrange All, <b>Freeze Panes</b> (keeps the header visible while scrolling), Switch Windows.</li>
+    <li><b>Macros</b> — automate repeated actions recorded as a sequence of steps.</li>
+  </ul>
+
+  <h3>Help tab</h3>
+  <p>The last tab: find information on using the program and send feedback to Microsoft.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/fila_ajutor.png" alt="Help tab">
+  <p>Also, the <b>Share</b> tab (top-right) allows collaborative work on the same workbook if it is saved in the cloud.</p>
+</section>
+
+<section id="ops">
+  <h2>📁 Basic operations with a workbook</h2>
+  <p>Like in any office application — create, open, save, print, close.</p>
+  <ul>
+    <li><b>Create</b> — Blank workbook from the start screen, or <b>File → New</b>, or <b>Ctrl+N</b>.</li>
+    <li><b>Open</b> — <b>File → Open</b> or <b>Ctrl+O</b>.</li>
+    <li><b>Save</b> — <b>Save</b> (Ctrl+S) keeps the name/format; <b>Save As</b> (F12) changes the name, type or location.</li>
+    <li><b>View</b> — Normal, Page Layout or Page Break Preview, from the View tab.</li>
+    <li><b>Print</b> — <b>File → Print</b>, on a real printer or into a .pdf file.</li>
+    <li><b>Close</b> — <b>File → Close</b> or the button in the top-right corner.</li>
+  </ul>
+  <h3>Operations with worksheets</h3>
+  <ul>
+    <li><b>Rename</b> — double-click the sheet tab, then type the new name.</li>
+    <li><b>Create (insert) a new sheet</b> — the "+" button next to the sheet tabs.</li>
+    <li><b>Go to a sheet</b> — a single click on its tab.</li>
+    <li><b>Change the order</b> — drag the tab to the place you want.</li>
+    <li><b>Delete</b> — right-click the tab → Delete.</li>
+    <li><b>Move or Copy...</b> — right-click the tab; you can choose the workbook, the position, and whether you want a copy.</li>
+  </ul>
+</section>
+
+<section id="format">
+  <h2>🎨 Formatting a workbook</h2>
+  <p>You can format rows and columns, and also cells — depending on the information they contain.</p>
+  <h3>a. Formatting rows and columns</h3>
+  <p>Place the mouse on the line between two column letters. The cursor becomes a vertical line with two arrows — hold and drag to make the left column narrower or wider. <b>Double-click</b> that line to automatically fit the width to the text. Do the same for row height, on the line between the row numbers.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/column_width.png" alt="Column width comparison">
+  <em class="cap">The same multiplication table by 6: default columns, narrower columns, and taller rows.</em>
+
+  <h3>b. Formatting cells</h3>
+  <p>Excel has predefined <b>cell styles</b> (Home → Styles → Cell Styles), but you can also create your own formatting. Right-click a cell → <b>Format Cells...</b> opens a window with several tabs:</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/format_alignment.png" alt="Alignment tab">
+  <em class="cap">Alignment tab</em>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/format_font.png" alt="Font tab">
+  <em class="cap">Font tab</em>
+  <ol>
+    <li><b>Horizontal/vertical alignment</b> of text (left, centre, right, top, bottom, etc.).</li>
+    <li>Text control: <b>Wrap text</b> (on several lines), <b>Shrink to fit</b>, <b>Merge cells</b>.</li>
+    <li><b>Orientation</b> — text can be horizontal, vertical or slanted (angle in degrees).</li>
+    <li>From the Font tab: effects — strikethrough, superscript, subscript.</li>
+    <li>Font, style (regular/italic/bold), size and text colour.</li>
+  </ol>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/format_border.png" alt="Border tab">
+  <em class="cap">Border tab — style, line colour and where it applies (outline/inside).</em>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/format_fill.png" alt="Fill tab">
+  <em class="cap">Fill tab — the cell's background colour, with a "More Colors..." button for extra shades.</em>
+  <p>You can freely combine all these options: a cell can be bold, centred, with a yellow background and a double border at the same time.</p>
+</section>
+
+<section id="types">
+  <h2>🔢 Data types: number, text, date and others</h2>
+  <p class="tip">Maybe the most important formatting option in practice is that you can set a cell's content to be of a certain type.</p>
+  <ul>
+    <li><b>Number</b> — set the thousands separator and the number of decimals shown.</li>
+    <li><b>Currency</b> — different currencies, including RON.</li>
+    <li><b>Date or time</b> — allows operations (adding/subtracting) with dates and times.</li>
+    <li><b>Percentage</b> — the value 0.25 is shown as 25%.</li>
+    <li><b>Fraction</b> — if you type "5.5", it shows "5 1/2".</li>
+    <li><b>Text</b> — the content is treated as a string of characters, not as a number.</li>
+  </ul>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/format_number.png" alt="Number tab">
+  <em class="cap">Number tab in Format Cells — categories of data types.</em>
+</section>
+
+<section id="formulas">
+  <h2>🧮 Calculation formulas</h2>
+  <p>The main purpose of a spreadsheet is to get automatically calculated results, based on formulas. A formula <b>always starts with the = sign</b>. Example: <code>=A1*B1</code> multiplies the content of cell A1 by the content of B1.</p>
+  <h3>Arithmetic operators</h3>
+  <ul>
+    <li><b>+ and −</b> — add / subtract. Ex: <code>=A2+B2</code></li>
+    <li><b>*</b> and <b>/</b> — multiply / divide. Ex: <code>=A8*B8</code></li>
+    <li><b>^</b> — power. You can also use brackets, with the same priority as in maths.</li>
+  </ul>
+  <p class="tip">A key advantage: if you write the formula with <b>cell references</b> (<code>=A1*B1</code>) instead of fixed values (<code>=1*6</code>) and copy it to another cell, Excel adapts the formula to the new row automatically. You can even drag the bottom-right corner of the cell to copy the formula over a whole table.</p>
+  <p>Complex expression: <code>=((A1+A2)*(A4-B4))/((A8*B8)+(A11/B11))</code></p>
+
+  <h3>Basic functions</h3>
+  <div class="grid">
+    <div class="card"><b>SUM — sum</b><br><code>=SUM(number1, [number2], ...)</code><br>Adds single values, cells or whole ranges.<br><code>=SUM(A2:A10)</code> → adds A2 to A10</div>
+    <div class="card"><b>AVERAGE — arithmetic mean</b><br><code>=AVERAGE(number1, [number2], ...)</code><br><code>=AVERAGE(A2:A10)</code> → average of A2 to A10</div>
+    <div class="card"><b>MAX / MIN</b><br><code>=MAX(...)</code> / <code>=MIN(...)</code><br>Return the largest / smallest value in a set.<br><code>=MAX(A2:A10)</code></div>
+    <div class="card"><b>IF — decision</b><br><code>=IF(logical_test, value_if_TRUE, value_if_FALSE)</code><br>Compares a value with a condition and returns one of two results.<br><code>=IF(D4&gt;=80,"PASSED","FAILED")</code></div>
+  </div>
+
+  <h3>Other very useful functions</h3>
+  <div class="grid">
+    <div class="card"><b>COUNT</b> — counts cells with numbers<br><code>=COUNT(range)</code> — ignores text and empty cells.<br><code>=COUNT(C2:C11)</code> → how many grades are entered</div>
+    <div class="card"><b>COUNTA</b> — counts non-empty cells<br><code>=COUNTA(range)</code><br><code>=COUNTA(A2:A20)</code> → how many students are in the list</div>
+    <div class="card"><b>COUNTIF</b> — counts with a condition<br><code>=COUNTIF(range, criteria)</code><br><code>=COUNTIF(C2:C11,"&gt;=9")</code> → how many grades are ≥ 9</div>
+    <div class="card"><b>SUMIF</b> — sum with a condition<br><code>=SUMIF(test_range, criteria, [sum_range])</code><br><code>=SUMIF(B2:B11,"Milk",D2:D11)</code> → total spent only on "Milk"</div>
+    <div class="card"><b>ROUND</b><br><code>=ROUND(number, decimals)</code><br><code>=ROUND(9.847,1)</code> → 9.8</div>
+    <div class="card"><b>MOD</b> — remainder of a division<br><code>=MOD(number, divisor)</code><br>Useful to test if a number is even/odd or divisible. <code>=MOD(10,3)</code> → 1</div>
+  </div>
+  <p class="tip"><b>Functions can be combined</b> with each other and with operators, e.g. <code>=SUM(B1,B2)*MIN(C1,C2,C3)/MAX(C4,C5)</code> or <code>=IF(COUNTIF(C2:C11,"&lt;5")&gt;0,"Has failing grades","All grades are passing")</code></p>
+</section>
+
+<!-- ========== CHARTS (interactive, taken from Romanian original) ========== -->
+<section id="charts">
+  <h2>📈 Charts</h2>
+  <p>A <b>chart</b> helps you understand at a glance what is in your table. Make it in 4 steps: build the data table → select it → <b>Insert</b> tab → <b>Charts</b> group → choose the right type. A chart updates automatically if you change the data it was made from.</p>
+  <img src="https://mmelisa14.github.io/informatica-clasa8/assets/chart_types.png" alt="Chart types in Excel">
+
+  <h3>Which chart to choose?</h3>
+  <div class="chart-when">
+    <div class="cw"><h5>📊 Column / Bar</h5><p>Compare values between a few categories (grades per subject, sales per product).</p></div>
+    <div class="cw"><h5>📉 Line</h5><p>Show a trend over time or in stages (progress, growth, decline).</p></div>
+    <div class="cw"><h5>🥧 Pie / Doughnut</h5><p>Show the proportions of a whole: what percent each part represents.</p></div>
+    <div class="cw"><h5>⚫ Scatter (XY)</h5><p>Check whether there is a <b>connection</b> (correlation) between two sets of numbers.</p></div>
+  </div>
+
+  <h3>Interactive examples</h3>
+  <p>Four real situations with live charts built on the page. Explore them, then read the interpretation.</p>
+
+  <div class="chart-card">
+    <h4>📊 Book genres borrowed from the school library</h4>
+    <canvas id="chartBar" height="200"></canvas>
+    <div class="interp"><b>Interpretation:</b> Adventure and Fantasy clearly lead with over 40 books each, while Poetry barely passes 10. A bar chart instantly shows which genres to buy more of in the next order.</div>
+  </div>
+
+  <div class="chart-card">
+    <h4>📉 Visitors on the class website in one week</h4>
+    <canvas id="chartLine" height="200"></canvas>
+    <div class="interp"><b>Interpretation:</b> Traffic grows steadily towards the weekend, with a peak on Saturday. A line chart highlights the <b>trend</b> — students visit mostly when they have no classes.</div>
+  </div>
+
+  <div class="chart-card">
+    <h4>🥧 How Andrei spends his free time on a normal day</h4>
+    <canvas id="chartPie" height="200"></canvas>
+    <div class="interp"><b>Interpretation:</b> Screens (phone + computer) take almost a third of his free time — more than sports and hobbies together. A pie/doughnut chart shows this imbalance much faster than a table of percentages.</div>
+  </div>
+
+  <div class="chart-card">
+    <h4>⚫ Study hours vs. grade obtained</h4>
+    <canvas id="chartScatter" height="200"></canvas>
+    <div class="interp"><b>Interpretation:</b> The points rise from left to right — the more a student studied, the higher the grade. It is not a perfect rule (see the isolated point at 5 hours / grade 6), but the <b>general trend</b> is clear. Excel offers this under "XY Scatter".</div>
+  </div>
+</section>
+
+<section id="exercise">
+  <h2>💪 Practical exercise — a workbook prepared for you</h2>
+  <p>Download the Excel file below. It has <b>3 worksheets</b>:</p>
+  <div class="sheets">
+    <div class="s1"><b>1 · Solved Exercises</b>The full solutions, with the formula and the steps explained next to every answer</div>
+    <div class="s2"><b>2 · Students</b>Grades table + tasks, with yellow answer boxes for you</div>
+    <div class="s3"><b>3 · Stationery</b>Stock table + tasks, with yellow answer boxes for you</div>
+  </div>
+  <p class="tip">First solve the tasks yourself on sheets 2 and 3 (type your formulas in the <b>yellow cells</b>). Then open sheet 1 and compare your work with the solution.</p>
+  <div class="dl">
+    <div style="font-size:46px">📗</div>
+    <h3 style="border:0;padding:0;margin:.2em 0">excel_exercises_solved.xlsx</h3>
+    <p>3 worksheets · all in English · ready to use</p>
+    <a class="btn" href="excel_exercises_solved.xlsx" download>⬇ Download the Excel file</a>
+  </div>
+
+  <h3>📘 Sheet "Students"</h3>
+  <ul>
+    <li>Calculate the <b>Average</b> of each student (column "Average"), using <b>AVERAGE</b> on the 4 grades.</li>
+    <li>In the "Status" column, use <b>IF</b> to show "Passed" if the average is ≥ 5, otherwise "Failed".</li>
+    <li>Apply <b>conditional formatting</b> on the grade columns: green for grades ≥ 9 and red for grades &lt; 5.</li>
+    <li>Under the last student, add a "Class average" row and calculate, with <b>AVERAGE</b>, the class average for each subject.</li>
+    <li>Use <b>MAX</b> and <b>MIN</b> to find the highest and lowest overall average in the class.</li>
+    <li>Use <b>COUNTIF</b> to count how many students have an overall average ≥ 8.</li>
+  </ul>
+
+  <h3>📙 Sheet "Stationery"</h3>
+  <ul>
+    <li>VAT is <b>19%</b>. In the "Unit price incl. VAT" column, calculate the price with VAT of each product (price excl. VAT × 1.19).</li>
+    <li>In the "Total value" column, calculate the cost of the whole quantity of each product (quantity × price with VAT).</li>
+    <li>Use <b>SUM</b> to calculate the total value of the whole stock.</li>
+    <li>In the "Stock" column, use <b>IF</b> to show "Low stock" if the quantity is under 10 pieces, otherwise "OK".</li>
+    <li>Use <b>COUNTIF</b> to count how many products have low stock.</li>
+    <li>Apply <b>conditional formatting</b> on the "Quantity" column: highlight in red the values under 10.</li>
+  </ul>
+</section>
+
 </main>
-<footer style="text-align:center;padding:20px;font-size:13px">Material made for ICT classes — Grade 8 · Unit 1: Using spreadsheets</footer>
+
+<footer>Material made for ICT classes — Grade 8 · Unit 1: Using spreadsheets</footer>
 <button id="top" onclick="scrollTo({top:0})">↑</button>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
 const ls=[...document.querySelectorAll('nav a')],tp=document.getElementById('top');
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)ls.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-30% 0px -60% 0px'});
 document.querySelectorAll('section[id]').forEach(s=>io.observe(s));
 addEventListener('scroll',()=>tp.classList.toggle('show',scrollY>500));
-</script></body></html>
+
+/* ---- Interactive charts (same data as Romanian original) ---- */
+const tealPalette = ['#1e7b6e','#e08a3e','#3f6fb5','#c0546f','#6ba43a','#8a5fb0','#c9a227','#4a8f9c'];
+
+function initCharts(){
+  if (typeof Chart === 'undefined') {
+    document.querySelectorAll('.chart-card canvas').forEach(function(c){
+      var msg = document.createElement('p');
+      msg.style.cssText = 'text-align:center;color:#5a6570;padding:24px;margin:0;';
+      msg.textContent = 'Chart could not load (check internet connection).';
+      c.parentNode.replaceChild(msg, c);
+    });
+    return;
+  }
+
+  try {
+    new Chart(document.getElementById('chartBar'), {
+      type: 'bar',
+      data: {
+        labels: ['Adventure','SF','Fantasy','History','Poetry'],
+        datasets: [{ label:'Books borrowed', data:[44, 27, 41, 19, 11], backgroundColor: tealPalette }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins:{ legend:{ display:false } },
+        scales:{ y:{ beginAtZero:true } }
+      }
+    });
+  } catch(e){ console.warn('chartBar', e); }
+
+  try {
+    new Chart(document.getElementById('chartLine'), {
+      type: 'line',
+      data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [{
+          label:'Visitors',
+          data:[32,28,35,30,48,76,58],
+          borderColor:'#1e7b6e',
+          backgroundColor:'rgba(30,123,110,.15)',
+          fill:true,
+          tension:.35
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins:{ legend:{ display:false } },
+        scales:{ y:{ beginAtZero:true } }
+      }
+    });
+  } catch(e){ console.warn('chartLine', e); }
+
+  try {
+    new Chart(document.getElementById('chartPie'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Homework','Sport','Screens (phone+PC)','Extra sleep','Hobbies'],
+        datasets: [{ data:[20, 18, 30, 12, 20], backgroundColor: tealPalette }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins:{ legend:{ position:'bottom' } }
+      }
+    });
+  } catch(e){ console.warn('chartPie', e); }
+
+  try {
+    new Chart(document.getElementById('chartScatter'), {
+      type: 'scatter',
+      data: {
+        datasets: [{
+          label:'Students',
+          data: [
+            {x:1,y:5},{x:1.5,y:5.5},{x:2,y:6},{x:2.5,y:6.5},{x:3,y:7},
+            {x:3.5,y:7},{x:4,y:8},{x:4.5,y:8.5},{x:5,y:6},{x:5,y:9},
+            {x:5.5,y:9.5},{x:6,y:10}
+          ],
+          backgroundColor:'#c0546f'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins:{ legend:{ display:false } },
+        scales:{
+          x:{ title:{ display:true, text:'Study hours' } },
+          y:{ title:{ display:true, text:'Grade obtained' }, min:0, max:10 }
+        }
+      }
+    });
+  } catch(e){ console.warn('chartScatter', e); }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCharts);
+} else {
+  setTimeout(initCharts, 50);
+}
+</script>
+</body>
+</html>
