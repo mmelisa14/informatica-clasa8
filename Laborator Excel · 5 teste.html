@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ro"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Joc Excel · Clasa a VIII-a</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#F2F5F0;--sf:#fff;--ink:#14231A;--mu:#566559;--ln:#D3DCD0;--ac:#1B6B3F;--ai:#fff;--as:#DDEEE2;--bad:#B3261E;--bs:#FBE4E1;--wn:#FFF1CC;--hd:#EAF0E8;--c1:#1B6B3F;--c2:#D98E04;--c3:#2F6FB3;--c4:#B4457A;--c5:#6B5FB5;
+--fd:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--fb:'Source Sans 3','Segoe UI',system-ui,sans-serif;--fm:ui-monospace,Consolas,monospace;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1A12;--sf:#16251B;--ink:#E4EFE6;--mu:#93A89A;--ln:#2C4033;--ac:#55C984;--ai:#07170D;--as:#1D3A28;--bad:#FF9188;--bs:#3D1F1D;--wn:#3B3217;--hd:#1D3224;--c1:#55C984;--c2:#F0B33C;--c3:#6AA7E8;--c4:#E57FB0;--c5:#A59AE8;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0E1A12;--sf:#16251B;--ink:#E4EFE6;--mu:#93A89A;--ln:#2C4033;--ac:#55C984;--ai:#07170D;--as:#1D3A28;--bad:#FF9188;--bs:#3D1F1D;--wn:#3B3217;--hd:#1D3224;--c1:#55C984;--c2:#F0B33C;--c3:#6AA7E8;--c4:#E57FB0;--c5:#A59AE8;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 var(--fb);padding:0 max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+.w{max-width:760px;margin:0 auto}
+h1{font:800 clamp(2rem,7vw,2.8rem)/1.1 var(--fd);margin:24px 0 4px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.s,.hl{color:var(--mu);margin:4px 0}.hl{font-size:.85rem}
+.nm{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--mu);margin:14px 0;max-width:280px}
+.nm input,#fi{font:inherit;font-size:1rem;padding:8px 10px;border:1px solid var(--ln);border-radius:6px;background:var(--sf);color:var(--ink)}
+.cards{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:12px}
+.tc{text-align:left;background:var(--sf);border:1.5px solid var(--ln);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:4px}
+.tc:hover{border-color:var(--ac)}.tc b{font:700 1.3rem var(--fd)}.tc small{color:var(--mu);font-size:.9rem}
+.st{margin-top:8px;font:600 .85rem var(--fm);color:var(--ac)}
+.bar,.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.bar{margin:16px 0 8px}.row{margin-top:14px}.sp{flex:1}
+.pc{font:.85rem var(--fm);color:var(--mu)}
+.pg{height:6px;background:var(--hd);border-radius:9px;overflow:hidden;margin-bottom:14px}.pg i{display:block;height:100%;background:var(--ac)}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.q{font:600 1.2rem/1.3 var(--fd);margin:0}
+code{font-family:var(--fm);font-size:.88em;background:var(--hd);padding:1px 6px;border-radius:4px;overflow-wrap:anywhere}
+.btn{border:0;background:var(--ac);color:var(--ai);font-weight:700;padding:10px 18px;border-radius:8px}
+.btn.gh{background:none;color:var(--ink);border:1.5px solid var(--ln);font-weight:600}
+.btn:disabled{opacity:.45;cursor:default}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:12px;text-align:left;background:var(--sf);border:1.5px solid var(--ln);border-radius:8px;padding:10px 12px;min-width:0;align-items:flex-start}
+.opt:hover:not(:disabled){border-color:var(--ac)}.opt:disabled{cursor:default}
+.opt .l{flex:none;width:26px;height:26px;border-radius:50%;background:var(--hd);display:grid;place-items:center;font:700 .8rem var(--fm)}
+.opt span:last-child{overflow-wrap:anywhere;padding-top:1px}.mo{font-family:var(--fm);font-size:.92rem}
+.opt.ok{border-color:var(--ac);background:var(--as)}.opt.ok .l{background:var(--ac);color:var(--ai)}
+.opt.no{border-color:var(--bad);background:var(--bs)}.opt.no .l{background:var(--bad);color:var(--ai)}
+.fb{border-radius:8px;padding:12px 14px;font-size:.97rem;margin-top:10px;border-left:5px solid}.fb b{display:block}
+.fb.ok{background:var(--as);border-color:var(--ac)}.fb.no{background:var(--bs);border-color:var(--bad)}.fb.hint{background:var(--wn);border-color:var(--c2)}
+.cb svg{display:block;width:100%;height:auto}.cb text{fill:var(--mu);font:10px var(--fb)}.cb .v{fill:var(--ink);font-weight:700}.cb .ct{fill:var(--ink);font:600 12px var(--fd)}
+.pie{display:flex;flex-wrap:wrap;gap:16px;align-items:center}.pie svg{flex:0 0 180px;width:180px}
+.pie ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}.pie li{display:flex;gap:8px;align-items:center}.pie li i{width:12px;height:12px;border-radius:3px}
+.fx{display:flex;border:1px solid var(--ln);border-radius:6px;overflow:hidden}
+.fx .nb{min-width:58px;padding:8px;font:.95rem var(--fm);background:var(--hd);text-align:center}.fx .f{padding:8px;font:italic .95rem var(--fm);color:var(--mu)}
+#fi{flex:1;min-width:0;border:0;border-radius:0;font-family:var(--fm)}#fi:read-only{color:var(--mu)}
+.sb{overflow-x:auto;border:1px solid var(--ln);border-radius:6px}
+.g{border-collapse:collapse;width:100%;min-width:max-content;font-variant-numeric:tabular-nums}
+.g th{background:var(--hd);color:var(--mu);font-size:.8rem;border:1px solid var(--ln);padding:3px 8px}
+.g td{border:1px solid var(--ln);padding:5px 10px;min-width:70px;height:32px;cursor:cell;white-space:nowrap}
+.g td.h{font-weight:700;background:var(--hd)}.g td.tg{background:var(--wn)}.g td.sel{outline:2.5px solid var(--ac);outline-offset:-2px}
+.big{font:800 clamp(3rem,14vw,4.5rem)/1 var(--fd);color:var(--ac)}
+.dots{display:flex;flex-wrap:wrap;gap:6px}.dt{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:700 .8rem var(--fm);background:var(--as);color:var(--ink)}
+.dt.no{background:var(--bs)}.dt.hf{background:var(--wn)}
+pre{font:.88rem var(--fm);background:var(--hd);border-radius:8px;padding:12px;margin:0;white-space:pre-wrap}
+</style></head>
+<body><div class="w" id="app"></div>
+<script>
+(()=>{
+const $=(s,r=document)=>r.querySelector(s),E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sh=a=>{const b=[...a];for(let i=b.length;i-->1;){const j=Math.random()*(i+1)|0;[b[i],b[j]]=[b[j],b[i]]}return b};
+const sum=a=>a.reduce((x,y)=>x+(y||0),0),pf=n=>String(Math.round(n*100)/100).replace('.',',');
+const CN=n=>{let s='';for(;n>0;n=(n-1)/26|0)s=String.fromCharCode(65+(n-1)%26)+s;return s},CI=s=>[...s].reduce((a,c)=>a*26+c.charCodeAt(0)-64,0);
+const fmt=v=>v==null?'':typeof v=='number'?String(Math.round(v*1e4)/1e4):String(v);
+/* ===== motor de formule ===== */
+const fl=a=>a.flat(9),ns=a=>fl(a).filter(v=>typeof v=='number');
+const mt=c=>{const m=/^(<=|>=|<>|<|>|=)?(.*)$/.exec(c+''),o=m[1]||'=',r=m[2].toLowerCase(),n=r!==''&&!isNaN(r)?+r:null;
+ return v=>{if(n!==null){if(typeof v!='number')return o=='<>';return o=='='?v==n:o=='<>'?v!=n:o=='<'?v<n:o=='>'?v>n:o=='<='?v<=n:v>=n}
+ const s=String(v??'').toLowerCase();return o=='='?s==r:o=='<>'?s!=r:false}};
+const F={SUM:(...a)=>ns(a).reduce((x,y)=>x+y,0),AVERAGE:(...a)=>{const n=ns(a);return n.length?n.reduce((x,y)=>x+y,0)/n.length:1/0},
+MAX:(...a)=>{const n=ns(a);return n.length?Math.max(...n):0},MIN:(...a)=>{const n=ns(a);return n.length?Math.min(...n):0},
+COUNT:(...a)=>ns(a).length,COUNTA:(...a)=>fl(a).filter(v=>v!=null&&v!=='').length,
+COUNTIF:(r,c)=>r.filter(mt(c)).length,SUMIF:(r,c,s=r)=>{const m=mt(c);return r.reduce((t,v,i)=>t+(m(v)&&typeof s[i]=='number'?s[i]:0),0)},
+ROUND:(n,d=0)=>{const f=10**d;return Math.sign(n)*Math.round(Math.abs(n)*f+1e-9)/f},MOD:(n,d)=>d?n-d*Math.floor(n/d):1/0,IF:(c,t,f=false)=>c?t:f};
+function ev(s,C,R){
+ const re=/\s*(?:("(?:[^"]|"")*")|(\$?[A-Z]{1,2}\$?\d+:\$?[A-Z]{1,2}\$?\d+)|(\$?[A-Z]{1,2}\$?\d+)(?![\w(])|([A-Z]+)(?=\()|(\d+\.?\d*|\.\d+)|(<>|<=|>=|[-+*\/(),<>=^%&]))/iy;
+ let p=0,o='',m;s=s.trim();
+ while(p<s.length){re.lastIndex=p;if(!(m=re.exec(s)))throw 0;p=re.lastIndex;
+  o+=m[1]?JSON.stringify(m[1].slice(1,-1).replace(/""/g,'"')):m[2]?`R("${m[2].replace(/\$/g,'').toUpperCase()}")`:m[3]?`C("${m[3].replace(/\$/g,'').toUpperCase()}")`:m[4]?'F.'+m[4].toUpperCase():m[5]?m[5]:({'<>':'!=','=':'==','^':'**','&':'+','%':'/100'}[m[6]]||m[6])}
+ return new Function('C','R','F','return '+o)(C,R,F)}
+function mk(rows,over,drop){const c={};rows.forEach((r,i)=>r.forEach((v,j)=>{if(v!==''&&v!=null)c[CN(j+1)+(i+1)]=v}));Object.assign(c,over);if(drop)delete c[drop];return c}
+function calc(c){const ch={},bz={};
+ const C=a=>{if(a in ch)return ch[a];let v=c[a];if(v==null)return null;
+  if(typeof v=='string'&&v[0]=='='){if(bz[a])throw 0;bz[a]=1;try{v=ev(v.slice(1),C,R)}finally{bz[a]=0}}
+  if(v===undefined)throw 0;return ch[a]=v};
+ const R=z=>{const[x,y]=z.split(':').map(a=>/(\D+)(\d+)/.exec(a)),o=[];if(y[2]-x[2]>99)throw 0;
+  for(let r=+x[2];r<=+y[2];r++)for(let k=CI(x[1]);k<=CI(y[1]);k++)o.push(C(CN(k)+r));return o};
+ return a=>{try{const v=C(a);if(Array.isArray(v))return{e:'#VALOARE!'};if(typeof v=='number'&&!isFinite(v))return{e:isNaN(v)?'#VALOARE!':'#DIV/0!'};return{v}}catch(e){return{e:'#NUME?'}}}}
+function chk(x,rows,f){f=f.trim();
+ if(!f)return'Scrie mai întâi formula.';if(f[0]!='=')return'O formulă începe cu semnul <code>=</code>.';
+ if(x.fn&&!new RegExp(x.fn+'\\s*\\(','i').test(f))return`Exercițiul cere funcția <b>${x.fn}</b>.`;
+ const run=(fm,o)=>{const c=mk(rows,o,x.t);c[x.t]=fm;return calc(c)(x.t)};
+ const eq=(p,q)=>!p.e&&!q.e&&(typeof p.v=='number'&&typeof q.v=='number'?Math.abs(p.v-q.v)<1e-9:String(p.v).trim().toLowerCase()==String(q.v).trim().toLowerCase());
+ const a=run(f);if(a.e)return`Excel ar afișa <code>${a.e}</code>. Verifică funcția, parantezele, virgulele și adresele.`;
+ if(!eq(a,run(x.s)))return`Formula ta dă <code>${E(fmt(a.v))}</code>, dar rezultatul trebuie să fie altul. Verifică adresele și operațiile.`;
+ if(!eq(run(f,x.o),run(x.s,x.o)))return'Rezultatul e bun acum, dar formula nu se adaptează când se schimbă datele. Folosește adrese de celule, nu numere scrise direct.';
+ return 0}
+/* ===== conținut ===== */
+const m=(q,a,b,c,d,w)=>({k:'m',q,o:[a,b,c,d],w}),g=(i,q,a,b,c,d,w)=>({k:'m',ch:i,q,o:[a,b,c,d],w}),x=(t,task,s,o,fn,h)=>({k:'f',t,task,s,o,fn,h});
+const cf=(f,cs)=>[...cs].map(c=>`=${f}(${c}2:${c}5)`);
+const TESTS=[
+{n:'Test 1',t:'Bazele foii de calcul: adrese, SUM, AVERAGE, MAX, MIN',
+ sh:[['Elev','Mate','Rom','Info','Media'],['Ana',9,10,10,'=AVERAGE(B2:D2)'],['Bogdan',6,5,7,'=AVERAGE(B3:D3)'],['Carla',4,3,6,'=AVERAGE(B4:D4)'],['Dan',8,9,9,'=AVERAGE(B5:D5)'],['Maxim',...cf('MAX','BCD')],['Minim',...cf('MIN','BCD')],['Total',...cf('SUM','BCD')]],
+ ch:[{t:'b',ti:'Elevi înscriși la cluburi',d:[['Robotică',14],['Șah',9],['Teatru',18],['Fotbal',22],['Desen',7]]},{t:'p',ti:'Cum vin elevii la școală',d:[['Pe jos',40],['Autobuz',25],['Mașină',20],['Bicicletă',15]]}],
+ q:[m('Cu ce semn începe orice formulă?','=','+','@','#','Semnul <code>=</code> îi spune lui Excel că urmează o formulă de calculat.'),
+ m('Care este adresa celulei de la intersecția coloanei D cu rândul 7?','D7','7D','D:7','D-7','Adresa = litera coloanei, apoi numărul rândului.'),
+ m('Cum se scrie zona de la celula B2 până la celula C4?','B2:C4','B2-C4','B2;C4','B2C4','Zona se scrie cu colțul stânga-sus, două puncte, colțul dreapta-jos.'),
+ m('Ce rezultat dă formula <code>=2+3*4</code>?','14','20','24','9','Înmulțirea are prioritate: 3·4 = 12, apoi 2 + 12 = 14.'),
+ m('Care formulă adună valorile de la A1 la A5?','=SUM(A1:A5)','=SUM(A1-A5)','SUM(A1:A5)','=ADD(A1:A5)','Formula începe cu =, iar zona se scrie cu două puncte.'),
+ g(0,'Care club are cei mai mulți elevi?','Fotbal','Teatru','Robotică','Desen','Cea mai înaltă coloană este Fotbal (22).'),
+ g(0,'Câți elevi sunt în total la Șah și Desen?','16','23','9','14','9 + 7 = 16.'),
+ g(1,'Care afirmație este adevărată?','Pe jos vin mai mulți elevi decât cu mașina','Autobuzul este cel mai folosit','Bicicleta este a doua ca popularitate','Mașina ocupă jumătate din diagramă','Pe jos = 40%, mașina = 20%.'),
+ x('E2','Calculează în <code>E2</code> <b>media Anei</b> din notele <code>B2:D2</code>, cu funcția <b>AVERAGE</b>.','=AVERAGE(B2:D2)',{B2:5,C2:7,D2:9},'AVERAGE','Forma generală este <code>=AVERAGE(zona)</code>. Notele Anei sunt pe rândul 2, de la B la D.'),
+ x('B6','Află în <code>B6</code> <b>cea mai mare notă</b> la Matematică (<code>B2:B5</code>), cu <b>MAX</b>.','=MAX(B2:B5)',{B4:10},'MAX','<code>=MAX(zona)</code> întoarce cea mai mare valoare din zonă.'),
+ x('C7','Află în <code>C7</code> <b>cea mai mică notă</b> la Română (<code>C2:C5</code>), cu <b>MIN</b>.','=MIN(C2:C5)',{C3:1},'MIN','<code>=MIN(zona)</code> întoarce cea mai mică valoare din zonă.'),
+ x('D8','Calculează în <code>D8</code> <b>suma notelor</b> la Informatică (<code>D2:D5</code>), cu <b>SUM</b>.','=SUM(D2:D5)',{D2:1},'SUM','<code>=SUM(zona)</code>. Zona este D2:D5.')]},
+{n:'Test 2',t:'Decizii cu IF, COUNTIF și SUMIF',
+ sh:[['Elev','Punctaj','Rezultat'],['Ana',72],['Bogdan',45],['Carla',90],['Dan',50],['Eva',38],['Florin',66],[],['Admiși (≥ 50)'],['Suma punctelor ≥ 50']],
+ ch:[{t:'l',ti:'Temperatura la prânz (°C)',d:[['L',12],['Ma',14],['Mi',17],['J',11],['V',9]]},{t:'b',ti:'Punctaje la concurs',d:[['Ana',72],['Bogdan',45],['Carla',90],['Dan',50],['Eva',38]]}],
+ q:[m('Ce afișează <code>=IF(A1&gt;10,"Mare","Mic")</code> dacă în A1 este 7?','Mic','Mare','7','FALS','7 nu este mai mare decât 10, deci IF alege a treia parte.'),
+ m('Care formulă numără celulele din B2:B9 cu valori mai mici decât 5?','=COUNTIF(B2:B9,"<5")','=COUNT(B2:B9<5)','=SUMIF(B2:B9,"<5")','=IF(B2:B9,"<5")','<code>COUNTIF(zonă, criteriu)</code> numără celulele care respectă criteriul.'),
+ m('Ce operator înseamnă „diferit de”?','<>','!=','=/=','><','În Excel „diferit de” se scrie <code>&lt;&gt;</code>.'),
+ m('Care este diferența dintre COUNT și COUNTA?','COUNT numără doar numerele, COUNTA numără toate celulele completate','COUNT numără textele, COUNTA numerele','Nu există nicio diferență','COUNTA adună valorile','COUNT ignoră textul, COUNTA numără orice celulă completată.'),
+ m('Ce se scrie între ghilimele într-o formulă IF?','Textele afișate','Adresele celulelor','Numerele','Numele funcțiilor','Textele (și criteriile) se scriu între ghilimele.'),
+ g(0,'În ce zi a fost cel mai cald?','Miercuri','Marți','Luni','Vineri','Punctul cel mai înalt este miercuri (17°C).'),
+ g(0,'Între care zile a scăzut cel mai mult temperatura?','Miercuri și joi','Joi și vineri','Luni și marți','Marți și miercuri','De la 17 la 11 înseamnă o scădere de 6 grade.'),
+ g(1,'Câți elevi au cel puțin 50 de puncte?','3','2','4','5','Ana (72), Carla (90) și Dan (50).'),
+ x('C2','În <code>C2</code> afișează <b>Admis</b> dacă punctajul din <code>B2</code> este cel puțin 50, altfel <b>Respins</b>. Folosește <b>IF</b>.','=IF(B2>=50,"Admis","Respins")',{B2:10},'IF','<code>=IF(test, dacă_adevărat, dacă_fals)</code>. Textele se scriu între ghilimele.'),
+ x('C4','În <code>C4</code> afișează <b>Excelent</b> dacă punctajul din <code>B4</code> este mai mare decât 85, altfel <b>Bine</b>.','=IF(B4>85,"Excelent","Bine")',{B4:20},'IF','Testul logic este <code>B4&gt;85</code>.'),
+ x('B9','Numără în <code>B9</code> câți elevi au <b>cel puțin 50 de puncte</b> (<code>B2:B7</code>), cu <b>COUNTIF</b>.','=COUNTIF(B2:B7,">=50")',{B2:1,B4:1},'COUNTIF','<code>=COUNTIF(zona, criteriu)</code>. Criteriul: <code>"&gt;=50"</code>.'),
+ x('B10','Adună în <code>B10</code> punctajele care sunt <b>cel puțin 50</b> (<code>B2:B7</code>), cu <b>SUMIF</b>.','=SUMIF(B2:B7,">=50")',{B2:1},'SUMIF','<code>=SUMIF(zona, criteriu)</code> adună doar valorile care respectă criteriul.')]},
+{n:'Test 3',t:'Magazinul: TVA, procente și rotunjiri',
+ sh:[['Produs','Preț','Cantitate','Valoare'],['Pâine',3.5,10,'=B2*C2'],['Lapte',7,6,'=B3*C3'],['Ouă',12,4,'=B4*C4'],['Mere',5,8,'=B5*C5'],[],['Total','','','=SUM(D2:D5)'],['Total cu TVA 19%','','','=D7*1.19'],['Rotunjit','','','=ROUND(D8,1)']],
+ ch:[{t:'p',ti:'Cheltuielile familiei',d:[['Mâncare',35],['Locuință',30],['Transport',15],['Distracție',10],['Economii',10]]},{t:'b',ti:'Înghețate vândute pe luni',d:[['Mai',120],['Iun',300],['Iul',450],['Aug',420],['Sep',150]]}],
+ q:[m('Cum calculezi prețul cu TVA de 19% pentru prețul din B2?','=B2*1.19','=B2+19','=B2*19','=B2/1.19','Prețul cu TVA de 19% este prețul înmulțit cu 1,19.'),
+ m('De ce este mai bună formula <code>=B2*C2</code> decât <code>=3.5*10</code>?','Se recalculează singură când se schimbă B2 sau C2','Este mai scurtă','Nu are nevoie de semnul =','Dă un rezultat mai mare','Formulele cu adrese rămân corecte când datele se modifică și pot fi copiate pe alte rânduri.'),
+ m('Ce rezultat dă <code>=ROUND(7.846,2)</code>?','7.85','7.8','7.84','8','ROUND rotunjește la 2 zecimale: 7.846 devine 7.85.'),
+ m('Într-o celulă cu formatul Procent scrii 0.4. Ce se afișează?','40%','0.4%','4%','400%','Formatul Procent înmulțește cu 100 la afișare.'),
+ m('Care formulă calculează 20% din valoarea din A1?','=A1*20%','=A1+20','=A1/20','=A1*2','20% înseamnă 20/100, deci A1·20% sau A1·0.2.'),
+ g(0,'Care categorie are cea mai mare pondere?','Mâncare','Locuință','Transport','Economii','Felia cea mai mare este Mâncare (35%).'),
+ g(0,'Familia are 2000 lei. Cât cheltuie pe transport?','300 lei','150 lei','600 lei','1500 lei','15% din 2000 = 300.'),
+ g(1,'Care este diferența dintre luna cu cele mai multe și cea cu cele mai puține înghețate vândute?','330','300','420','570','450 − 120 = 330.'),
+ x('D3','Calculează în <code>D3</code> <b>valoarea</b> laptelui: prețul din <code>B3</code> înmulțit cu cantitatea din <code>C3</code>.','=B3*C3',{B3:10},'','Valoarea = preț · cantitate, pe rândul 3.'),
+ x('D7','Calculează în <code>D7</code> <b>totalul</b>, adunând <code>D2:D5</code>, cu <b>SUM</b>.','=SUM(D2:D5)',{C2:1},'SUM','<code>=SUM(zona)</code>. Zona valorilor este D2:D5.'),
+ x('D8','În <code>D8</code> calculează totalul <b>cu TVA de 19%</b>: valoarea din <code>D7</code> înmulțită cu 1.19.','=D7*1.19',{C2:1},'','Înmulțește D7 cu 1.19. Zecimalele se scriu cu punct.'),
+ x('D9','În <code>D9</code> rotunjește valoarea din <code>D8</code> la <b>o zecimală</b>, cu <b>ROUND</b>.','=ROUND(D8,1)',{B2:10},'ROUND','<code>=ROUND(număr, zecimale)</code>. Numărul este chiar D8.')]},
+{n:'Test 4',t:'Sport și numere: MOD, ROUND, MAX − MIN',
+ sh:[['Elev','Timp 100 m (s)','Număr','Paritate'],['Ana',14.2,7],['Bogdan',15.8,12],['Carla',13.9,9],['Dan',16.1,20],['Eva',14.8,15],['Fane',15,4],[],['Media timpilor'],['Sub 15 secunde'],['Diferența max − min']],
+ ch:[{t:'s',ti:'Ore de studiu și nota la test',xl:'Ore de studiu',yl:'Nota',d:[[0.5,4],[1,5],[1.5,5.5],[2,6],[3,7],[3.5,7.5],[4,8.5],[5,9]]},{t:'l',ti:'Kilometri alergați de Maria',d:[['L',2],['Ma',3],['Mi',0],['J',4],['V',5]]}],
+ q:[m('Ce rezultat dă <code>=MOD(17,5)</code>?','2','3','3.4','12','MOD dă restul împărțirii: 17 = 3·5 + 2.'),
+ m('Care formulă dă diferența dintre cea mai mare și cea mai mică valoare din A1:A10?','=MAX(A1:A10)-MIN(A1:A10)','=MAX(A1:A10)+MIN(A1:A10)','=MAX-MIN(A1:A10)','=SUM(A1:A10)','Se scade cea mai mică valoare din cea mai mare.'),
+ m('Cum verifici dacă numărul din A1 este par?','=IF(MOD(A1,2)=0,"par","impar")','=IF(A1/2,"par","impar")','=IF(MOD(A1)=2,"par","impar")','=IF(A1=2,"par","impar")','Un număr este par dacă restul împărțirii la 2 este 0.'),
+ m('Ce face dublu clic pe linia dintre antetele coloanelor A și B?','Potrivește lățimea coloanei A la conținut','Șterge coloana A','Ascunde coloana A','Inserează o coloană nouă','Dublu clic pe linia de separare ajustează automat lățimea.'),
+ m('Ce rezultat dă <code>=AVERAGE(4,6,8)</code>?','6','18','8','4','(4 + 6 + 8) / 3 = 6.'),
+ g(0,'Ce legătură arată norul de puncte?','Cu cât se studiază mai mult, cu atât nota tinde să crească','Cu cât se studiază mai mult, cu atât nota scade','Nu există nicio legătură','Toate notele sunt egale','Punctele urcă de la stânga la dreapta.'),
+ g(0,'Aproximativ ce notă are elevul care a studiat 3 ore?','7','5','9','3','Punctul de la 3 ore are înălțimea 7.'),
+ g(1,'În ce zi nu a alergat Maria?','Miercuri','Marți','Joi','Vineri','Miercuri valoarea este 0.'),
+ x('B9','Calculează în <code>B9</code> <b>media timpilor</b> (<code>B2:B7</code>) rotunjită la <b>o zecimală</b>, cu ROUND și AVERAGE.','=ROUND(AVERAGE(B2:B7),1)',{B2:30},'ROUND','Pune AVERAGE în interiorul lui ROUND: <code>=ROUND(AVERAGE(zona),1)</code>.'),
+ x('B10','Numără în <code>B10</code> câți elevi au alergat în <b>sub 15 secunde</b> (<code>B2:B7</code>), cu <b>COUNTIF</b>.','=COUNTIF(B2:B7,"<15")',{B2:20,B3:1},'COUNTIF','Criteriul este <code>"&lt;15"</code>, între ghilimele.'),
+ x('B11','Calculează în <code>B11</code> <b>diferența</b> dintre cel mai mare și cel mai mic timp din <code>B2:B7</code>.','=MAX(B2:B7)-MIN(B2:B7)',{B4:10},'','Folosește MAX și MIN pe aceeași zonă și scade-le.'),
+ x('D3','În <code>D3</code> afișează <b>par</b> dacă numărul din <code>C3</code> este par, altfel <b>impar</b>. Folosește IF și MOD.','=IF(MOD(C3,2)=0,"par","impar")',{C3:7},'IF','<code>MOD(C3,2)</code> este restul împărțirii la 2; numărul e par dacă restul este 0.')]},
+{n:'Test 5',t:'Recapitulare: excursia clasei',
+ sh:[['Cheltuială','Categorie','Sumă'],['Autocar','Transport',450],['Bilete','Cultură',120],['Prânz','Mâncare',300],['Cină','Mâncare',250],['Suveniruri','Altele',80],['Muzeu','Cultură',90],[],['Total','','=SUM(C2:C7)'],['Total Mâncare','','=SUMIF(B2:B7,"Mâncare",C2:C7)'],['Procent Mâncare','','=ROUND(C10/C9*100,0)'],['Nr. Cultură','','=COUNTIF(B2:B7,"Cultură")']],
+ ch:[{t:'b',ti:'Cheltuieli excursie (lei)',d:[['Transport',450],['Cultură',210],['Mâncare',550],['Altele',80]]},{t:'p',ti:'Unde petrec elevii pauza',d:[['Curte',45],['Cantină',25],['Clasă',20],['Bibliotecă',10]]}],
+ q:[m('Ce diagramă arată cel mai bine părțile unui întreg (procente din total)?','Radială','Linie','Puncte (XY)','Sparkline','Diagrama radială arată cât la sută reprezintă fiecare parte.'),
+ m('Ce diagramă alegi pentru evoluția temperaturii pe luni?','Linie','Radială','Puncte (XY)','Inelară','Linia arată bine schimbarea în timp.'),
+ m('Ce rezultat dă <code>=SUMIF(A1:A3,"&gt;5")</code> dacă A1=4, A2=7, A3=9?','16','20','2','7','Se adună doar valorile mai mari decât 5: 7 + 9 = 16.'),
+ m('Ce se întâmplă cu o diagramă dacă modifici datele din tabel?','Se actualizează automat','Rămâne neschimbată','Se șterge','Trebuie refăcută','Diagrama este legată de datele din tabel.'),
+ m('Ce înseamnă eroarea <code>#DIV/0!</code>?','S-a încercat o împărțire la zero','Funcția nu există','Adresa celulei nu este validă','Celula este goală','Împărțirea la 0 nu se poate face.'),
+ g(0,'Care categorie costă cel mai mult?','Mâncare','Transport','Cultură','Altele','Cea mai înaltă coloană este Mâncare (550).'),
+ g(0,'Cât costă împreună Transport și Altele?','530 lei','450 lei','630 lei','760 lei','450 + 80 = 530.'),
+ g(1,'Care spațiu este ales de cei mai puțini elevi?','Biblioteca','Clasa','Cantina','Curtea','Felia cea mai mică este Biblioteca (10%).'),
+ x('C9','Calculează în <code>C9</code> <b>totalul cheltuielilor</b> (<code>C2:C7</code>), cu <b>SUM</b>.','=SUM(C2:C7)',{C2:1},'SUM','<code>=SUM(zona)</code>.'),
+ x('C10','Adună în <code>C10</code> doar cheltuielile din categoria <b>Mâncare</b>, cu <b>SUMIF</b> (categoriile sunt în <code>B2:B7</code>, sumele în <code>C2:C7</code>).','=SUMIF(B2:B7,"Mâncare",C2:C7)',{C4:1},'SUMIF','<code>=SUMIF(zona_criteriu, criteriu, zona_sume)</code>. Criteriul: <code>"Mâncare"</code>.'),
+ x('C11','În <code>C11</code> calculează ce <b>procent</b> din total reprezintă Mâncarea (<code>C10</code> din <code>C9</code>), ca <b>număr întreg</b> (ROUND, înmulțit cu 100).','=ROUND(C10/C9*100,0)',{C3:1000},'ROUND','Procent = parte / total · 100. Rotunjește la 0 zecimale.'),
+ x('C12','Numără în <code>C12</code> câte cheltuieli sunt din categoria <b>Cultură</b>, cu <b>COUNTIF</b>.','=COUNTIF(B2:B7,"Cultură")',{B2:'Cultură'},'COUNTIF','<code>=COUNTIF(zona, "Cultură")</code>.')]}
+];
+/* ===== diagrame ===== */
+const COL=['--c1','--c2','--c3','--c4','--c5'];
+const nice=v=>{for(const s of[1,2,5,10,20,50,100,200,500,1000])if(v/s<=5)return[s,Math.ceil(v/s)*s];return[2000,v]};
+function chart(c){
+ if(c.t=='p'){const tot=sum(c.d.map(d=>d[1]));let a=-Math.PI/2,s='';
+  c.d.forEach((d,i)=>{const e=a+2*Math.PI*d[1]/tot;s+=`<path d="M95 95L${95+88*Math.cos(a)} ${95+88*Math.sin(a)}A88 88 0 ${e-a>Math.PI?1:0} 1 ${95+88*Math.cos(e)} ${95+88*Math.sin(e)}Z" fill="var(${COL[i]})" stroke="var(--sf)" stroke-width="2"/>`;a=e});
+  return`<div class="cb"><b>${E(c.ti)}</b><div class="pie"><svg viewBox="0 0 190 190" role="img" aria-label="${E(c.ti)}">${s}</svg><ul>${c.d.map((d,i)=>`<li><i style="background:var(${COL[i]})"></i>${E(d[0])}: <b>${d[1]}%</b></li>`).join('')}</ul></div></div>`}
+ const sc=c.t=='s',W=360,H=sc?240:210,l=34,r=12,t=30,b=sc?42:26,pw=W-l-r,ph=H-t-b,[st,top]=nice(Math.max(...c.d.map(d=>d[1]))),Y=v=>t+ph-ph*v/top;
+ let s=`<text class="ct" x="${l}" y="16">${E(c.ti)}</text>`;
+ for(let v=0;v<=top;v+=st)s+=`<line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--ln)"/><text x="${l-5}" y="${Y(v)+3}" text-anchor="end">${v}</text>`;
+ if(c.t=='b'){const bw=pw/c.d.length;c.d.forEach((d,i)=>{const X=l+i*bw+bw*.18,w=bw*.64;s+=`<rect x="${X}" y="${Y(d[1])}" width="${w}" height="${ph*d[1]/top}" rx="2" fill="var(--c1)"/><text class="v" x="${X+w/2}" y="${Y(d[1])-4}" text-anchor="middle">${d[1]}</text><text x="${X+w/2}" y="${H-b+14}" text-anchor="middle">${E(d[0])}</text>`})}
+ else if(c.t=='l'){const n=c.d.length,P=c.d.map((d,i)=>[l+(i+.5)*pw/n,Y(d[1])]);s+=`<polyline points="${P.join(' ')}" fill="none" stroke="var(--c1)" stroke-width="2.5"/>`;P.forEach((p,i)=>s+=`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="var(--c1)"/><text class="v" x="${p[0]}" y="${p[1]-8}" text-anchor="middle">${c.d[i][1]}</text><text x="${p[0]}" y="${H-b+14}" text-anchor="middle">${E(c.d[i][0])}</text>`)}
+ else{const xm=Math.ceil(Math.max(...c.d.map(d=>d[0]))),X=v=>l+pw*v/xm;for(let v=0;v<=xm;v++)s+=`<text x="${X(v)}" y="${H-b+14}" text-anchor="middle">${v}</text>`;
+  s+=`<text x="${l+pw/2}" y="${H-6}" text-anchor="middle">${E(c.xl)}</text><text x="10" y="${t+ph/2}" text-anchor="middle" transform="rotate(-90 10 ${t+ph/2})">${E(c.yl)}</text>`;
+  c.d.forEach(d=>s+=`<circle cx="${X(d[0])}" cy="${Y(d[1])}" r="4.5" fill="var(--c3)" stroke="var(--sf)" stroke-width="1.5"/>`)}
+ return`<div class="cb"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(c.ti)}">${s}</svg></div>`}
+/* ===== întrebări ===== */
+function qm(q,t,mm,aw,qc){if(!mm.o)mm.o=sh([0,1,2,3]);
+ let h=`<p class="q">${q.q}</p>`;if(q.ch!=null)h+=chart(t.ch[q.ch]);
+ h+='<div class="opts">'+mm.o.map((oi,j)=>{const c=mm.k==null?'':oi==0?' ok':oi==mm.k?' no':'';return`<button class="opt${c}" data-o="${oi}"${mm.k!=null?' disabled':''}><span class="l">${'ABCD'[j]}</span><span class="${q.o[oi][0]=='='?'mo':''}">${E(q.o[oi])}</span></button>`}).join('')+'</div>';
+ if(mm.k!=null)h+=`<div class="fb ${mm.k?'no':'ok'}"><b>${mm.k?'✗ Nu chiar. Răspunsul corect este marcat cu verde.':'✓ Corect!'}</b>${q.w}</div>`;
+ qc.innerHTML=h;qc.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{mm.k=+b.dataset.o;aw(mm.k?0:1)})}
+function qf(q,t,mm,aw,qc){const rows=t.sh,lk=mm.s||mm.sw,base=mk(rows,0,q.t),nc=Math.max(...rows.map(r=>r.length));
+ qc.innerHTML=`<p class="q">${q.task}</p><div class="fx"><span class="nb"></span><span class="f">fx</span><input id="fi" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Bara de formule" placeholder="Scrie formula, începând cu =" ${lk?'readonly':''}></div><div class="sb"><table class="g"><thead><tr><th></th>${Array.from({length:nc},(_,i)=>`<th>${CN(i+1)}</th>`).join('')}</tr></thead><tbody>${rows.map((r,i)=>`<tr><th>${i+1}</th>${Array.from({length:nc},(_,j)=>{const a=CN(j+1)+(i+1);return`<td data-a="${a}" class="${i?'':'h'}${a==q.t?' tg':''}"></td>`}).join('')}</tr>`).join('')}</tbody></table></div><p class="hl">Apasă celula galbenă, scrie formula și apasă Enter. Zecimalele se scriu cu punct (1.19), iar argumentele se despart prin virgulă.</p><div class="row"><button class="btn" id="ck"${lk?' disabled':''}>Verifică</button><button class="btn gh" id="hn"${lk?' disabled':''}>Ajutor</button><button class="btn gh" id="sw"${lk||mm.n<2||!mm.n?' hidden':''}>Arată răspunsul</button></div><div id="fb"></div>`;
+ const inp=$('#fi',qc),nb=$('.nb',qc),tb=$('.g',qc);
+ const paint=()=>{const c={...base};if(mm.v)c[q.t]=mm.v[0]=='='?mm.v:isNaN(mm.v)?mm.v:+mm.v;const s=calc(c);
+  tb.querySelectorAll('td').forEach(td=>{const a=td.dataset.a,r=s(a);td.textContent=r.e?(a==q.t&&!lk?'':r.e):fmt(r.v);td.style.color=r.e?'var(--bad)':'';td.style.textAlign=typeof r.v=='number'?'right':''})};
+ const sel=a=>{nb.textContent=a;tb.querySelectorAll('td').forEach(td=>td.classList.toggle('sel',td.dataset.a==a));
+  if(a==q.t){inp.value=mm.v||'';inp.readOnly=!!lk}else{inp.value=base[a]==null?'':base[a];inp.readOnly=true}};
+ tb.onclick=e=>{const td=e.target.closest('td');if(td)sel(td.dataset.a)};
+ inp.oninput=()=>{if(nb.textContent==q.t&&!lk){mm.v=inp.value;paint()}};
+ inp.onkeydown=e=>{if(e.key=='Enter'){e.preventDefault();$('#ck',qc).click()}};
+ paint();sel(q.t);
+ $('#fb',qc).innerHTML=mm.s?`<div class="fb ok"><b>✓ Corect!${mm.n>1?' Ai reușit după mai multe încercări: ½ punct.':''}</b>Formula se adaptează singură dacă se schimbă datele.</div>`:mm.sw?`<div class="fb no"><b>O formulă corectă este:</b><code>${E(q.s)}</code></div>`:(mm.msg?`<div class="fb no"><b>✗ Încă nu.</b>${mm.msg}</div>`:'')+(mm.hint?`<div class="fb hint"><b>Ajutor</b>${q.h}</div>`:'');
+ $('#ck',qc).onclick=()=>{const r=chk(q,rows,mm.v||'');mm.n=(mm.n||0)+1;if(!r){mm.s=1;mm.msg=0;aw(mm.n==1?1:.5)}else{mm.msg=r;qf(q,t,mm,aw,qc);$('#fi',qc).focus()}};
+ $('#hn',qc).onclick=()=>{mm.hint=1;qf(q,t,mm,aw,qc)};
+ $('#sw',qc).onclick=()=>{mm.sw=1;mm.v=q.s;aw(0)}}
+/* ===== aplicația ===== */
+const app=$('#app'),nd=()=>({i:0,p:Array(12).fill(null),m:Array.from({length:12},()=>({}))});
+let T=TESTS.map(nd),name='';
+const nota=p=>Math.round((p*.75+1)*100)/100;
+function home(){
+ app.innerHTML=`<h1>Laborator Excel</h1><p class="s">Informatică, clasa a VIII-a · 5 teste · câte 12 întrebări</p><label class="nm">Numele tău<input id="nm" value="${E(name)}" placeholder="Prenume Nume" autocomplete="off"></label><p class="s">Alege un test: 5 grile, 3 grafice de interpretat și 4 formule de scris. Fiecare întrebare valorează 1 punct, iar nota este <b>puncte × 0,75 + 1</b>.</p><div class="cards">${TESTS.map((t,i)=>{const d=T[i],a=d.p.filter(v=>v!=null).length;return`<button class="tc" data-i="${i}"><b>${t.n}</b><small>${t.t}</small><span class="st">${d.fin?'Nota '+pf(nota(sum(d.p))):a?a+'/12 răspunsuri':'Nefăcut'}</span></button>`}).join('')}</div>`;
+ $('#nm').oninput=e=>name=e.target.value;app.querySelectorAll('.tc').forEach(b=>b.onclick=()=>{test(+b.dataset.i);scrollTo(0,0)});scrollTo(0,0)}
+function test(i){const t=TESTS[i],d=T[i];if(d.fin)return res(i);
+ const k=d.i,q=t.q[k],y=scrollY,a=d.p.filter(v=>v!=null).length;
+ app.innerHTML=`<div class="bar"><button class="btn gh" id="hm">← Teste</button><b>${t.n}</b><span class="sp"></span><span class="pc">${k+1}/12 · ${pf(sum(d.p))} p</span></div><div class="pg"><i style="width:${a/12*100}%"></i></div><div class="card" id="qc"></div><div class="row"><button class="btn gh" id="bk"${k?'':' disabled'}>← Înapoi</button><span class="sp"></span><button class="btn" id="nx"${d.p[k]==null?' disabled':''}>${k==11?'Vezi nota →':'Următoarea →'}</button></div>`;
+ const aw=p=>{if(d.p[k]==null)d.p[k]=p;test(i)};
+ (q.k=='m'?qm:qf)(q,t,d.m[k],aw,$('#qc'));
+ $('#hm').onclick=home;$('#bk').onclick=()=>{d.i--;test(i);scrollTo(0,0)};$('#nx').onclick=()=>{if(k==11)d.fin=1;else d.i++;test(i);scrollTo(0,0)};scrollTo(0,y)}
+function res(i){const t=TESTS[i],d=T[i],p=sum(d.p),n=nota(p),
+ txt=`${name||'(fără nume)'} · ${t.n} · ${new Date().toLocaleDateString('ro-RO')}\n${pf(p)} puncte din 12 → ${pf(p)} × 0,75 + 1 = nota ${pf(n)}`;
+ app.innerHTML=`<div class="bar"><button class="btn gh" id="hm">← Teste</button></div><div class="card"><div class="big">${pf(n)}</div><p class="q">${n>=9?'Excelent!':n>=7?'Foarte bine!':n>=5?'Bine, dar mai exersează.':'Mai ai de recapitulat.'}</p><p>${pf(p)} puncte din 12 → ${pf(p)} × 0,75 + 1 = <b>${pf(n)}</b></p><div class="dots">${d.p.map((v,j)=>`<span class="dt ${v==1?'':v==0?'no':'hf'}">${j+1}</span>`).join('')}</div><p class="hl">Verde = 1 punct · galben = ½ punct · roșu = 0 puncte</p><pre>${E(txt)}</pre><div class="row"><button class="btn" id="cp">Copiază rezultatul</button><span class="hl" id="cs" role="status"></span><span class="sp"></span><button class="btn gh" id="rs">Reia testul</button></div></div>`;
+ $('#hm').onclick=home;$('#rs').onclick=()=>{T[i]=nd();test(i);scrollTo(0,0)};
+ $('#cp').onclick=async()=>{try{await navigator.clipboard.writeText(txt);$('#cs').textContent='Copiat.'}catch(e){$('#cs').textContent='Selectează textul și copiază-l manual.'}};scrollTo(0,0)}
+home();
+})();
+</script></body></html>
