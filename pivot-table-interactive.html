@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pivot Table Interactiv – Explicații complete + Practică</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .excel-header { background: linear-gradient(180deg, #217346 0%, #1a5c38 100%); }
+    .excel-table th { background: #217346; color: white; font-weight: 600; font-size: 0.8rem; }
+    .excel-table td, .excel-table th { border: 1px solid #c6c6c6; padding: 6px 10px; }
+    .excel-table tr:nth-child(even) { background: #f2f2f2; }
+    .excel-table tr:hover { background: #e8f5e9; }
+    .pivot-result th { background: #2e75b6; color: white; }
+    .pivot-result .total-row { background: #d6eaf8 !important; font-weight: 700; }
+    .pivot-result .total-col { background: #d6eaf8; font-weight: 700; }
+    .field-box { min-height: 42px; border: 2px dashed #94a3b8; transition: all 0.2s; }
+    .field-box.active { border-color: #217346; background: #ecfdf5; }
+    .chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 500; cursor: pointer; user-select: none; }
+    .chip-row { background: #dbeafe; color: #1e40af; }
+    .chip-col { background: #fce7f3; color: #9d174d; }
+    .chip-val { background: #d1fae5; color: #065f46; }
+    .step-number { width: 28px; height: 28px; border-radius: 50%; background: #217346; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+    .card { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+    .btn-excel { background: linear-gradient(180deg, #217346 0%, #1a5c38 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; transition: all 0.2s; }
+    .btn-excel:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(33, 115, 70, 0.4); }
+    .btn-blue { background: linear-gradient(180deg, #2e75b6 0%, #1e5a8a 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; transition: all 0.2s; }
+    .btn-blue:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(46, 117, 182, 0.4); }
+    .btn-purple { background: linear-gradient(180deg, #7c3aed 0%, #5b21b6 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; }
+    .btn-orange { background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; }
+    .tab-btn { padding: 12px 20px; font-weight: 600; border-bottom: 3px solid transparent; transition: all 0.2s; color: #64748b; cursor: pointer; }
+    .tab-btn.active { color: #217346; border-bottom-color: #217346; }
+    .fade-in { animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .merged-highlight { background: #fef3c7 !important; border: 2px solid #f59e0b; }
+    .concept-box { border-left: 4px solid #217346; }
+    .warn-box { border-left: 4px solid #ea580c; background: #fff7ed; }
+    .info-box { border-left: 4px solid #2e75b6; background: #eff6ff; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+  <!-- Header -->
+  <header class="excel-header text-white py-6 px-4 shadow-lg">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center gap-3">
+        <div class="bg-white/20 p-3 rounded-xl"><i class="fas fa-table text-2xl"></i></div>
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold">Pivot Table Interactiv</h1>
+          <p class="text-green-100 text-sm md:text-base mt-1">Explicații complete • Rows / Columns / Grupare • Merge & Join • Produs cartezian</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+
+    <!-- ===== CE ESTE ===== -->
+    <section class="card p-6 md:p-8">
+      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+        <i class="fas fa-lightbulb text-amber-500"></i> Ce este un Pivot Table?
+      </h2>
+      <p class="text-slate-600 leading-relaxed mb-4">
+        Un <strong>Pivot Table</strong> (tabel pivot) ia un tabel mare de date și îl <strong>rezumă automat</strong> după categorii pe care le alegi tu.
+        Nu modifică datele originale – creează o vedere nouă, agregată.
+      </p>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div class="flex items-start gap-3 bg-slate-50 rounded-lg p-4">
+          <div class="step-number">1</div>
+          <div><p class="font-semibold text-sm">Alegi datele</p><p class="text-xs text-slate-500">Un tabel sau mai multe unite</p></div>
+        </div>
+        <div class="flex items-start gap-3 bg-slate-50 rounded-lg p-4">
+          <div class="step-number">2</div>
+          <div><p class="font-semibold text-sm">Tragi câmpurile</p><p class="text-xs text-slate-500">Rows, Columns, Values</p></div>
+        </div>
+        <div class="flex items-start gap-3 bg-slate-50 rounded-lg p-4">
+          <div class="step-number">3</div>
+          <div><p class="font-semibold text-sm">Vezi rezultatul</p><p class="text-xs text-slate-500">Sumă / medie / count</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ROWS vs COLUMNS vs GRUPARE ===== -->
+    <section class="card p-6 md:p-8">
+      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+        <i class="fas fa-arrows-alt text-blue-600"></i> Rows, Columns și Gruparea – explicație clară
+      </h2>
+
+      <div class="grid md:grid-cols-2 gap-6 mb-6">
+        <div class="concept-box bg-blue-50 p-5 rounded-r-xl">
+          <h3 class="font-bold text-blue-800 mb-2 flex items-center gap-2">
+            <span class="chip chip-row">Rows (Rânduri)</span>
+          </h3>
+          <p class="text-sm text-slate-700 mb-2">
+            Câmpul pe care îl pui la <strong>Rows</strong> devine <strong>lista verticală</strong> din stânga pivot-ului.
+          </p>
+          <p class="text-sm text-slate-600">
+            Exemplu: pui <em>Produs</em> → fiecare produs apare pe câte un rând.<br>
+            Pui <em>Regiune</em> → fiecare regiune pe câte un rând.
+          </p>
+          <p class="text-xs text-blue-700 mt-3 font-medium">💡 Aici „grupezi” datele pe verticală.</p>
+        </div>
+
+        <div class="concept-box bg-pink-50 p-5 rounded-r-xl" style="border-left-color:#9d174d">
+          <h3 class="font-bold text-pink-800 mb-2 flex items-center gap-2">
+            <span class="chip chip-col">Columns (Coloane)</span>
+          </h3>
+          <p class="text-sm text-slate-700 mb-2">
+            Câmpul pe care îl pui la <strong>Columns</strong> devine <strong>anteturile orizontale</strong> de sus.
+          </p>
+          <p class="text-sm text-slate-600">
+            Exemplu: pui <em>Regiune</em> → apar coloanele Nord | Sud | Est.<br>
+            Pui <em>Lună</em> → apar coloanele Ian | Feb | Mar...
+          </p>
+          <p class="text-xs text-pink-700 mt-3 font-medium">💡 Aici „grupezi” datele pe orizontală.</p>
+        </div>
+      </div>
+
+      <div class="info-box p-5 rounded-r-xl mb-6">
+        <h3 class="font-bold text-blue-800 mb-2"><i class="fas fa-layer-group mr-2"></i>Ce înseamnă „grupare”?</h3>
+        <p class="text-sm text-slate-700 mb-3">
+          Pivot Table <strong>grupează automat</strong> rândurile care au aceeași valoare la câmpul ales.
+          Dacă ai 50 de vânzări de „Laptop” în Nord, el le pune pe toate la un loc și calculează suma / media / numărul.
+        </p>
+        <div class="bg-white rounded-lg p-4 text-sm border border-blue-100">
+          <p class="font-semibold mb-1">Fără grupare (date brute):</p>
+          <p class="text-slate-500 mb-2">Laptop – Nord – 3 &nbsp;|&nbsp; Laptop – Nord – 1 &nbsp;|&nbsp; Laptop – Nord – 2 &nbsp;→ 3 rânduri separate</p>
+          <p class="font-semibold mb-1 text-emerald-700">Cu grupare (Pivot):</p>
+          <p class="text-emerald-700">Laptop – Nord – <strong>6</strong> &nbsp;→ un singur rând cu totalul</p>
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-4 text-sm">
+        <div class="bg-slate-50 rounded-lg p-4">
+          <p class="font-semibold text-emerald-700 mb-1">Values (Valori)</p>
+          <p class="text-slate-600">Ce calculezi: sumă, medie, numărare, max, min... de obicei o coloană numerică (Cantitate, Preț, Venit).</p>
+        </div>
+        <div class="bg-slate-50 rounded-lg p-4">
+          <p class="font-semibold text-amber-700 mb-1">Filters (Filtre)</p>
+          <p class="text-slate-600">Poți filtra înainte (ex. doar anul 2025, doar o regiune). În Excel apar deasupra pivot-ului.</p>
+        </div>
+        <div class="bg-slate-50 rounded-lg p-4">
+          <p class="font-semibold text-purple-700 mb-1">Sfat practic</p>
+          <p class="text-slate-600">Pune categoriile pe Rows, perioadele sau alte categorii pe Columns, și numerele pe Values.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TABS ===== -->
+    <div class="flex flex-wrap border-b border-slate-200 gap-1">
+      <button class="tab-btn active" onclick="switchTab(1)" id="tab1"><i class="fas fa-table mr-2"></i>1. Pivot pe un tabel</button>
+      <button class="tab-btn" onclick="switchTab(2)" id="tab2"><i class="fas fa-object-group mr-2"></i>2. Două tabele + Merge</button>
+      <button class="tab-btn" onclick="switchTab(3)" id="tab3"><i class="fas fa-project-diagram mr-2"></i>3. Join vs Produs cartezian</button>
+    </div>
+
+    <!-- ===== TAB 1 ===== -->
+    <div id="content1" class="space-y-6 fade-in">
+      <div class="card p-6">
+        <h3 class="font-bold text-lg mb-2 flex items-center gap-2">
+          <span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-sm">Exemplu 1</span>
+          Pivot pe un singur tabel
+        </h3>
+        <p class="text-slate-600 text-sm mb-4">
+          Selectezi câmpurile: ce vrei pe <strong>rânduri</strong>, ce pe <strong>coloane</strong>, ce <strong>calculezi</strong>.
+          Pivot-ul grupează automat și face totalurile.
+        </p>
+
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-semibold text-sm"><i class="fas fa-database text-emerald-600 mr-1"></i> Date sursă</h4>
+            <span class="text-xs bg-slate-100 px-2 py-1 rounded">12 rânduri</span>
+          </div>
+          <div class="overflow-x-auto rounded-lg border border-slate-200">
+            <table class="excel-table w-full text-sm" id="sourceTable1">
+              <thead><tr><th>Data</th><th>Produs</th><th>Regiune</th><th>Cantitate</th><th>Preț (lei)</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+          <h4 class="font-semibold text-sm mb-4"><i class="fas fa-sliders-h text-blue-600 mr-1"></i> Configurare Pivot (ca în Excel)</h4>
+          <div class="grid md:grid-cols-4 gap-4 mb-5">
+            <div>
+              <p class="text-xs font-semibold text-slate-500 uppercase mb-2">Câmpuri disponibile</p>
+              <div class="space-y-2">
+                <div class="chip chip-row" onclick="selectField(1,'row','Produs')">Produs</div>
+                <div class="chip chip-col" onclick="selectField(1,'col','Regiune')">Regiune</div>
+                <div class="chip chip-val" onclick="selectField(1,'val','Cantitate')">Cantitate</div>
+                <div class="chip" style="background:#fef3c7;color:#92400e" onclick="selectField(1,'val','Preț (lei)')">Preț (lei)</div>
+              </div>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-500 uppercase mb-2">Rows (Rânduri)</p>
+              <div class="field-box rounded-lg p-2" id="rows1"><span class="text-xs text-slate-400">Alege un câmp...</span></div>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-500 uppercase mb-2">Columns (Coloane)</p>
+              <div class="field-box rounded-lg p-2" id="cols1"><span class="text-xs text-slate-400">Opțional...</span></div>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-500 uppercase mb-2">Values (Valori)</p>
+              <div class="field-box rounded-lg p-2" id="vals1"><span class="text-xs text-slate-400">Alege un câmp...</span></div>
+              <select id="agg1" class="mt-2 w-full text-sm border border-slate-300 rounded-lg px-2 py-1.5">
+                <option value="sum">Sumă</option>
+                <option value="count">Numărare</option>
+                <option value="avg">Medie</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button class="btn-excel" onclick="generatePivot(1)"><i class="fas fa-magic mr-2"></i>Generează Pivot</button>
+            <button class="btn-blue" onclick="resetPivot(1)"><i class="fas fa-undo mr-2"></i>Resetează</button>
+            <button class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg font-medium text-sm" onclick="preset1a()">Produs × Regiune (Sumă)</button>
+            <button class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg font-medium text-sm" onclick="preset1b()">Regiune (doar Rows)</button>
+          </div>
+        </div>
+
+        <div id="result1" class="mt-6 hidden">
+          <h4 class="font-semibold text-sm mb-2"><i class="fas fa-chart-bar text-blue-600 mr-1"></i> Rezultat Pivot Table</h4>
+          <div class="overflow-x-auto rounded-lg border border-slate-200">
+            <table class="excel-table pivot-result w-full text-sm" id="pivotTable1"><thead></thead><tbody></tbody></table>
+          </div>
+          <p class="text-xs text-slate-500 mt-2" id="pivotInfo1"></p>
+        </div>
+
+        <!-- Mai multe exemple explicate -->
+        <div class="mt-8 border-t pt-6">
+          <h4 class="font-bold mb-4"><i class="fas fa-book-open text-emerald-600 mr-2"></i>Exemple practice – ce alegi și de ce</h4>
+          <div class="space-y-4 text-sm">
+            <div class="bg-emerald-50 rounded-lg p-4">
+              <p class="font-semibold text-emerald-800">Exemplu A: „Cât s-a vândut din fiecare produs, pe regiune?”</p>
+              <p class="text-slate-600 mt-1">Rows = <strong>Produs</strong> &nbsp;|&nbsp; Columns = <strong>Regiune</strong> &nbsp;|&nbsp; Values = <strong>Sumă Cantitate</strong></p>
+              <p class="text-xs text-slate-500 mt-1">→ Vezi o matrice Produs × Regiune cu totaluri.</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4">
+              <p class="font-semibold text-blue-800">Exemplu B: „Câte comenzi am pe fiecare regiune?”</p>
+              <p class="text-slate-600 mt-1">Rows = <strong>Regiune</strong> &nbsp;|&nbsp; Columns = (nimic) &nbsp;|&nbsp; Values = <strong>Numărare</strong> (orice câmp)</p>
+              <p class="text-xs text-slate-500 mt-1">→ Doar o listă verticală cu numărul de rânduri pe regiune.</p>
+            </div>
+            <div class="bg-amber-50 rounded-lg p-4">
+              <p class="font-semibold text-amber-800">Exemplu C: „Care e prețul mediu pe produs?”</p>
+              <p class="text-slate-600 mt-1">Rows = <strong>Produs</strong> &nbsp;|&nbsp; Columns = (nimic) &nbsp;|&nbsp; Values = <strong>Medie Preț</strong></p>
+              <p class="text-xs text-slate-500 mt-1">→ Un singur număr pe produs (media).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB 2 ===== -->
+    <div id="content2" class="space-y-6 hidden">
+      <div class="card p-6">
+        <h3 class="font-bold text-lg mb-2 flex items-center gap-2">
+          <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-sm">Exemplu 2</span>
+          Două tabele + Merge (Join)
+        </h3>
+        <p class="text-slate-600 text-sm mb-4">
+          Datele sunt împărțite. Le unești pe o <strong>coloană comună</strong> (cheia), apoi faci pivot pe tabelul rezultat.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <h4 class="font-semibold text-sm mb-2"><i class="fas fa-file-alt text-blue-600 mr-1"></i> Tabel 1: Vânzări</h4>
+            <div class="overflow-x-auto rounded-lg border border-slate-200">
+              <table class="excel-table w-full text-sm" id="tableSales">
+                <thead><tr><th>ID_Produs</th><th>Data</th><th>Regiune</th><th>Cantitate</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <h4 class="font-semibold text-sm mb-2"><i class="fas fa-box text-amber-600 mr-1"></i> Tabel 2: Produse</h4>
+            <div class="overflow-x-auto rounded-lg border border-slate-200">
+              <table class="excel-table w-full text-sm" id="tableProducts">
+                <thead><tr><th>ID_Produs</th><th>Nume Produs</th><th>Categorie</th><th>Preț (lei)</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mb-6">
+          <button class="btn-blue text-base px-8 py-3" onclick="doMerge()" id="mergeBtn">
+            <i class="fas fa-link mr-2"></i>Unește tabelele (LEFT JOIN pe ID_Produs)
+          </button>
+          <p class="text-xs text-slate-500 mt-2">Se potrivesc rândurile care au același <code class="bg-slate-100 px-1 rounded">ID_Produs</code></p>
+        </div>
+
+        <div id="mergedSection" class="hidden mb-6">
+          <h4 class="font-semibold text-sm mb-2"><i class="fas fa-object-group text-emerald-600 mr-1"></i> Tabel unit (rezultat Merge)</h4>
+          <div class="overflow-x-auto rounded-lg border-2 border-emerald-300">
+            <table class="excel-table w-full text-sm" id="mergedTable">
+              <thead><tr><th>ID_Produs</th><th>Data</th><th>Regiune</th><th>Cantitate</th><th>Nume Produs</th><th>Categorie</th><th>Preț (lei)</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="text-xs text-emerald-700 mt-2 bg-emerald-50 p-2 rounded">
+            <i class="fas fa-check-circle mr-1"></i> Acum ai toate coloanele într-un singur loc → poți face Pivot.
+          </p>
+        </div>
+
+        <div id="pivotOnMerged" class="hidden">
+          <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+            <h4 class="font-semibold text-sm mb-4"><i class="fas fa-sliders-h text-blue-600 mr-1"></i> Pivot pe tabelul unit</h4>
+            <div class="grid md:grid-cols-4 gap-4 mb-5">
+              <div>
+                <p class="text-xs font-semibold text-slate-500 uppercase mb-2">Câmpuri</p>
+                <div class="space-y-2">
+                  <div class="chip chip-row" onclick="selectField(2,'row','Nume Produs')">Nume Produs</div>
+                  <div class="chip chip-row" onclick="selectField(2,'row','Categorie')">Categorie</div>
+                  <div class="chip chip-col" onclick="selectField(2,'col','Regiune')">Regiune</div>
+                  <div class="chip chip-val" onclick="selectField(2,'val','Cantitate')">Cantitate</div>
+                  <div class="chip" style="background:#fef3c7;color:#92400e" onclick="selectField(2,'val','Preț (lei)')">Preț (lei)</div>
+                </div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-slate-500 uppercase mb-2">Rows</p>
+                <div class="field-box rounded-lg p-2" id="rows2"><span class="text-xs text-slate-400">Alege...</span></div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-slate-500 uppercase mb-2">Columns</p>
+                <div class="field-box rounded-lg p-2" id="cols2"><span class="text-xs text-slate-400">Opțional...</span></div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-slate-500 uppercase mb-2">Values</p>
+                <div class="field-box rounded-lg p-2" id="vals2"><span class="text-xs text-slate-400">Alege...</span></div>
+                <select id="agg2" class="mt-2 w-full text-sm border border-slate-300 rounded-lg px-2 py-1.5">
+                  <option value="sum">Sumă</option>
+                  <option value="count">Numărare</option>
+                  <option value="avg">Medie</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <button class="btn-excel" onclick="generatePivot(2)"><i class="fas fa-magic mr-2"></i>Generează Pivot</button>
+              <button class="btn-blue" onclick="resetPivot(2)"><i class="fas fa-undo mr-2"></i>Resetează</button>
+              <button class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg font-medium text-sm" onclick="preset2()">Categorie × Regiune</button>
+            </div>
+          </div>
+          <div id="result2" class="mt-6 hidden">
+            <h4 class="font-semibold text-sm mb-2"><i class="fas fa-chart-bar text-blue-600 mr-1"></i> Rezultat Pivot (după Merge)</h4>
+            <div class="overflow-x-auto rounded-lg border border-slate-200">
+              <table class="excel-table pivot-result w-full text-sm" id="pivotTable2"><thead></thead><tbody></tbody></table>
+            </div>
+            <p class="text-xs text-slate-500 mt-2" id="pivotInfo2"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB 3: JOIN vs CARTESIAN ===== -->
+    <div id="content3" class="space-y-6 hidden">
+      <div class="card p-6">
+        <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+          <span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-sm">Concepte importante</span>
+          Merge (Join) vs Produs cartezian
+        </h3>
+
+        <!-- Explicații -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+          <div class="info-box p-5 rounded-r-xl">
+            <h4 class="font-bold text-blue-800 mb-2"><i class="fas fa-link mr-2"></i>Merge / Join (pe cheie comună)</h4>
+            <p class="text-sm text-slate-700 mb-3">
+              Unești două tabele <strong>doar pe rândurile care se potrivesc</strong> la o coloană comună (cheia).
+            </p>
+            <ul class="text-sm text-slate-600 space-y-1 list-disc list-inside">
+              <li><strong>LEFT JOIN</strong> – păstrează tot din stânga + potrivirile din dreapta</li>
+              <li><strong>INNER JOIN</strong> – doar rândurile care au potrivire în ambele</li>
+              <li><strong>RIGHT JOIN</strong> – păstrează tot din dreapta</li>
+            </ul>
+            <p class="text-xs text-blue-700 mt-3 font-medium">În Excel: VLOOKUP, XLOOKUP, Power Query → Merge, sau Data Model + relație.</p>
+          </div>
+
+          <div class="warn-box p-5 rounded-r-xl">
+            <h4 class="font-bold text-orange-800 mb-2"><i class="fas fa-times-circle mr-2"></i>Produs cartezian (Cartesian product)</h4>
+            <p class="text-sm text-slate-700 mb-3">
+              Combină <strong>fiecare rând</strong> din primul tabel cu <strong>fiecare rând</strong> din al doilea.
+              Nu folosește nicio cheie!
+            </p>
+            <p class="text-sm text-slate-600">
+              Dacă ai 12 vânzări și 3 produse → rezultă <strong>12 × 3 = 36 rânduri</strong>.
+              De obicei e greșit și explodează datele.
+            </p>
+            <p class="text-xs text-orange-700 mt-3 font-medium">⚠️ Evită-l dacă nu știi exact de ce îl vrei (uneori e util la generare de combinații).</p>
+          </div>
+        </div>
+
+        <!-- Demo interactivă -->
+        <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 mb-6">
+          <h4 class="font-semibold mb-4"><i class="fas fa-flask text-purple-600 mr-2"></i>Demo interactivă – vezi diferența</h4>
+          <p class="text-sm text-slate-600 mb-4">
+            Folosim tabele mici ca să vezi clar ce se întâmplă:
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-4 text-sm">
+            <div>
+              <p class="font-semibold text-slate-700 mb-1">Tabel A (Comenzi)</p>
+              <table class="excel-table w-full text-xs">
+                <thead><tr><th>ID</th><th>Client</th></tr></thead>
+                <tbody>
+                  <tr><td>C1</td><td>Ana</td></tr>
+                  <tr><td>C2</td><td>Bogdan</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-700 mb-1">Tabel B (Produse)</p>
+              <table class="excel-table w-full text-xs">
+                <thead><tr><th>ID</th><th>Produs</th></tr></thead>
+                <tbody>
+                  <tr><td>C1</td><td>Laptop</td></tr>
+                  <tr><td>C3</td><td>Telefon</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-3 mb-4">
+            <button class="btn-blue" onclick="showJoin('left')"><i class="fas fa-link mr-1"></i> LEFT JOIN pe ID</button>
+            <button class="btn-excel" onclick="showJoin('inner')"><i class="fas fa-compress-arrows-alt mr-1"></i> INNER JOIN pe ID</button>
+            <button class="btn-orange" onclick="showJoin('cartesian')"><i class="fas fa-bomb mr-1"></i> Produs cartezian (fără cheie)</button>
+          </div>
+
+          <div id="joinResult" class="hidden">
+            <p class="font-semibold text-sm mb-2" id="joinTitle"></p>
+            <div class="overflow-x-auto rounded-lg border border-slate-300">
+              <table class="excel-table w-full text-sm" id="joinTable">
+                <thead></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <p class="text-xs mt-2" id="joinExplain"></p>
+          </div>
+        </div>
+
+        <!-- Cum faci în Excel -->
+        <div class="bg-gradient-to-br from-slate-50 to-emerald-50 rounded-xl p-5">
+          <h4 class="font-bold mb-3"><i class="fas fa-graduation-cap text-emerald-600 mr-2"></i>Cum faci Merge / Join în Excel</h4>
+          <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-700">
+            <div>
+              <p class="font-semibold mb-1">Metoda simplă (VLOOKUP / XLOOKUP)</p>
+              <ol class="list-decimal list-inside space-y-1 text-slate-600">
+                <li>În tabelul Vânzări adaugi o coloană nouă</li>
+                <li>Scrii =XLOOKUP([ID_Produs]; TabelProduse[ID]; TabelProduse[Nume])</li>
+                <li>Tragi formula în jos</li>
+              </ol>
+            </div>
+            <div>
+              <p class="font-semibold mb-1">Metoda modernă (Power Query)</p>
+              <ol class="list-decimal list-inside space-y-1 text-slate-600">
+                <li>Data → Get Data → din tabele</li>
+                <li>Home → Merge Queries</li>
+                <li>Alegi coloana comună + tipul de Join</li>
+                <li>Expand coloanele dorite</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REZUMAT FINAL ===== -->
+    <section class="card p-6 bg-gradient-to-br from-emerald-50 to-blue-50">
+      <h3 class="font-bold text-lg mb-4"><i class="fas fa-check-double text-emerald-600 mr-2"></i>Rezumat rapid</h3>
+      <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+        <div class="bg-white rounded-lg p-4 shadow-sm">
+          <p class="font-semibold text-blue-700">Rows</p>
+          <p class="text-slate-600">Ce apare pe verticală (grupare pe rânduri)</p>
+        </div>
+        <div class="bg-white rounded-lg p-4 shadow-sm">
+          <p class="font-semibold text-pink-700">Columns</p>
+          <p class="text-slate-600">Ce apare pe orizontală (grupare pe coloane)</p>
+        </div>
+        <div class="bg-white rounded-lg p-4 shadow-sm">
+          <p class="font-semibold text-emerald-700">Values</p>
+          <p class="text-slate-600">Ce calculezi (sumă, medie, count...)</p>
+        </div>
+        <div class="bg-white rounded-lg p-4 shadow-sm">
+          <p class="font-semibold text-purple-700">Merge / Join</p>
+          <p class="text-slate-600">Unești tabele pe o cheie comună (nu produs cartezian!)</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="text-center text-slate-400 text-sm py-8">
+    Pivot Table Interactiv • Explicații + Demo • Similar cu Excel
+  </footer>
+
+  <script>
+    // ========== DATE ==========
+    const dataSingle = [
+      { Data: "2025-01-05", Produs: "Laptop", Regiune: "Nord", Cantitate: 3, "Preț (lei)": 4500 },
+      { Data: "2025-01-06", Produs: "Telefon", Regiune: "Sud", Cantitate: 5, "Preț (lei)": 2200 },
+      { Data: "2025-01-07", Produs: "Tabletă", Regiune: "Est", Cantitate: 2, "Preț (lei)": 1800 },
+      { Data: "2025-01-08", Produs: "Laptop", Regiune: "Sud", Cantitate: 1, "Preț (lei)": 4500 },
+      { Data: "2025-01-09", Produs: "Telefon", Regiune: "Nord", Cantitate: 4, "Preț (lei)": 2200 },
+      { Data: "2025-01-10", Produs: "Laptop", Regiune: "Est", Cantitate: 2, "Preț (lei)": 4500 },
+      { Data: "2025-01-11", Produs: "Tabletă", Regiune: "Nord", Cantitate: 3, "Preț (lei)": 1800 },
+      { Data: "2025-01-12", Produs: "Telefon", Regiune: "Est", Cantitate: 6, "Preț (lei)": 2200 },
+      { Data: "2025-01-13", Produs: "Laptop", Regiune: "Nord", Cantitate: 1, "Preț (lei)": 4500 },
+      { Data: "2025-01-14", Produs: "Tabletă", Regiune: "Sud", Cantitate: 4, "Preț (lei)": 1800 },
+      { Data: "2025-01-15", Produs: "Telefon", Regiune: "Sud", Cantitate: 3, "Preț (lei)": 2200 },
+      { Data: "2025-01-16", Produs: "Laptop", Regiune: "Sud", Cantitate: 2, "Preț (lei)": 4500 },
+    ];
+
+    const dataSales = [
+      { ID_Produs: "P01", Data: "2025-01-05", Regiune: "Nord", Cantitate: 3 },
+      { ID_Produs: "P02", Data: "2025-01-06", Regiune: "Sud", Cantitate: 5 },
+      { ID_Produs: "P03", Data: "2025-01-07", Regiune: "Est", Cantitate: 2 },
+      { ID_Produs: "P01", Data: "2025-01-08", Regiune: "Sud", Cantitate: 1 },
+      { ID_Produs: "P02", Data: "2025-01-09", Regiune: "Nord", Cantitate: 4 },
+      { ID_Produs: "P01", Data: "2025-01-10", Regiune: "Est", Cantitate: 2 },
+      { ID_Produs: "P03", Data: "2025-01-11", Regiune: "Nord", Cantitate: 3 },
+      { ID_Produs: "P02", Data: "2025-01-12", Regiune: "Est", Cantitate: 6 },
+      { ID_Produs: "P01", Data: "2025-01-13", Regiune: "Nord", Cantitate: 1 },
+      { ID_Produs: "P03", Data: "2025-01-14", Regiune: "Sud", Cantitate: 4 },
+      { ID_Produs: "P02", Data: "2025-01-15", Regiune: "Sud", Cantitate: 3 },
+      { ID_Produs: "P01", Data: "2025-01-16", Regiune: "Sud", Cantitate: 2 },
+    ];
+
+    const dataProducts = [
+      { ID_Produs: "P01", "Nume Produs": "Laptop Pro", Categorie: "Calculatoare", "Preț (lei)": 4500 },
+      { ID_Produs: "P02", "Nume Produs": "Telefon X", Categorie: "Mobile", "Preț (lei)": 2200 },
+      { ID_Produs: "P03", "Nume Produs": "Tabletă Air", Categorie: "Tablete", "Preț (lei)": 1800 },
+    ];
+
+    // Mini tabele pentru demo Join
+    const tableA = [ { ID: "C1", Client: "Ana" }, { ID: "C2", Client: "Bogdan" } ];
+    const tableB = [ { ID: "C1", Produs: "Laptop" }, { ID: "C3", Produs: "Telefon" } ];
+
+    let config = { 1: { row: null, col: null, val: null }, 2: { row: null, col: null, val: null } };
+    let mergedData = [];
+
+    function renderTable(tableId, data, columns) {
+      const tbody = document.querySelector(`#${tableId} tbody`);
+      tbody.innerHTML = data.map(row => `<tr>${columns.map(c => `<td>${row[c]}</td>`).join('')}</tr>`).join('');
+    }
+
+    function init() {
+      renderTable('sourceTable1', dataSingle, ['Data', 'Produs', 'Regiune', 'Cantitate', 'Preț (lei)']);
+      renderTable('tableSales', dataSales, ['ID_Produs', 'Data', 'Regiune', 'Cantitate']);
+      renderTable('tableProducts', dataProducts, ['ID_Produs', 'Nume Produs', 'Categorie', 'Preț (lei)']);
+    }
+
+    function switchTab(n) {
+      [1,2,3].forEach(i => {
+        document.getElementById('content' + i).classList.toggle('hidden', i !== n);
+        document.getElementById('tab' + i).classList.toggle('active', i === n);
+      });
+      document.getElementById('content' + n).classList.add('fade-in');
+    }
+
+    function selectField(tab, type, field) {
+      config[tab][type] = field;
+      const box = document.getElementById(type === 'row' ? `rows${tab}` : type === 'col' ? `cols${tab}` : `vals${tab}`);
+      const colorClass = type === 'row' ? 'chip-row' : type === 'col' ? 'chip-col' : 'chip-val';
+      box.innerHTML = `<span class="chip ${colorClass}">${field} <i class="fas fa-times text-xs ml-1 opacity-60" onclick="event.stopPropagation(); clearField(${tab},'${type}')"></i></span>`;
+      box.classList.add('active');
+    }
+
+    function clearField(tab, type) {
+      config[tab][type] = null;
+      const box = document.getElementById(type === 'row' ? `rows${tab}` : type === 'col' ? `cols${tab}` : `vals${tab}`);
+      box.innerHTML = `<span class="text-xs text-slate-400">Alege...</span>`;
+      box.classList.remove('active');
+    }
+
+    function resetPivot(tab) {
+      config[tab] = { row: null, col: null, val: null };
+      ['rows', 'cols', 'vals'].forEach(t => {
+        const box = document.getElementById(`${t}${tab}`);
+        box.innerHTML = `<span class="text-xs text-slate-400">Alege...</span>`;
+        box.classList.remove('active');
+      });
+      document.getElementById(`result${tab}`).classList.add('hidden');
+    }
+
+    function preset1a() {
+      selectField(1, 'row', 'Produs');
+      selectField(1, 'col', 'Regiune');
+      selectField(1, 'val', 'Cantitate');
+      document.getElementById('agg1').value = 'sum';
+      generatePivot(1);
+    }
+
+    function preset1b() {
+      selectField(1, 'row', 'Regiune');
+      clearField(1, 'col');
+      selectField(1, 'val', 'Cantitate');
+      document.getElementById('agg1').value = 'sum';
+      generatePivot(1);
+    }
+
+    function preset2() {
+      selectField(2, 'row', 'Categorie');
+      selectField(2, 'col', 'Regiune');
+      selectField(2, 'val', 'Cantitate');
+      document.getElementById('agg2').value = 'sum';
+      generatePivot(2);
+    }
+
+    function doMerge() {
+      mergedData = dataSales.map(sale => {
+        const prod = dataProducts.find(p => p.ID_Produs === sale.ID_Produs) || {};
+        return { ...sale, "Nume Produs": prod["Nume Produs"] || "?", Categorie: prod.Categorie || "?", "Preț (lei)": prod["Preț (lei)"] || 0 };
+      });
+      const tbody = document.querySelector('#mergedTable tbody');
+      tbody.innerHTML = mergedData.map(row => `
+        <tr>
+          <td class="merged-highlight">${row.ID_Produs}</td>
+          <td>${row.Data}</td><td>${row.Regiune}</td><td>${row.Cantitate}</td>
+          <td>${row["Nume Produs"]}</td><td>${row.Categorie}</td><td>${row["Preț (lei)"]}</td>
+        </tr>`).join('');
+      document.getElementById('mergedSection').classList.remove('hidden');
+      document.getElementById('pivotOnMerged').classList.remove('hidden');
+      document.getElementById('mergeBtn').innerHTML = '<i class="fas fa-check mr-2"></i>Tabele unite cu succes!';
+      document.getElementById('mergeBtn').className = 'bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg font-semibold';
+    }
+
+    function generatePivot(tab) {
+      const conf = config[tab];
+      if (!conf.row || !conf.val) { alert('Alege cel puțin Rows și Values!'); return; }
+      const data = tab === 1 ? dataSingle : mergedData;
+      const agg = document.getElementById(`agg${tab}`).value;
+      const rowKey = conf.row, colKey = conf.col, valKey = conf.val;
+
+      const rows = [...new Set(data.map(d => d[rowKey]))].sort();
+      const cols = colKey ? [...new Set(data.map(d => d[colKey]))].sort() : ['Total'];
+
+      const matrix = {};
+      rows.forEach(r => {
+        matrix[r] = {};
+        cols.forEach(c => {
+          const filtered = data.filter(d => d[rowKey] === r && (!colKey || d[colKey] === c));
+          let value = 0;
+          if (agg === 'sum') value = filtered.reduce((s, d) => s + (Number(d[valKey]) || 0), 0);
+          else if (agg === 'count') value = filtered.length;
+          else if (agg === 'avg') {
+            const sum = filtered.reduce((s, d) => s + (Number(d[valKey]) || 0), 0);
+            value = filtered.length ? Math.round((sum / filtered.length) * 10) / 10 : 0;
+          }
+          matrix[r][c] = value;
+        });
+      });
+
+      const rowTotals = {};
+      rows.forEach(r => { rowTotals[r] = cols.reduce((s, c) => s + matrix[r][c], 0); });
+      const colTotals = {};
+      cols.forEach(c => { colTotals[c] = rows.reduce((s, r) => s + matrix[r][c], 0); });
+      const grandTotal = Object.values(rowTotals).reduce((s, v) => s + v, 0);
+
+      const thead = document.querySelector(`#pivotTable${tab} thead`);
+      const tbody = document.querySelector(`#pivotTable${tab} tbody`);
+
+      let headerHtml = `<tr><th>${rowKey}</th>`;
+      cols.forEach(c => headerHtml += `<th>${c}</th>`);
+      if (colKey) headerHtml += `<th class="total-col">Total</th>`;
+      headerHtml += `</tr>`;
+      thead.innerHTML = headerHtml;
+
+      let bodyHtml = '';
+      rows.forEach(r => {
+        bodyHtml += `<tr><td class="font-medium">${r}</td>`;
+        cols.forEach(c => bodyHtml += `<td class="text-right">${matrix[r][c]}</td>`);
+        if (colKey) bodyHtml += `<td class="total-col text-right">${rowTotals[r]}</td>`;
+        bodyHtml += `</tr>`;
+      });
+      bodyHtml += `<tr class="total-row"><td>Total</td>`;
+      cols.forEach(c => bodyHtml += `<td class="text-right">${colTotals[c]}</td>`);
+      if (colKey) bodyHtml += `<td class="text-right">${grandTotal}</td>`;
+      bodyHtml += `</tr>`;
+      tbody.innerHTML = bodyHtml;
+
+      const aggLabel = { sum: 'Sumă', count: 'Numărare', avg: 'Medie' }[agg];
+      document.getElementById(`pivotInfo${tab}`).textContent =
+        `${aggLabel} de „${valKey}” • Rânduri: ${rowKey}` + (colKey ? ` • Coloane: ${colKey}` : '');
+      document.getElementById(`result${tab}`).classList.remove('hidden');
+      document.getElementById(`result${tab}`).classList.add('fade-in');
+    }
+
+    // ========== JOIN DEMO ==========
+    function showJoin(type) {
+      const thead = document.querySelector('#joinTable thead');
+      const tbody = document.querySelector('#joinTable tbody');
+      let result = [], title = '', explain = '';
+
+      if (type === 'left') {
+        title = 'LEFT JOIN pe ID – păstrează tot din Tabel A';
+        explain = 'Ana (C1) are potrivire → apare Laptop. Bogdan (C2) nu are potrivire în B → apare cu Produs gol. Telefonul (C3) nu apare deloc.';
+        result = tableA.map(a => {
+          const b = tableB.find(x => x.ID === a.ID);
+          return { ID: a.ID, Client: a.Client, Produs: b ? b.Produs : '(gol)' };
+        });
+      } else if (type === 'inner') {
+        title = 'INNER JOIN pe ID – doar potrivirile comune';
+        explain = 'Doar C1 există în ambele tabele. Bogdan și Telefonul dispar.';
+        result = tableA.filter(a => tableB.some(b => b.ID === a.ID)).map(a => {
+          const b = tableB.find(x => x.ID === a.ID);
+          return { ID: a.ID, Client: a.Client, Produs: b.Produs };
+        });
+      } else {
+        title = 'Produs cartezian – FĂRĂ cheie (fiecare cu fiecare)';
+        explain = '2 rânduri × 2 rânduri = 4 combinații. Nu se uită la ID! De obicei e greșit și dublează datele.';
+        result = [];
+        tableA.forEach(a => {
+          tableB.forEach(b => {
+            result.push({ 'ID_A': a.ID, Client: a.Client, 'ID_B': b.ID, Produs: b.Produs });
+          });
+        });
+      }
+
+      const cols = Object.keys(result[0] || {});
+      thead.innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join('')}</tr>`;
+      tbody.innerHTML = result.map(r => `<tr>${cols.map(c => `<td>${r[c]}</td>`).join('')}</tr>`).join('');
+      document.getElementById('joinTitle').textContent = title;
+      document.getElementById('joinExplain').innerHTML = explain;
+      document.getElementById('joinResult').classList.remove('hidden');
+      document.getElementById('joinResult').classList.add('fade-in');
+    }
+
+    init();
+  </script>
+</body>
+</html>
