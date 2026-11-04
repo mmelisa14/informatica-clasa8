@@ -1,0 +1,1596 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ghid baze de date · Clasa a 8-a</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F0F4F2;
+  --surface: #FFFFFF;
+  --surface2: #E8EEEC;
+  --fg: #14201C;
+  --muted: #5A6B64;
+  --line: #C5D0CB;
+  --accent: #0B7A62;
+  --accent2: #1A6BB5;
+  --ok: #1B7A3D;
+  --bad: #B0352A;
+  --ok-bg: #D8F0E0;
+  --bad-bg: #F8E0DC;
+  --tint: #D4EBE3;
+  --code: #E6EDE9;
+  --t-k: #0B7A62;
+  --t-s: #C45A1A;
+  --t-n: #1A6BB5;
+  --t-c: #6A7A74;
+  --term-bg: #0D1613;
+  --term-fg: #D4E8DE;
+  --term-dim: #7A9288;
+  --term-prompt: #E8B84A;
+  --term-err: #FF8F7E;
+  --term-line: #1E302A;
+  --f-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --f-body: 'Source Sans 3', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius: 12px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 17px/1.65 var(--f-body);
+  padding-bottom: 64px;
+}
+.wrap { max-width: 800px; margin: 0 auto; padding: 0 18px; }
+
+.topnav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(240,244,242,.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 0;
+}
+.topnav .inner {
+  max-width: 800px; margin: 0 auto; padding: 0 18px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.logo {
+  font-family: var(--f-display); font-weight: 800; font-size: 17px;
+  color: var(--accent);
+}
+.nav-links { display: flex; gap: 4px; flex-wrap: wrap; margin-left: auto; }
+.nav-links a {
+  font: 600 13px/1 var(--f-body); color: var(--muted);
+  text-decoration: none; padding: 6px 10px; border-radius: 8px;
+}
+.nav-links a:hover { color: var(--fg); background: var(--surface2); }
+
+.hero {
+  padding: 36px 0 28px;
+  border-bottom: 1px solid var(--line);
+}
+.kicker {
+  font: 600 12.5px/1.3 var(--f-mono); letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 10px;
+}
+h1 {
+  font-family: var(--f-display);
+  font-size: clamp(36px, 9vw, 56px);
+  font-weight: 800; line-height: 1.08;
+  margin: 0 0 12px; letter-spacing: -0.02em;
+}
+.lead {
+  font-size: 18px; line-height: 1.5; color: var(--muted);
+  max-width: 52ch; margin: 0 0 20px;
+}
+.hero-cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+  font: 700 15px/1 var(--f-body);
+  padding: 11px 18px; border-radius: 10px;
+  border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn:hover { filter: brightness(1.05); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-ghost {
+  background: var(--surface); color: var(--fg);
+  border: 1px solid var(--line);
+}
+.btn.sm { padding: 8px 12px; font-size: 13.5px; }
+.btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+
+section {
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+}
+section h2 {
+  font-family: var(--f-display);
+  font-size: clamp(24px, 4.5vw, 30px);
+  font-weight: 800; margin: 0 0 6px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sec-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: grid; place-items: center; font-size: 20px;
+  flex-shrink: 0; background: var(--tint);
+}
+.sec-sub { color: var(--muted); margin: 0 0 20px; font-size: 15.5px; }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.card:hover { border-color: var(--accent); }
+.card .emoji { font-size: 28px; margin-bottom: 6px; display: block; }
+.card b { display: block; font-family: var(--f-display); font-size: 16px; margin-bottom: 2px; }
+.card span { color: var(--muted); font-size: 14px; }
+
+.info-box {
+  background: var(--tint);
+  border: 1px solid #B8D9CC;
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin: 16px 0;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.info-box .icon { font-size: 22px; flex-shrink: 0; }
+.info-box p { margin: 0; font-size: 15.5px; }
+.info-box strong { color: var(--accent); }
+
+.list-cool { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.list-cool li {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.list-cool .num {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: var(--tint); color: var(--accent);
+  font: 700 13px/26px var(--f-mono); text-align: center; flex-shrink: 0;
+}
+.list-cool b { font-family: var(--f-display); }
+
+.tbl-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th {
+  font: 700 12px/1.3 var(--f-mono); letter-spacing: .04em;
+  text-transform: uppercase; color: var(--muted);
+  background: var(--code); white-space: nowrap;
+}
+td:first-child { font-weight: 700; }
+table.data { font: 400 13px/1.4 var(--f-mono); }
+table.data td:first-child { font-weight: 400; }
+table.data th, table.data td { padding: 7px 11px; white-space: nowrap; }
+table.data .num { text-align: right; }
+table.data .hl { background: var(--tint); color: var(--accent); }
+table.data th.hl { color: var(--accent); }
+table.data .more { color: var(--muted); text-align: center; }
+
+.erd { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.erd figure { margin: 0; flex: 1 1 230px; min-width: 0; }
+.erd figcaption {
+  font: 700 13px/1.4 var(--f-mono); margin-bottom: 6px;
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+.tag {
+  font: 700 11px/1 var(--f-mono); padding: 3px 7px; border-radius: 5px;
+  background: var(--tint); color: var(--accent);
+}
+.rel {
+  font: 800 16px/1 var(--f-mono); color: var(--accent2);
+  padding: 4px 0; flex: 0 0 auto;
+}
+
+.code {
+  margin: 0; background: var(--code);
+  border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+}
+.code pre {
+  margin: 0; padding: 14px 16px; overflow-x: auto;
+  font-size: 13.5px; line-height: 1.6; tab-size: 2;
+}
+.code .bar {
+  display: flex; gap: 10px; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; padding: 9px 14px;
+  border-top: 1px solid var(--line); font-size: 13px; color: var(--muted);
+  background: rgba(0,0,0,.03);
+}
+.k { color: var(--t-k); font-weight: 600; }
+.s { color: var(--t-s); }
+.n { color: var(--t-n); }
+.c { color: var(--t-c); font-style: italic; }
+
+.pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 14px;
+}
+.pair > * { min-width: 0; }
+.cap {
+  font: 700 12px/1.3 var(--f-mono); letter-spacing: .04em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 6px;
+}
+
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 560px) { .compare { grid-template-columns: 1fr; } }
+.compare-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 16px;
+}
+.compare-card h3 {
+  margin: 0 0 10px; font-family: var(--f-display); font-size: 16px;
+}
+.compare-card ul { margin: 0; padding: 0; list-style: none; }
+.compare-card li {
+  padding: 7px 0; border-top: 1px solid var(--line);
+  font-size: 14px; color: var(--muted);
+}
+.compare-card li:first-child { border-top: 0; padding-top: 0; }
+.compare-card li::before { content: '• '; color: var(--accent); font-weight: 700; }
+
+.schema-box {
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  padding: 18px;
+  margin: 16px 0;
+}
+.schema-box h3 {
+  margin: 0 0 10px;
+  font-family: var(--f-display);
+  font-size: 17px;
+  color: var(--accent);
+}
+.schema-box .code { border-color: #B8D9CC; }
+.constraint-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+.constraint-item {
+  background: var(--tint);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+.constraint-item b { display: block; font-family: var(--f-display); margin-bottom: 2px; }
+.constraint-item span { color: var(--muted); font-size: 13.5px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.chip {
+  font: 500 12.5px/1.3 var(--f-mono);
+  padding: 7px 11px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--surface);
+  color: var(--fg); cursor: pointer; text-align: left;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.term {
+  background: var(--term-bg); color: var(--term-fg);
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--term-line);
+  box-shadow: 0 8px 30px rgba(0,0,0,.18);
+}
+.term-head {
+  display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  padding: 11px 14px; border-bottom: 1px solid var(--term-line);
+  font-size: 12.5px; color: var(--term-dim);
+  background: rgba(0,0,0,.25);
+}
+.term-dots { display: flex; gap: 5px; align-items: center; }
+.term-dots span { width: 9px; height: 9px; border-radius: 50%; }
+.term-dots span:nth-child(1) { background: #f87171; }
+.term-dots span:nth-child(2) { background: #fbbf24; }
+.term-dots span:nth-child(3) { background: #4ade80; }
+.term-out {
+  height: 300px; max-height: 50vh; overflow: auto;
+  padding: 12px 14px; font-size: 13px; line-height: 1.5;
+  font-family: var(--f-mono);
+}
+.ln { white-space: pre; margin-bottom: 8px; }
+.ln.err { color: var(--term-err); }
+.ln.dim { color: var(--term-dim); }
+.ln .p { color: var(--term-prompt); }
+.term-in {
+  border-top: 1px solid var(--term-line);
+  padding: 11px 14px 14px;
+  display: flex; flex-direction: column; gap: 9px;
+}
+.term-in label { font-size: 12.5px; color: var(--term-prompt); font-family: var(--f-mono); }
+.term textarea {
+  width: 100%; min-height: 85px; resize: vertical;
+  background: transparent; color: var(--term-fg);
+  border: 1px solid var(--term-line); border-radius: 8px;
+  padding: 10px 12px; font-size: 13.5px; line-height: 1.55;
+  font-family: var(--f-mono);
+}
+.term textarea::placeholder { color: var(--term-dim); }
+.term .btn { border-color: var(--term-prompt); background: var(--term-prompt); color: #1B1405; }
+.term .btn.ghost { background: transparent; color: var(--term-fg); border-color: var(--term-line); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+details {
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--surface); padding: 0 14px; margin-top: 12px;
+}
+details summary {
+  cursor: pointer; padding: 12px 0; font-weight: 700;
+  font-family: var(--f-display);
+}
+details[open] summary { border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+.state { display: flex; flex-direction: column; gap: 12px; padding-bottom: 12px; }
+
+.schema {
+  font: 400 13.5px/1.7 var(--f-mono);
+  background: var(--code); border: 1px solid var(--line);
+  border-radius: 8px; padding: 11px 14px; overflow-x: auto; white-space: pre;
+}
+.score {
+  font: 800 15px/1 var(--f-display); color: var(--accent);
+  display: flex; align-items: center; gap: 10px;
+}
+.score-bar {
+  flex: 1; height: 7px; background: var(--surface2);
+  border-radius: 999px; overflow: hidden; max-width: 180px;
+}
+.score-fill {
+  height: 100%; background: var(--accent);
+  border-radius: 999px; transition: width .35s;
+  width: 0%;
+}
+.exs { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+.ex {
+  border: 1px solid var(--line); background: var(--surface);
+  border-radius: 12px; padding: 16px 18px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.ex h3 {
+  margin: 0; font-family: var(--f-display); font-size: 17px;
+  display: flex; align-items: center; gap: 8px;
+}
+.ex-num {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--accent); color: #fff;
+  font: 800 13px/28px var(--f-mono); text-align: center;
+}
+.ex .q { font-size: 16px; line-height: 1.45; margin: 0; }
+.ex textarea {
+  width: 100%; min-height: 95px; resize: vertical;
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--line); border-radius: 8px;
+  padding: 10px 12px; font-size: 13.5px; line-height: 1.55;
+  font-family: var(--f-mono);
+}
+.out { display: flex; flex-direction: column; gap: 10px; }
+.out:empty { display: none; }
+.out .err { color: var(--bad); font: 400 13.5px/1.5 var(--f-mono); white-space: pre-wrap; }
+.verdict {
+  padding: 10px 12px; border-radius: 8px;
+  font-weight: 700; font-size: 15px;
+}
+.verdict.ok { background: var(--ok-bg); color: var(--ok); }
+.verdict.bad { background: var(--bad-bg); color: var(--bad); }
+.verdict span {
+  display: block; font-weight: 400; color: var(--fg);
+  font-size: 14px; margin-top: 3px;
+}
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+.foot {
+  padding: 28px 0; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 14px; text-align: center;
+}
+
+p { margin: 0 0 12px; }
+a { color: var(--accent); }
+h3 { font-family: var(--f-display); font-size: 17px; margin: 18px 0 8px; }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+code, pre, textarea { font-family: var(--f-mono); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+kbd {
+  font: 600 12px var(--f-mono); padding: 2px 5px;
+  background: var(--surface2); border-radius: 4px;
+  border: 1px solid var(--line);
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="inner">
+    <div class="logo">Baze de date</div>
+    <div class="nav-links">
+      <a href="#ce-este">Ce este</a>
+      <a href="#importanta">Importanță</a>
+      <a href="#organizare">Organizare</a>
+      <a href="#schema">Schema</a>
+      <a href="#tipuri">Tipuri</a>
+      <a href="#sql-nosql">SQL / NoSQL</a>
+      <a href="#creare">Creare</a>
+      <a href="#simulator">Simulator</a>
+      <a href="#exercitii">Exerciții</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header class="hero">
+  <p class="kicker">Ghid practic · SQL și NoSQL · simulator în stil Oracle</p>
+  <h1>Baze de date</h1>
+  <p class="lead">Ce sunt, de ce contează, cum se organizează datele și ce tip alegi. La final ai un simulator în stil Oracle în care rulezi cod și rezolvi exerciții cu verificare.</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="#simulator">Deschide simulatorul</a>
+    <a class="btn btn-ghost" href="#exercitii">Exerciții</a>
+  </div>
+</header>
+
+<section id="ce-este">
+  <h2><span class="sec-icon">📦</span> Ce este o bază de date</h2>
+  <p class="sec-sub">O colecție de informații organizate astfel încât să poată fi căutate, modificate și protejate rapid.</p>
+  <p>Programul care o administrează se numește <b>SGBD</b> (sistem de gestiune a bazelor de date). Exemple: Oracle Database, MySQL, PostgreSQL, MongoDB.</p>
+  <p>Un caiet cu nume și telefoane se poate răsfoi, dar nu îl poți întreba „toți clienții din Brașov care au comandat luna trecută”. O bază de date răspunde la o asemenea cerere în milisecunde, chiar și cu zeci de milioane de rânduri.</p>
+  <div class="cards">
+    <div class="card"><span class="emoji">🏦</span><b>Bancă</b><span>conturi, carduri, tranzacții</span></div>
+    <div class="card"><span class="emoji">🛒</span><b>Magazin online</b><span>produse, comenzi, stocuri</span></div>
+    <div class="card"><span class="emoji">🏫</span><b>Școală</b><span>elevi, note, absențe</span></div>
+    <div class="card"><span class="emoji">📱</span><b>Rețea socială</b><span>profiluri, postări, prieteni</span></div>
+    <div class="card"><span class="emoji">🏥</span><b>Spital</b><span>pacienți, programări, rețete</span></div>
+    <div class="card"><span class="emoji">🎮</span><b>Joc online</b><span>scoruri, inventar, progres</span></div>
+  </div>
+</section>
+
+<section id="importanta">
+  <h2><span class="sec-icon">⚡</span> De ce sunt importante</h2>
+  <ul class="list-cool">
+    <li><span class="num">1</span><div><b>Căutare rapidă</b><br>Indecșii funcționează ca cuprinsul unei cărți: baza găsește rândul fără să citească toată tabela.</div></li>
+    <li><span class="num">2</span><div><b>O singură sursă de adevăr</b><br>Adresa unui client este stocată o dată. Nu apar două variante care se contrazic.</div></li>
+    <li><span class="num">3</span><div><b>Acces simultan</b><br>Mii de utilizatori citesc și scriu în același timp fără să-și strice datele reciproc.</div></li>
+    <li><span class="num">4</span><div><b>Securitate</b><br>Fiecare utilizator primește doar drepturile de care are nevoie, iar copiile de rezervă protejează de pierderi.</div></li>
+    <li><span class="num">5</span><div><b>Reguli care se aplică singure</b><br>Un salariu nu poate fi text, un id nu se repetă, o comandă nu poate avea un client inexistent.</div></li>
+  </ul>
+  <h3>Tranzacții și ACID</h3>
+  <p>Un transfer bancar scade suma dintr-un cont și o adaugă în altul. Ambii pași reușesc împreună sau niciunul. Regula se numește ACID:</p>
+  <div class="cards">
+    <div class="card"><span class="emoji">⚛️</span><b>Atomicitate</b><span>totul sau nimic</span></div>
+    <div class="card"><span class="emoji">✅</span><b>Consistență</b><span>regulile rămân respectate după fiecare tranzacție</span></div>
+    <div class="card"><span class="emoji">🔒</span><b>Izolare</b><span>utilizatorii simultani nu se încurcă</span></div>
+    <div class="card"><span class="emoji">💾</span><b>Durabilitate</b><span>după COMMIT datele rezistă chiar și la o pană de curent</span></div>
+  </div>
+</section>
+
+<section id="organizare">
+  <h2><span class="sec-icon">🗂️</span> Cum se organizează datele</h2>
+  <div class="cards" style="margin-bottom:20px">
+    <div class="card"><span class="emoji">📋</span><b>Tabel</b><span>un tip de lucru: angajați, produse, comenzi</span></div>
+    <div class="card"><span class="emoji">📄</span><b>Rând (înregistrare)</b><span>un exemplar: un angajat anume</span></div>
+    <div class="card"><span class="emoji">🏷️</span><b>Coloană (câmp)</b><span>o proprietate: nume, salariu, oraș</span></div>
+    <div class="card"><span class="emoji">🔑</span><b>Cheie primară (PK)</b><span>valoarea care identifică unic un rând</span></div>
+    <div class="card"><span class="emoji">🔗</span><b>Cheie străină (FK)</b><span>coloana care trimite la cheia primară din alt tabel</span></div>
+    <div class="card"><span class="emoji">⚡</span><b>Index</b><span>structură ajutătoare care accelerează căutarea</span></div>
+  </div>
+  <h3>Două tabele legate</h3>
+  <p>Numele departamentului nu se scrie în fiecare rând de angajat. Se scrie o dată în <code>DEPARTAMENTE</code>, iar angajatul păstrează doar <code>id_dep</code>. Coloanele evidențiate sunt legătura dintre cele două tabele.</p>
+  <div class="erd">
+    <figure>
+      <figcaption>DEPARTAMENTE <span class="tag">PK id_dep</span></figcaption>
+      <div class="tbl-wrap" data-tbl="DEPARTAMENTE" data-hl="ID_DEP"></div>
+    </figure>
+    <div class="rel" aria-hidden="true">1 → N</div>
+    <figure>
+      <figcaption>ANGAJATI <span class="tag">FK id_dep</span></figcaption>
+      <div class="tbl-wrap" data-tbl="ANGAJATI" data-hl="ID_DEP" data-cols="ID,NUME,ID_DEP" data-limit="5"></div>
+    </figure>
+  </div>
+  <h3>Tipuri de relații</h3>
+  <ul class="list-cool">
+    <li><span class="num">1</span><div><b>1 → N</b> — Un departament are mai mulți angajați, iar un angajat aparține unui singur departament.</div></li>
+    <li><span class="num">N</span><div><b>N → N</b> — Un student urmează mai multe cursuri, iar un curs are mai mulți studenți. Se rezolvă cu un tabel de legătură, de exemplu <code>INSCRIERI(id_student, id_curs)</code>.</div></li>
+    <li><span class="num">1</span><div><b>1 → 1</b> — O persoană are un singur pașaport activ. Apare rar.</div></li>
+  </ul>
+  <h3>Normalizarea pe scurt</h3>
+  <ul class="list-cool">
+    <li><span class="num">1</span><div><b>Forma 1</b> — Fiecare celulă conține o singură valoare. Fără liste de telefoane într-o coloană.</div></li>
+    <li><span class="num">2</span><div><b>Forma 2</b> — Fiecare coloană depinde de întreaga cheie, nu doar de o parte din ea.</div></li>
+    <li><span class="num">3</span><div><b>Forma 3</b> — Coloanele nu depind una de alta. Orașul unui departament nu se repetă în tabela angajaților.</div></li>
+  </ul>
+</section>
+
+<section id="schema">
+  <h2><span class="sec-icon">📐</span> Schema din simulator</h2>
+  <p class="sec-sub">Înainte să rulezi comenzi, iată cum sunt create tabelele și ce restricții au. Aceste reguli se aplică automat la INSERT, UPDATE și DELETE.</p>
+  <div class="schema-box">
+    <h3>CREATE TABLE – cu restricții</h3>
+    <figure class="code"><pre>
+CREATE TABLE departamente (
+  id_dep NUMBER PRIMARY KEY,          -- cheie primară: unică + nenulă
+  nume   VARCHAR2(30) NOT NULL,       -- obligatoriu
+  oras   VARCHAR2(30)
+);
+
+CREATE TABLE angajati (
+  id          NUMBER PRIMARY KEY,     -- cheie primară
+  nume        VARCHAR2(40) NOT NULL,  -- obligatoriu
+  id_dep      NUMBER REFERENCES departamente (id_dep),  -- cheie străină
+  salariu     NUMBER(8,2),
+  an_angajare NUMBER(4)
+);</pre></figure>
+    <div class="constraint-list">
+      <div class="constraint-item">
+        <b>PRIMARY KEY</b>
+        <span>Valoare unică și nenulă. Nu poți insera două rânduri cu același id.</span>
+      </div>
+      <div class="constraint-item">
+        <b>NOT NULL</b>
+        <span>Coloana nu poate fi goală. INSERT fără nume este respins.</span>
+      </div>
+      <div class="constraint-item">
+        <b>FOREIGN KEY (REFERENCES)</b>
+        <span>id_dep din angajati trebuie să existe în departamente. Nu poți șterge un departament care are angajați.</span>
+      </div>
+    </div>
+  </div>
+  <div class="info-box">
+    <div class="icon">💡</div>
+    <p><strong>Ce se întâmplă dacă încalci o restricție?</strong> Oracle (și simulatorul) returnează un mesaj de tip <code>ORA-xxxxx</code>. Exemple: <code>ORA-02291</code> = cheia părinte nu există; <code>ORA-02292</code> = există încă înregistrări copil; <code>ORA-00001</code> = cheie unică încălcată.</p>
+  </div>
+</section>
+
+<section id="tipuri">
+  <h2><span class="sec-icon">🧩</span> Tipuri de baze de date</h2>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Tip</th><th>Cum stochează</th><th>Exemple</th><th>Potrivit pentru</th></tr></thead>
+      <tbody>
+        <tr><td>Relațională</td><td>tabele cu rânduri și coloane, legate prin chei</td><td>Oracle, PostgreSQL, MySQL, SQL Server</td><td>bănci, facturare, ERP, reguli stricte</td></tr>
+        <tr><td>Document</td><td>documente JSON, fiecare cu structura ei</td><td>MongoDB, Couchbase</td><td>cataloage de produse, conținut, profiluri</td></tr>
+        <tr><td>Cheie-valoare</td><td>perechi cheie → valoare</td><td>Redis, DynamoDB</td><td>cache, sesiuni, coșuri de cumpărături</td></tr>
+        <tr><td>Coloane late</td><td>familii de coloane pe multe servere</td><td>Cassandra, HBase</td><td>volume uriașe de scrieri: loguri, IoT</td></tr>
+        <tr><td>Graf</td><td>noduri și muchii</td><td>Neo4j</td><td>rețele sociale, recomandări, fraudă</td></tr>
+        <tr><td>Serii de timp</td><td>valori însoțite de marca de timp</td><td>InfluxDB, TimescaleDB</td><td>metrici, senzori, monitorizare</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted small" style="margin-top:12px">Mai există o împărțire după locul unde rulează: locale (SQLite), pe un server propriu, în cloud (Oracle Autonomous Database, Amazon RDS) sau distribuite pe mai multe servere.</p>
+</section>
+
+<section id="sql-nosql">
+  <h2><span class="sec-icon">⚔️</span> SQL și NoSQL</h2>
+  <p class="sec-sub"><b>SQL</b> este limbajul standard al bazelor relaționale. <b>NoSQL</b> („not only SQL”) grupează celelalte tipuri, fiecare cu propriul mod de interogare.</p>
+  <div class="tbl-wrap" style="margin-bottom:18px">
+    <table>
+      <thead><tr><th>Criteriu</th><th>SQL (relațional)</th><th>NoSQL</th></tr></thead>
+      <tbody>
+        <tr><td>Structură</td><td>schemă fixă, definită înainte de date</td><td>schemă flexibilă sau absentă</td></tr>
+        <tr><td>Limbaj</td><td>SQL, același în mare măsură peste tot</td><td>diferit la fiecare produs</td></tr>
+        <tr><td>Relații</td><td>JOIN între tabele, chei străine</td><td>limitate; datele se copiază în document</td></tr>
+        <tr><td>Consistență</td><td>ACID complet</td><td>depinde de produs; adesea consistență eventuală</td></tr>
+        <tr><td>Scalare</td><td>în mod clasic un server mai puternic</td><td>în mod clasic mai multe servere</td></tr>
+        <tr><td>Interogări complexe</td><td>excelent: grupări, rapoarte, agregări</td><td>mai limitat</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="compare">
+    <div class="compare-card">
+      <h3>Alege SQL când</h3>
+      <ul>
+        <li>datele au o structură clară și stabilă: clienți, comenzi, facturi</li>
+        <li>ai nevoie de rapoarte cu JOIN și GROUP BY</li>
+        <li>corectitudinea contează mai mult decât viteza brută: bani, stocuri, rezervări</li>
+        <li>mai mulți utilizatori modifică aceleași date în același timp</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h3>Alege NoSQL când</h3>
+      <ul>
+        <li>structura se schimbă des sau fiecare element arată diferit</li>
+        <li>volumul este foarte mare și adaugi servere pe parcurs</li>
+        <li>ai nevoie de viteză pentru operații simple: cache, sesiuni, clasamente</li>
+        <li>datele sunt în esență legături (graf) sau valori în timp</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box" style="margin-top:16px">
+    <div class="icon">📌</div>
+    <p>Dacă nu ai un motiv clar pentru altceva, începe cu o bază relațională. Oracle și PostgreSQL stochează și JSON, deci flexibilitatea nu cere neapărat NoSQL. Multe aplicații le combină: Oracle pentru comenzi, Redis pentru cache.</p>
+  </div>
+  <h3>Aceleași date, două moduri</h3>
+  <div class="pair">
+    <div>
+      <p class="cap">SQL: două tabele și un JOIN</p>
+      <figure class="code"><pre>
+SELECT a.nume, a.salariu, d.nume, d.oras
+FROM angajati a
+JOIN departamente d ON a.id_dep = d.id_dep
+WHERE a.id = 1;</pre>
+      <div class="bar"><span>Rulează în simulator</span><button class="btn ghost sm load" type="button">Încarcă</button></div>
+      </figure>
+    </div>
+    <div>
+      <p class="cap">NoSQL: un document JSON</p>
+      <figure class="code"><pre>
+{
+  "_id": 1,
+  "nume": "Andrei Popescu",
+  "departament": { "nume": "IT", "oras": "Cluj-Napoca" },
+  "salariu": 7200,
+  "competente": ["SQL", "Python"]
+}</pre></figure>
+    </div>
+  </div>
+  <p class="muted small">În document, departamentul este copiat în interiorul angajatului. Citirea este rapidă, dar dacă IT se mută în alt oraș, trebuie actualizate toate documentele care îl conțin.</p>
+</section>
+
+<section id="creare">
+  <h2><span class="sec-icon">🛠️</span> Cum se creează o bază de date în Oracle</h2>
+  <p class="sec-sub">În Oracle nu creezi de obicei o bază nouă pentru fiecare aplicație. Administratorul creează un utilizator, iar contul acela are propria <b>schemă</b>: spațiul în care trăiesc tabelele lui.</p>
+  <h3>Pasul 1. Utilizatorul (doar administrator)</h3>
+  <figure class="code"><pre>
+CREATE USER demo IDENTIFIED BY parola_sigura;
+GRANT CREATE SESSION, CREATE TABLE TO demo;
+ALTER USER demo QUOTA 50M ON users;</pre>
+  <div class="bar"><span>Comenzi pentru un Oracle real. Simulatorul este deja conectat ca DEMO.</span></div>
+  </figure>
+  <h3>Pasul 2. Tabelul, datele, salvarea, citirea</h3>
+  <figure class="code"><pre>
+-- creăm tabelul
+CREATE TABLE clienti (
+  id_client NUMBER PRIMARY KEY,
+  nume      VARCHAR2(50) NOT NULL,
+  email     VARCHAR2(80) UNIQUE,
+  oras      VARCHAR2(40)
+);
+
+-- adăugăm date
+INSERT INTO clienti VALUES (1, 'Ioana Dobre', 'ioana@exemplu.ro', 'Brasov');
+INSERT INTO clienti VALUES (2, 'Paul Neagu', 'paul@exemplu.ro', 'Cluj-Napoca');
+INSERT INTO clienti (id_client, nume) VALUES (3, 'Sorin Lazar');
+
+-- salvăm definitiv
+COMMIT;
+
+-- citim
+SELECT * FROM clienti ORDER BY nume;</pre>
+  <div class="bar"><span>Încarcă codul și apasă Rulează în simulator</span><button class="btn ghost sm load" type="button">Încarcă în simulator</button></div>
+  </figure>
+  <p><code>VARCHAR2</code> este textul din Oracle, <code>NUMBER</code> este numărul. <code>PRIMARY KEY</code> impune o valoare unică și nenulă, <code>NOT NULL</code> interzice golul, iar <code>UNIQUE</code> interzice duplicatele. Fără <code>COMMIT</code>, modificările se pot anula cu <code>ROLLBACK</code>.</p>
+</section>
+
+<section id="simulator">
+  <h2><span class="sec-icon">💻</span> Simulator în stil Oracle</h2>
+  <p class="sec-sub">Ești conectat ca <code>DEMO</code>. Există deja tabelele <code>ANGAJATI</code> și <code>DEPARTAMENTE</code> (vezi schema de mai sus). Scrie comenzi SQL terminate cu <code>;</code> și apasă Rulează sau <kbd>Ctrl</kbd>+<kbd>Enter</kbd>.</p>
+  <div class="chips" id="chips"></div>
+  <div class="term">
+    <div class="term-head">
+      <div class="term-dots"><span></span><span></span><span></span></div>
+      <span>SQL*Plus (simulator) · utilizator DEMO</span>
+      <span>nu este un Oracle real</span>
+    </div>
+    <div class="term-out" id="term" role="log" aria-live="polite"></div>
+    <div class="term-in">
+      <label for="sql">SQL&gt;</label>
+      <textarea id="sql" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="SELECT * FROM angajati;"></textarea>
+      <div class="row">
+        <button class="btn" id="run" type="button">Rulează</button>
+        <button class="btn ghost" id="clear" type="button">Curăță ecranul</button>
+        <button class="btn ghost" id="reset" type="button">Resetează baza</button>
+      </div>
+    </div>
+  </div>
+  <details>
+    <summary>Tabelele din simulator, în starea curentă</summary>
+    <div class="state" id="state"></div>
+  </details>
+  <p class="muted small" style="margin-top:12px">Simulatorul înțelege: <code>CREATE TABLE</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>SELECT</code> cu <code>WHERE</code>, <code>JOIN</code>, <code>GROUP BY</code>, <code>HAVING</code>, <code>ORDER BY</code>, <code>FETCH FIRST</code>, plus <code>DESC</code>, <code>COMMIT</code> și <code>ROLLBACK</code>. Cheile primare, cheile străine și mesajele de eroare <code>ORA-</code> funcționează ca în Oracle.</p>
+</section>
+
+<section id="exercitii">
+  <h2><span class="sec-icon">📝</span> Exerciții cu verificare</h2>
+  <p class="sec-sub">Fiecare exercițiu are loc pentru codul tău. <b>Rulează</b> arată răspunsul interogării tale. <b>Verifică</b> îl compară cu rezultatul corect. <b>Rezolvare</b> afișează interogarea corectă. Interogările rulează pe o copie curată a bazei.</p>
+  <pre class="schema">ANGAJATI      (id, nume, id_dep, salariu, an_angajare)
+DEPARTAMENTE  (id_dep, nume, oras)</pre>
+  <p class="score" id="score" aria-live="polite">
+    <span>Rezolvate: 0 / 6</span>
+    <span class="score-bar"><span class="score-fill" id="scoreFill"></span></span>
+  </p>
+  <div class="exs" id="exs"></div>
+</section>
+
+<p class="foot">
+  Material de învățare · Simulatorul SQL este scris special pentru această pagină<br>
+  Nu înlocuiește un Oracle real, dar sintaxa și mesajele sunt cele pe care le vei întâlni acolo.
+</p>
+
+</div>
+
+<script>
+/*ENGINE_START*/
+class SqlError extends Error{constructor(code,msg){super(msg?code+': '+msg:code);this.ora=true}}
+const RESERVED=new Set(['SELECT','FROM','WHERE','GROUP','ORDER','HAVING','JOIN','INNER','LEFT','RIGHT','CROSS','OUTER','ON','AND','OR','NOT','FETCH','UNION','AS','IN','IS','LIKE','BETWEEN','SET','VALUES','NULL']);
+const AGGS=new Set(['COUNT','SUM','AVG','MIN','MAX']);
+const NUMT=new Set(['NUMBER','INTEGER','INT','FLOAT','DECIMAL','NUMERIC','SMALLINT']);
+
+function tokenize(sql){
+  const t=[];let i=0;
+  while(i<sql.length){
+    const c=sql[i];
+    if(/\s/.test(c)){i++;continue}
+    if(c==='-'&&sql[i+1]==='-'){while(i<sql.length&&sql[i]!=='\n')i++;continue}
+    if(c==="'"){
+      let s='';i++;let closed=false;
+      while(i<sql.length){
+        if(sql[i]==="'"){if(sql[i+1]==="'"){s+="'";i+=2;continue}closed=true;i++;break}
+        s+=sql[i++];
+      }
+      if(!closed)throw new SqlError('ORA-01756','quoted string not properly terminated');
+      t.push({k:'str',v:s});continue;
+    }
+    if(c==='"'){
+      let j=sql.indexOf('"',i+1);
+      if(j<0)throw new SqlError('ORA-00972','identifier is too long');
+      t.push({k:'id',v:sql.slice(i+1,j),quoted:true});i=j+1;continue;
+    }
+    if(/[0-9]/.test(c)||(c==='.'&&/[0-9]/.test(sql[i+1]||''))){
+      let j=i;while(j<sql.length&&/[0-9.]/.test(sql[j]))j++;
+      t.push({k:'num',v:parseFloat(sql.slice(i,j)),raw:sql.slice(i,j)});i=j;continue;
+    }
+    if(/[A-Za-z_]/.test(c)){
+      let j=i;while(j<sql.length&&/[A-Za-z0-9_$#]/.test(sql[j]))j++;
+      t.push({k:'id',v:sql.slice(i,j).toUpperCase()});i=j;continue;
+    }
+    const two=sql.substr(i,2);
+    if(['<=','>=','<>','!=','||'].includes(two)){t.push({k:'op',v:two});i+=2;continue}
+    if('=<>(),*.+-/;'.includes(c)){t.push({k:'op',v:c});i++;continue}
+    throw new SqlError('ORA-00911','invalid character');
+  }
+  return t;
+}
+function tokText(ts){
+  let s='',prev=null;
+  for(const t of ts){
+    const w=t.k==='id'?(t.quoted?'"'+t.v+'"':t.v):t.k==='str'?"'"+t.v+"'":String(t.raw??t.v);
+    if(prev&&(prev.k==='id'||prev.k==='num')&&(t.k==='id'||t.k==='num'))s+=' ';
+    s+=w;prev=t;
+  }
+  return s;
+}
+function splitStatements(tokens){
+  const out=[];let cur=[];
+  for(const t of tokens){
+    if(t.k==='op'&&t.v===';'){if(cur.length)out.push(cur);cur=[]}else cur.push(t);
+  }
+  if(cur.length)out.push(cur);
+  return out;
+}
+function kids(e){
+  switch(e.t){
+    case 'or':case 'and':case 'cmp':case 'bin':return [e.l,e.r];
+    case 'not':case 'neg':case 'isnull':return [e.e];
+    case 'in':return [e.e,...e.list];
+    case 'between':return [e.e,e.lo,e.hi];
+    case 'like':return [e.e,e.pat];
+    case 'fn':return e.args;
+    default:return [];
+  }
+}
+function hasAgg(e){return (e.t==='fn'&&AGGS.has(e.name))||kids(e).some(hasAgg)}
+
+function parseStmt(toks){
+  let p=0;
+  const kw=(w,o=0)=>{const t=toks[p+o];return !!t&&t.k==='id'&&!t.quoted&&t.v===w};
+  const opIs=(v,o=0)=>{const t=toks[p+o];return !!t&&t.k==='op'&&t.v===v};
+  const acc=w=>kw(w)?(p++,true):false;
+  const accOp=v=>opIs(v)?(p++,true):false;
+  const need=(w,code,msg)=>{if(!acc(w))throw new SqlError(code||'ORA-00905',msg||'missing keyword')};
+  const needOp=(v,code,msg)=>{if(!accOp(v))throw new SqlError(code||'ORA-00933',msg||'SQL command not properly ended')};
+  const ident=(what)=>{
+    const t=toks[p];
+    if(!t||t.k!=='id'||(!t.quoted&&RESERVED.has(t.v)))
+      throw what==='col'?new SqlError('ORA-00904','invalid identifier'):new SqlError('ORA-00903','invalid table name');
+    p++;return t.v;
+  };
+  const nameList=()=>{
+    needOp('(','ORA-00906','missing left parenthesis');
+    const l=[ident('col')];while(accOp(','))l.push(ident('col'));
+    needOp(')','ORA-00907','missing right parenthesis');return l;
+  };
+
+  function expr(){return orE()}
+  function orE(){let l=andE();while(acc('OR'))l={t:'or',l,r:andE()};return l}
+  function andE(){let l=notE();while(acc('AND'))l={t:'and',l,r:notE()};return l}
+  function notE(){if(acc('NOT'))return{t:'not',e:notE()};return cmpE()}
+  function cmpE(){
+    let l=addE();
+    for(;;){
+      const t=toks[p];
+      if(t&&t.k==='op'&&['=','<>','!=','<','>','<=','>='].includes(t.v)){p++;l={t:'cmp',op:t.v==='!='?'<>':t.v,l,r:addE()};continue}
+      let neg=false;
+      if(kw('NOT')&&['IN','BETWEEN','LIKE'].includes(toks[p+1]?.v)){p++;neg=true}
+      if(acc('IN')){
+        needOp('(','ORA-00906','missing left parenthesis');
+        const list=[expr()];while(accOp(','))list.push(expr());
+        needOp(')','ORA-00907','missing right parenthesis');
+        l={t:'in',e:l,list,neg};continue;
+      }
+      if(acc('BETWEEN')){const lo=addE();need('AND','ORA-00905','missing keyword');const hi=addE();l={t:'between',e:l,lo,hi,neg};continue}
+      if(acc('LIKE')){l={t:'like',e:l,pat:addE(),neg};continue}
+      if(acc('IS')){const n=acc('NOT');need('NULL');l={t:'isnull',e:l,neg:n};continue}
+      break;
+    }
+    return l;
+  }
+  function addE(){
+    let l=mulE();
+    for(;;){
+      if(opIs('+')){p++;l={t:'bin',op:'+',l,r:mulE()}}
+      else if(opIs('-')){p++;l={t:'bin',op:'-',l,r:mulE()}}
+      else if(opIs('||')){p++;l={t:'bin',op:'||',l,r:mulE()}}
+      else break;
+    }
+    return l;
+  }
+  function mulE(){
+    let l=unE();
+    for(;;){
+      if(opIs('*')){p++;l={t:'bin',op:'*',l,r:unE()}}
+      else if(opIs('/')){p++;l={t:'bin',op:'/',l,r:unE()}}
+      else break;
+    }
+    return l;
+  }
+  function unE(){
+    if(opIs('-')){p++;return{t:'neg',e:unE()}}
+    if(opIs('+')){p++;return unE()}
+    return prim();
+  }
+  function prim(){
+    const t=toks[p];
+    if(!t)throw new SqlError('ORA-00936','missing expression');
+    if(t.k==='num'){p++;return{t:'num',v:t.v}}
+    if(t.k==='str'){p++;return{t:'str',v:t.v}}
+    if(t.k==='op'&&t.v==='('){p++;const e=expr();needOp(')','ORA-00907','missing right parenthesis');return e}
+    if(t.k==='id'&&(t.quoted||!RESERVED.has(t.v)||t.v==='NULL')){
+      if(!t.quoted&&t.v==='NULL'){p++;return{t:'null'}}
+      p++;
+      if(!t.quoted&&opIs('(')){
+        p++;
+        const fn={t:'fn',name:t.v,args:[],star:false,distinct:false};
+        if(accOp('*'))fn.star=true;
+        else if(!opIs(')')){fn.distinct=acc('DISTINCT');fn.args.push(expr());while(accOp(','))fn.args.push(expr())}
+        needOp(')','ORA-00907','missing right parenthesis');
+        return fn;
+      }
+      if(opIs('.')&&toks[p+1]&&toks[p+1].k==='id'){p++;const n=toks[p++].v;return{t:'col',q:t.v,n}}
+      return{t:'col',q:null,n:t.v};
+    }
+    throw new SqlError('ORA-00936','missing expression');
+  }
+
+  function parseSelect(){
+    const q={t:'select',items:[],srcs:[],joins:[],where:null,group:[],having:null,order:[],fetch:null,distinct:false};
+    q.distinct=acc('DISTINCT');acc('ALL');
+    do{
+      if(opIs('*')){p++;q.items.push({star:true})}
+      else if(toks[p]&&toks[p].k==='id'&&opIs('.',1)&&opIs('*',2)){q.items.push({star:true,q:toks[p].v});p+=3}
+      else{
+        const s=p;const e=expr();const text=tokText(toks.slice(s,p));
+        let alias=null;
+        if(acc('AS')){alias=ident('col')}
+        else if(toks[p]&&toks[p].k==='id'&&(toks[p].quoted||!RESERVED.has(toks[p].v))){alias=toks[p++].v}
+        q.items.push({e,alias,text});
+      }
+    }while(accOp(','));
+    if(!acc('FROM'))throw new SqlError('ORA-00923','FROM keyword not found where expected');
+    const src=()=>{
+      const name=ident();let alias=null;
+      if(toks[p]&&toks[p].k==='id'&&(toks[p].quoted||!RESERVED.has(toks[p].v)))alias=toks[p++].v;
+      q.srcs.push({name,alias:alias||name});
+    };
+    src();
+    for(;;){
+      if(accOp(',')){src();q.joins.push({type:'cross'});continue}
+      let type=null;
+      if(kw('JOIN')){p++;type='inner'}
+      else if(kw('INNER')&&kw('JOIN',1)){p+=2;type='inner'}
+      else if(kw('LEFT')){p++;acc('OUTER');need('JOIN');type='left'}
+      else if(kw('CROSS')){p++;need('JOIN');type='cross'}
+      else break;
+      src();
+      let on=null;
+      if(type!=='cross'){need('ON','ORA-00905','missing keyword');on=expr()}
+      q.joins.push({type,on});
+    }
+    if(acc('WHERE'))q.where=expr();
+    if(acc('GROUP')){need('BY');q.group.push(expr());while(accOp(','))q.group.push(expr())}
+    if(acc('HAVING'))q.having=expr();
+    if(acc('ORDER')){
+      need('BY');
+      do{const e=expr();let desc=false;if(acc('DESC'))desc=true;else acc('ASC');q.order.push({e,desc})}while(accOp(','));
+    }
+    if(acc('FETCH')){
+      if(!acc('FIRST'))need('NEXT');
+      const t=toks[p];if(!t||t.k!=='num')throw new SqlError('ORA-00905','missing keyword');p++;q.fetch=t.v;
+      if(!acc('ROWS'))need('ROW');need('ONLY');
+    }
+    return q;
+  }
+
+  function dispatch(){
+    if(acc('SELECT'))return parseSelect();
+    if(acc('CREATE')){
+      need('TABLE','ORA-00901','invalid CREATE command');
+      const name=ident();needOp('(','ORA-00906','missing left parenthesis');
+      const cols=[],cons=[];
+      do{
+        if(kw('CONSTRAINT'))p+=2;
+        if(kw('PRIMARY')){p++;need('KEY');cons.push({k:'pk',cols:nameList()})}
+        else if(kw('UNIQUE')&&opIs('(',1)){p++;cons.push({k:'uq',cols:nameList()})}
+        else if(kw('FOREIGN')){p++;need('KEY');const c=nameList();need('REFERENCES');const rt=ident();const rc=nameList();cons.push({k:'fk',cols:c,ref:{t:rt,c:rc[0]}})}
+        else{
+          const cn=ident('col');
+          const tt=toks[p];if(!tt||tt.k!=='id')throw new SqlError('ORA-00902','invalid datatype');
+          const ts=p;p++;
+          if(opIs('(')){while(p<toks.length&&!opIs(')'))p++;needOp(')','ORA-00907','missing right parenthesis')}
+          const col={name:cn,type:tt.v,typeText:tokText(toks.slice(ts,p)),num:NUMT.has(tt.v),notnull:false,defE:null};
+          for(;;){
+            if(kw('PRIMARY')){p++;need('KEY');cons.push({k:'pk',cols:[cn]})}
+            else if(kw('NOT')){p++;need('NULL');col.notnull=true}
+            else if(kw('NULL')){p++}
+            else if(kw('UNIQUE')){p++;cons.push({k:'uq',cols:[cn]})}
+            else if(kw('DEFAULT')){p++;col.defE=unE()}
+            else if(kw('REFERENCES')){p++;const rt=ident();const rc=nameList();cons.push({k:'fk',cols:[cn],ref:{t:rt,c:rc[0]}})}
+            else if(kw('CONSTRAINT')){p+=2}
+            else break;
+          }
+          cols.push(col);
+        }
+      }while(accOp(','));
+      needOp(')','ORA-00907','missing right parenthesis');
+      return{t:'create',name,cols,cons};
+    }
+    if(acc('INSERT')){
+      need('INTO','ORA-00925','missing INTO keyword');
+      const name=ident();let cols=null;
+      if(opIs('('))cols=nameList();
+      need('VALUES','ORA-00926','missing VALUES keyword');
+      needOp('(','ORA-00906','missing left parenthesis');
+      const vals=[expr()];while(accOp(','))vals.push(expr());
+      needOp(')','ORA-00907','missing right parenthesis');
+      return{t:'insert',name,cols,vals};
+    }
+    if(acc('UPDATE')){
+      const name=ident();need('SET','ORA-00971','missing SET keyword');
+      const sets=[];
+      do{const col=ident('col');needOp('=','ORA-00927','missing equal sign');sets.push({col,e:expr()})}while(accOp(','));
+      let where=null;if(acc('WHERE'))where=expr();
+      return{t:'update',name,sets,where};
+    }
+    if(acc('DELETE')){
+      acc('FROM');const name=ident();let where=null;if(acc('WHERE'))where=expr();
+      return{t:'delete',name,where};
+    }
+    if(acc('DROP')){need('TABLE','ORA-00905','missing keyword');const name=ident();return{t:'drop',name}}
+    if(acc('TRUNCATE')){need('TABLE','ORA-00905','missing keyword');const name=ident();return{t:'truncate',name}}
+    if(acc('COMMIT'))return{t:'commit'};
+    if(acc('ROLLBACK'))return{t:'rollback'};
+    if(acc('DESC')||acc('DESCRIBE')){const name=ident();return{t:'desc',name}}
+    throw new SqlError('ORA-00900','invalid SQL statement');
+  }
+  const ast=dispatch();
+  if(p<toks.length)throw new SqlError('ORA-00933','SQL command not properly ended');
+  return ast;
+}
+
+/* ---------- execuție ---------- */
+const numv=v=>{
+  if(typeof v==='number')return v;
+  const s=String(v).trim();const x=Number(s);
+  if(s===''||Number.isNaN(x))throw new SqlError('ORA-01722','invalid number');
+  return x;
+};
+const cmpv=(a,b)=>{
+  if(typeof a==='number'||typeof b==='number'){const x=numv(a),y=numv(b);return x<y?-1:x>y?1:0}
+  return a<b?-1:a>b?1:0;
+};
+const likeRe=p=>new RegExp('^'+String(p).replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/%/g,'.*').replace(/_/g,'.')+'$','s');
+function getTable(db,name){
+  if(name==='DUAL')return{name,cols:[{name:'DUMMY'}],rows:[['X']]};
+  if(name==='USER_TABLES')return{name,cols:[{name:'TABLE_NAME'}],rows:Object.keys(db.tables).map(n=>[n])};
+  const t=db.tables[name];
+  if(!t)throw new SqlError('ORA-00942','table or view does not exist');
+  return t;
+}
+function makeScope(srcs){
+  const idx={},keys=new Set();
+  for(const s of srcs)for(const c of s.t.cols){const k=s.alias+'.'+c.name;keys.add(k);(idx[c.name]=idx[c.name]||[]).push(k)}
+  return{srcs,idx,keys};
+}
+function colKey(sc,e){
+  if(e.q){
+    const k=e.q+'.'+e.n;
+    if(!sc.keys.has(k))throw new SqlError('ORA-00904','"'+e.q+'"."'+e.n+'": invalid identifier');
+    return k;
+  }
+  if(e.n==='ROWNUM'||e.n==='SYSDATE')return e.n;
+  const ks=sc.idx[e.n];
+  if(!ks)throw new SqlError('ORA-00904','"'+e.n+'": invalid identifier');
+  if(ks.length>1)throw new SqlError('ORA-00918','"'+e.n+'": column ambiguously defined');
+  return ks[0];
+}
+function makeEv(sc){
+  const ev=(e,row,grp)=>{
+    switch(e.t){
+      case 'num':case 'str':return e.v;
+      case 'null':return null;
+      case 'col':{
+        const k=colKey(sc,e);
+        if(k==='ROWNUM')return row.__rn??null;
+        if(k==='SYSDATE')return new Date().toISOString().slice(0,10);
+        return row[k]??null;
+      }
+      case 'neg':{const v=ev(e.e,row,grp);return v===null?null:-numv(v)}
+      case 'bin':{
+        const l=ev(e.l,row,grp),r=ev(e.r,row,grp);
+        if(e.op==='||')return (l===null?'':String(l))+(r===null?'':String(r));
+        if(l===null||r===null)return null;
+        const a=numv(l),b=numv(r);
+        if(e.op==='+')return a+b;if(e.op==='-')return a-b;if(e.op==='*')return a*b;
+        if(b===0)throw new SqlError('ORA-01476','divisor is equal to zero');
+        return a/b;
+      }
+      case 'cmp':{
+        const l=ev(e.l,row,grp),r=ev(e.r,row,grp);
+        if(l===null||r===null)return null;
+        const c=cmpv(l,r);
+        switch(e.op){case '=':return c===0;case '<>':return c!==0;case '<':return c<0;case '>':return c>0;case '<=':return c<=0;default:return c>=0}
+      }
+      case 'and':{
+        const l=ev(e.l,row,grp);if(l===false)return false;
+        const r=ev(e.r,row,grp);if(r===false)return false;
+        return (l===null||r===null)?null:true;
+      }
+      case 'or':{
+        const l=ev(e.l,row,grp);if(l===true)return true;
+        const r=ev(e.r,row,grp);if(r===true)return true;
+        return (l===null||r===null)?null:false;
+      }
+      case 'not':{const v=ev(e.e,row,grp);return v===null?null:!v}
+      case 'in':{
+        const v=ev(e.e,row,grp);if(v===null)return null;
+        let found=false,sawNull=false;
+        for(const it of e.list){const x=ev(it,row,grp);if(x===null)sawNull=true;else if(cmpv(v,x)===0)found=true}
+        const r=found?true:(sawNull?null:false);
+        return e.neg?(r===null?null:!r):r;
+      }
+      case 'between':{
+        const v=ev(e.e,row,grp),lo=ev(e.lo,row,grp),hi=ev(e.hi,row,grp);
+        if(v===null||lo===null||hi===null)return null;
+        const r=cmpv(v,lo)>=0&&cmpv(v,hi)<=0;return e.neg?!r:r;
+      }
+      case 'like':{
+        const v=ev(e.e,row,grp),p=ev(e.pat,row,grp);
+        if(v===null||p===null)return null;
+        const r=likeRe(p).test(String(v));return e.neg?!r:r;
+      }
+      case 'isnull':{const r=ev(e.e,row,grp)===null;return e.neg?!r:r}
+      case 'fn':return fnEv(e,row,grp);
+    }
+    throw new SqlError('ORA-00936','missing expression');
+  };
+  const fnEv=(e,row,grp)=>{
+    const n=e.name;
+    if(AGGS.has(n)){
+      if(!grp)throw new SqlError('ORA-00934','group function is not allowed here');
+      if(e.star){if(n!=='COUNT')throw new SqlError('ORA-00936','missing expression');return grp.length}
+      if(e.args.length!==1)throw new SqlError('ORA-00909','invalid number of arguments');
+      let vals=grp.map(r=>ev(e.args[0],r,null)).filter(v=>v!==null);
+      if(e.distinct){const seen=new Set();vals=vals.filter(v=>{const k=typeof v+String(v);if(seen.has(k))return false;seen.add(k);return true})}
+      if(n==='COUNT')return vals.length;
+      if(!vals.length)return null;
+      if(n==='SUM')return vals.reduce((a,b)=>a+numv(b),0);
+      if(n==='AVG')return vals.reduce((a,b)=>a+numv(b),0)/vals.length;
+      return vals.reduce((a,b)=>{const c=cmpv(a,b);return n==='MIN'?(c<=0?a:b):(c>=0?a:b)});
+    }
+    const a=e.args.map(x=>ev(x,row,grp));
+    if(n==='NVL'){return a[0]===null?a[1]:a[0]}
+    if(n==='COALESCE'){for(const v of a)if(v!==null)return v;return null}
+    if(a.length&&a[0]===null)return null;
+    const rnd=(x,d)=>Number(Math.round(Number(x+'e'+d))+'e-'+d);
+    switch(n){
+      case 'UPPER':return String(a[0]).toUpperCase();
+      case 'LOWER':return String(a[0]).toLowerCase();
+      case 'INITCAP':return String(a[0]).toLowerCase().replace(/(^|[^a-z0-9])([a-z])/g,(m,x,y)=>x+y.toUpperCase());
+      case 'LENGTH':return String(a[0]).length;
+      case 'TRIM':return String(a[0]).trim();
+      case 'SUBSTR':{
+        const s=String(a[0]);let st=numv(a[1]);if(st>0)st=st-1;else if(st<0)st=Math.max(s.length+st,0);
+        return a[2]!==undefined&&a[2]!==null?s.substr(st,numv(a[2])):s.substr(st);
+      }
+      case 'ROUND':return rnd(numv(a[0]),a[1]!==undefined?numv(a[1]):0);
+      case 'TRUNC':{const d=a[1]!==undefined?numv(a[1]):0;const f=Math.pow(10,d);return Math.trunc(numv(a[0])*f)/f}
+      case 'ABS':return Math.abs(numv(a[0]));
+      case 'MOD':return numv(a[0])%numv(a[1]);
+      case 'CEIL':return Math.ceil(numv(a[0]));
+      case 'FLOOR':return Math.floor(numv(a[0]));
+      case 'CONCAT':return String(a[0])+(a[1]===null?'':String(a[1]));
+      case 'TO_CHAR':return String(a[0]);
+    }
+    throw new SqlError('ORA-00904','"'+n+'": invalid identifier');
+  };
+  return ev;
+}
+
+function execSelect(db,q){
+  const srcs=q.srcs.map(s=>({alias:s.alias,t:getTable(db,s.name)}));
+  const sc=makeScope(srcs);const ev=makeEv(sc);
+  const mk=(s,row)=>{const o={};s.t.cols.forEach((c,i)=>{o[s.alias+'.'+c.name]=row[i]??null});return o};
+  let rows=srcs[0].t.rows.map(r=>mk(srcs[0],r));
+  q.joins.forEach((j,ji)=>{
+    const s=srcs[ji+1];
+    const right=s.t.rows.map(r=>mk(s,r));
+    const nulls=mk(s,s.t.cols.map(()=>null));
+    const nr=[];
+    for(const l of rows){
+      let m=0;
+      for(const r of right){
+        const row={...l,...r};
+        if(j.type==='cross'||ev(j.on,row)===true){nr.push(row);m++}
+      }
+      if(j.type==='left'&&!m)nr.push({...l,...nulls});
+    }
+    rows=nr;
+  });
+  if(q.where){
+    if(hasAgg(q.where))throw new SqlError('ORA-00934','group function is not allowed here');
+    const out=[];let n=0;
+    for(const r of rows){r.__rn=n+1;if(ev(q.where,r)===true){out.push(r);n++}}
+    rows=out;
+  }
+  const outs=[];
+  for(const it of q.items){
+    if(it.star){
+      if(it.q&&!srcs.some(s=>s.alias===it.q))throw new SqlError('ORA-00904','"'+it.q+'": invalid identifier');
+      for(const s of srcs){
+        if(it.q&&s.alias!==it.q)continue;
+        for(const c of s.t.cols)outs.push({name:c.name,e:{t:'col',q:s.alias,n:c.name}});
+      }
+    }else outs.push({name:it.alias||(it.e.t==='col'?it.e.n:it.text),e:it.e});
+  }
+  const grouped=q.group.length>0||outs.some(o=>hasAgg(o.e))||(q.having&&hasAgg(q.having));
+  let units;
+  if(grouped){
+    const gKeys=q.group.map(g=>JSON.stringify(g));
+    const gCols=new Set(q.group.filter(g=>g.t==='col').map(g=>colKey(sc,g)));
+    const chk=e=>{
+      if(gKeys.includes(JSON.stringify(e)))return;
+      if(e.t==='fn'&&AGGS.has(e.name))return;
+      if(e.t==='col'){if(!gCols.has(colKey(sc,e)))throw new SqlError('ORA-00979','not a GROUP BY expression');return}
+      kids(e).forEach(chk);
+    };
+    outs.forEach(o=>chk(o.e));if(q.having)chk(q.having);
+    const map=new Map();
+    if(q.group.length){
+      for(const r of rows){const k=JSON.stringify(q.group.map(g=>ev(g,r)));if(!map.has(k))map.set(k,[]);map.get(k).push(r)}
+    }else map.set('',rows);
+    units=[...map.values()].map(g=>({row:g[0]||{},grp:g}));
+    if(q.having)units=units.filter(u=>ev(q.having,u.row,u.grp)===true);
+  }else{
+    if(q.having)throw new SqlError('ORA-00935','group function is not allowed here');
+    units=rows.map(r=>({row:r,grp:null}));
+  }
+  let res=units.map(u=>({vals:outs.map(o=>ev(o.e,u.row,u.grp)),u}));
+  if(q.distinct){
+    const seen=new Set();
+    res=res.filter(k=>{const s=JSON.stringify(k.vals);if(seen.has(s))return false;seen.add(s);return true});
+  }
+  if(q.order.length){
+    const specs=q.order.map(o=>{
+      const e=o.e;
+      if(e.t==='num'){
+        const i=e.v-1;
+        if(i<0||i>=outs.length)throw new SqlError('ORA-01785','ORDER BY item must be the number of a SELECT-list expression');
+        return{idx:i,desc:o.desc};
+      }
+      if(e.t==='col'&&!e.q){const i=outs.findIndex(x=>x.name===e.n);if(i>=0)return{idx:i,desc:o.desc}}
+      return{e,desc:o.desc};
+    });
+    res.forEach(k=>{k.keys=specs.map(s=>s.idx!==undefined?k.vals[s.idx]:ev(s.e,k.u.row,k.u.grp))});
+    res.sort((a,b)=>{
+      for(let i=0;i<specs.length;i++){
+        const x=a.keys[i],y=b.keys[i];
+        if(x===y)continue;
+        let c;
+        if(x===null)c=1;else if(y===null)c=-1;else c=cmpv(x,y);
+        if(specs[i].desc)c=-c;
+        if(c!==0)return c;
+      }
+      return 0;
+    });
+  }
+  if(q.fetch!==null)res=res.slice(0,q.fetch);
+  const cols=outs.map(o=>o.name);
+  const rr=res.map(k=>k.vals);
+  const num=cols.map((_,i)=>rr.some(r=>typeof r[i]==='number')&&rr.every(r=>r[i]===null||typeof r[i]==='number'));
+  return{kind:'rs',cols,rows:rr,num};
+}
+
+function nextCons(db){db.seq=(db.seq||0)+1;return 'SYS_C00'+(7100+db.seq)}
+function coerce(c,v){
+  if(v===null||v===undefined)return null;
+  if(c.num)return numv(v);
+  return String(v);
+}
+function checkRow(db,t,row,self,mode,list){
+  list=list||t.rows;
+  t.cols.forEach((c,i)=>{
+    if(c.notnull&&row[i]===null)
+      throw new SqlError(mode==='insert'?'ORA-01400':'ORA-01407',(mode==='insert'?'cannot insert NULL into ':'cannot update ')+'("DEMO"."'+t.name+'"."'+c.name+'")'+(mode==='insert'?'':' to NULL'));
+  });
+  for(const u of t.uniq||[]){
+    const vals=u.cols.map(i=>row[i]);
+    if(vals.some(v=>v===null))continue;
+    list.forEach((r,ri)=>{
+      if(ri===self)return;
+      if(u.cols.every((ci,k)=>r[ci]===vals[k]))
+        throw new SqlError('ORA-00001','unique constraint (DEMO.'+u.name+') violated');
+    });
+  }
+  for(const f of t.fks||[]){
+    const v=row[f.col];if(v===null)continue;
+    const parent=db.tables[f.rt];const pi=parent.cols.findIndex(c=>c.name===f.rc);
+    if(!parent.rows.some(r=>r[pi]===v))
+      throw new SqlError('ORA-02291','integrity constraint (DEMO.'+f.name+') violated - parent key not found');
+  }
+}
+const msg=text=>({kind:'msg',text});
+const plural=(n,w)=>n+' '+w+(n===1?'':'s');
+
+function execStmt(db,a){
+  const tbl=name=>{const t=db.tables[name];if(!t)throw new SqlError('ORA-00942','table or view does not exist');return t};
+  switch(a.t){
+    case 'select':return execSelect(db,a);
+    case 'create':{
+      if(db.tables[a.name])throw new SqlError('ORA-00955','name is already used by an existing object');
+      const seen=new Set();
+      a.cols.forEach(c=>{if(seen.has(c.name))throw new SqlError('ORA-00957','duplicate column name');seen.add(c.name)});
+      const t={name:a.name,cols:a.cols.map(c=>({...c})),rows:[],uniq:[],fks:[]};
+      const ci=n=>{const i=t.cols.findIndex(c=>c.name===n);if(i<0)throw new SqlError('ORA-00904','"'+n+'": invalid identifier');return i};
+      for(const k of a.cons){
+        if(k.k==='pk'){const cols=k.cols.map(ci);cols.forEach(i=>{t.cols[i].notnull=true});t.uniq.push({cols,name:nextCons(db)})}
+        else if(k.k==='uq')t.uniq.push({cols:k.cols.map(ci),name:nextCons(db)});
+        else{
+          const parent=db.tables[k.ref.t];
+          if(!parent)throw new SqlError('ORA-00942','table or view does not exist');
+          if(!parent.cols.some(c=>c.name===k.ref.c))throw new SqlError('ORA-00904','"'+k.ref.c+'": invalid identifier');
+          t.fks.push({col:ci(k.cols[0]),rt:k.ref.t,rc:k.ref.c,name:nextCons(db)});
+        }
+      }
+      db.tables[a.name]=t;db.snap=JSON.stringify(db.tables);
+      return msg('Table created.');
+    }
+    case 'insert':{
+      const t=tbl(a.name);const ev=makeEv(makeScope([]));
+      const idxs=a.cols?a.cols.map(n=>{const i=t.cols.findIndex(c=>c.name===n);if(i<0)throw new SqlError('ORA-00904','"'+n+'": invalid identifier');return i}):t.cols.map((_,i)=>i);
+      if(a.vals.length<idxs.length)throw new SqlError('ORA-00947','not enough values');
+      if(a.vals.length>idxs.length)throw new SqlError('ORA-00913','too many values');
+      const row=t.cols.map(c=>c.defE?coerce(c,ev(c.defE,{})):null);
+      idxs.forEach((ci,k)=>{row[ci]=coerce(t.cols[ci],ev(a.vals[k],{}))});
+      checkRow(db,t,row,-1,'insert');
+      t.rows.push(row);
+      return msg('1 row created.');
+    }
+    case 'update':{
+      const t=tbl(a.name);const ev=makeEv(makeScope([{alias:t.name,t}]));
+      const sets=a.sets.map(s=>{const i=t.cols.findIndex(c=>c.name===s.col);if(i<0)throw new SqlError('ORA-00904','"'+s.col+'": invalid identifier');return{i,e:s.e}});
+      const mkrow=r=>{const o={};t.cols.forEach((c,i)=>{o[t.name+'.'+c.name]=r[i]});return o};
+      const nr=t.rows.map(r=>r.slice());const changed=[];let n=0;
+      t.rows.forEach((r,ri)=>{
+        const ctx=mkrow(r);
+        if(!a.where||ev(a.where,ctx)===true){
+          sets.forEach(s=>{nr[ri][s.i]=coerce(t.cols[s.i],ev(s.e,ctx))});
+          changed.push(ri);n++;
+        }
+      });
+      changed.forEach(ri=>checkRow(db,t,nr[ri],ri,'update',nr));
+      t.rows=nr;
+      return msg(plural(n,'row')+' updated.');
+    }
+    case 'delete':{
+      const t=tbl(a.name);const ev=makeEv(makeScope([{alias:t.name,t}]));
+      const mkrow=r=>{const o={};t.cols.forEach((c,i)=>{o[t.name+'.'+c.name]=r[i]});return o};
+      const keep=[],gone=[];
+      t.rows.forEach(r=>{if(!a.where||ev(a.where,mkrow(r))===true)gone.push(r);else keep.push(r)});
+      for(const t2 of Object.values(db.tables))for(const f of t2.fks||[]){
+        if(f.rt!==t.name)continue;
+        const pi=t.cols.findIndex(c=>c.name===f.rc);
+        for(const g of gone)if(t2.rows.some(r=>r[f.col]!==null&&r[f.col]===g[pi]))
+          throw new SqlError('ORA-02292','integrity constraint (DEMO.'+f.name+') violated - child record found');
+      }
+      t.rows=keep;
+      return msg(plural(gone.length,'row')+' deleted.');
+    }
+    case 'drop':{
+      const t=tbl(a.name);
+      for(const t2 of Object.values(db.tables))if(t2!==t&&(t2.fks||[]).some(f=>f.rt===t.name))
+        throw new SqlError('ORA-02449','unique/primary keys in table referenced by foreign keys');
+      delete db.tables[a.name];db.snap=JSON.stringify(db.tables);
+      return msg('Table dropped.');
+    }
+    case 'truncate':{const t=tbl(a.name);t.rows=[];db.snap=JSON.stringify(db.tables);return msg('Table truncated.')}
+    case 'commit':db.snap=JSON.stringify(db.tables);return msg('Commit complete.');
+    case 'rollback':db.tables=JSON.parse(db.snap);return msg('Rollback complete.');
+    case 'desc':{
+      const t=tbl(a.name);
+      const w=Math.max(4,...t.cols.map(c=>c.name.length));
+      let s=' '+'Name'.padEnd(w)+' Null?    Type\n '+'-'.repeat(w)+' -------- ----------------\n';
+      s+=t.cols.map(c=>' '+c.name.padEnd(w)+' '+(c.notnull?'NOT NULL':'        ')+' '+c.typeText).join('\n');
+      return{kind:'text',text:s};
+    }
+  }
+  throw new SqlError('ORA-00900','invalid SQL statement');
+}
+function execScript(db,text){
+  const out=[];let toks;
+  try{toks=tokenize(text)}catch(e){if(e.ora)return[{kind:'err',text:e.message}];throw e}
+  for(const st of splitStatements(toks)){
+    if(st.length===1&&st[0].k==='op'&&st[0].v==='/')continue;
+    try{out.push(execStmt(db,parseStmt(st)))}
+    catch(e){if(e.ora)out.push({kind:'err',text:e.message});else throw e}
+  }
+  return out;
+}
+function fmtVal(v){
+  if(v===null||v===undefined)return '';
+  if(typeof v==='number')return String(Number.isInteger(v)?v:parseFloat(v.toPrecision(10)));
+  return String(v);
+}
+function formatRS(rs){
+  if(!rs.rows.length)return 'no rows selected';
+  const w=rs.cols.map((c,i)=>Math.max(c.length,...rs.rows.map(r=>fmtVal(r[i]).length)));
+  const line=cells=>cells.map((c,i)=>rs.num[i]?c.padStart(w[i]):c.padEnd(w[i])).join(' ').replace(/\s+$/,'');
+  return [line(rs.cols),w.map(n=>'-'.repeat(n)).join(' '),...rs.rows.map(r=>line(r.map(fmtVal))),'',plural(rs.rows.length,'row')+' selected.'].join('\n');
+}
+const SEED_SQL=`
+CREATE TABLE departamente (
+  id_dep NUMBER PRIMARY KEY,
+  nume   VARCHAR2(30) NOT NULL,
+  oras   VARCHAR2(30)
+);
+CREATE TABLE angajati (
+  id          NUMBER PRIMARY KEY,
+  nume        VARCHAR2(40) NOT NULL,
+  id_dep      NUMBER REFERENCES departamente (id_dep),
+  salariu     NUMBER(8,2),
+  an_angajare NUMBER(4)
+);
+INSERT INTO departamente VALUES (10, 'IT', 'Cluj-Napoca');
+INSERT INTO departamente VALUES (20, 'Vanzari', 'Bucuresti');
+INSERT INTO departamente VALUES (30, 'HR', 'Iasi');
+INSERT INTO departamente VALUES (40, 'Financiar', 'Timisoara');
+INSERT INTO angajati VALUES (1, 'Andrei Popescu', 10, 7200, 2019);
+INSERT INTO angajati VALUES (2, 'Maria Ionescu', 10, 6500, 2020);
+INSERT INTO angajati VALUES (3, 'Elena Radu', 20, 4800, 2018);
+INSERT INTO angajati VALUES (4, 'Mihai Dumitru', 20, 5200, 2021);
+INSERT INTO angajati VALUES (5, 'Ioana Stan', 30, 4100, 2022);
+INSERT INTO angajati VALUES (6, 'Vlad Georgescu', 10, 8100, 2017);
+INSERT INTO angajati VALUES (7, 'Ana Munteanu', 40, 5600, 2016);
+INSERT INTO angajati VALUES (8, 'Cristian Pop', 20, 3900, 2023);
+INSERT INTO angajati VALUES (9, 'Daria Toma', 30, 4400, 2020);
+INSERT INTO angajati VALUES (10, 'Radu Matei', 40, 6100, 2015);
+COMMIT;`;
+let SEED_SNAP=null;
+function newDB(){
+  if(!SEED_SNAP){
+    const d={tables:{},snap:null,seq:0};
+    const r=execScript(d,SEED_SQL);
+    if(r.some(o=>o.kind==='err'))console.error('seed',r);
+    SEED_SNAP=JSON.stringify({tables:d.tables,seq:d.seq});
+  }
+  const s=JSON.parse(SEED_SNAP);
+  return{tables:s.tables,seq:s.seq,snap:JSON.stringify(s.tables)};
+}
+const EXERCISES=[
+  {q:'Afișează numele și salariul angajaților din departamentul cu id_dep 10.',hint:'filtrezi rândurile cu WHERE',sol:'SELECT nume, salariu\nFROM angajati\nWHERE id_dep = 10;'},
+  {q:'Afișează numele și salariul angajaților care câștigă mai mult de 5000, de la cel mai mare salariu la cel mai mic.',hint:'WHERE pentru condiție, ORDER BY ... DESC pentru sortare',sol:'SELECT nume, salariu\nFROM angajati\nWHERE salariu > 5000\nORDER BY salariu DESC;'},
+  {q:'Câți angajați are fiecare departament? Afișează id_dep și numărul de angajați.',hint:'COUNT(*) împreună cu GROUP BY',sol:'SELECT id_dep, COUNT(*) AS nr_angajati\nFROM angajati\nGROUP BY id_dep;'},
+  {q:'Afișează numele fiecărui angajat și orașul departamentului în care lucrează.',hint:'unește cele două tabele cu JOIN ... ON',sol:'SELECT a.nume, d.oras\nFROM angajati a\nJOIN departamente d ON a.id_dep = d.id_dep;'},
+  {q:'Afișează numele departamentului și salariul mediu din el, doar pentru departamentele cu salariul mediu peste 5000.',hint:'condiția pe o medie se pune în HAVING, nu în WHERE',sol:'SELECT d.nume, AVG(a.salariu) AS salariu_mediu\nFROM angajati a\nJOIN departamente d ON a.id_dep = d.id_dep\nGROUP BY d.nume\nHAVING AVG(a.salariu) > 5000;'},
+  {q:'Afișează primii 3 angajați după salariu (cel mai mare primul), cu numele și salariul.',hint:'Oracle folosește FETCH FIRST n ROWS ONLY după ORDER BY',sol:'SELECT nume, salariu\nFROM angajati\nORDER BY salariu DESC\nFETCH FIRST 3 ROWS ONLY;'}
+];
+function canonRows(rs){return rs.rows.map(r=>r.map(v=>v===null?'\u2205':typeof v==='number'?String(parseFloat(v.toPrecision(10))):String(v)))}
+function verifyAnswer(ex,userText){
+  const exp=execScript(newDB(),ex.sol).find(o=>o.kind==='rs');
+  const got=execScript(newDB(),userText);
+  const err=got.find(o=>o.kind==='err');
+  if(err)return{ok:false,msg:err.text,got};
+  const g=[...got].reverse().find(o=>o.kind==='rs');
+  if(!g)return{ok:false,msg:'Interogarea nu a returnat rânduri de afișat. Folosește SELECT.',got};
+  if(g.cols.length!==exp.cols.length)return{ok:false,msg:'Ai '+g.cols.length+' coloane, rezultatul cerut are '+exp.cols.length+'.',got};
+  if(g.rows.length!==exp.rows.length)return{ok:false,msg:'Ai obținut '+g.rows.length+' rânduri, rezultatul cerut are '+exp.rows.length+'.',got};
+  let a=canonRows(g).map(r=>r.join('\u0001')),b=canonRows(exp).map(r=>r.join('\u0001'));
+  if(!/ORDER\s+BY/i.test(ex.sol)){a=a.sort();b=b.sort()}
+  const same=a.every((x,i)=>x===b[i]);
+  return same?{ok:true,got}:{ok:false,msg:'Numărul de rânduri și de coloane este corect, dar valorile sau ordinea nu coincid. Verifică condițiile și sortarea.',got};
+}
+/*ENGINE_END*/
+
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const KW=new Set('SELECT FROM WHERE INSERT INTO VALUES UPDATE SET DELETE CREATE TABLE DROP PRIMARY KEY FOREIGN REFERENCES NOT NULL UNIQUE AND OR IN BETWEEN LIKE IS AS ON JOIN LEFT INNER GROUP BY HAVING ORDER ASC DESC FETCH FIRST ROWS ONLY DISTINCT COMMIT ROLLBACK USER IDENTIFIED GRANT TO ALTER QUOTA DEFAULT TRUNCATE'.split(' '));
+function hl(src){
+  return esc(src).replace(/(--.*$)|('(?:[^']|'')*')|("(?:[^"\\]|\\.)*")|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_][A-Za-z0-9_]*)\b/gm,(m,c,s,d,n,w)=>{
+    if(c)return '<span class="c">'+c+'</span>';
+    if(s||d)return '<span class="s">'+m+'</span>';
+    if(n)return '<span class="n">'+m+'</span>';
+    if(w&&KW.has(w.toUpperCase()))return '<span class="k">'+m+'</span>';
+    return m;
+  });
+}
+$$('.code pre').forEach(pre=>{pre.innerHTML=hl(pre.textContent.replace(/^\n/,'').replace(/\s+$/,''))});
+
+function rsHTML(rs,o={}){
+  const hlc=(o.hl||[]).map(s=>s.toUpperCase());
+  const idx=rs.cols.map((_,i)=>i).filter(i=>!o.cols||o.cols.includes(rs.cols[i]));
+  const rows=o.limit?rs.rows.slice(0,o.limit):rs.rows;
+  const cls=i=>(rs.num[i]?'num ':'')+(hlc.includes(rs.cols[i])?'hl':'');
+  let h='<table class="data"><thead><tr>'+idx.map(i=>'<th class="'+cls(i)+'">'+esc(rs.cols[i])+'</th>').join('')+'</tr></thead><tbody>';
+  h+=rows.map(r=>'<tr>'+idx.map(i=>'<td class="'+cls(i)+'">'+esc(fmtVal(r[i]))+'</td>').join('')+'</tr>').join('');
+  if(o.limit&&rs.rows.length>o.limit)h+='<tr><td class="more" colspan="'+idx.length+'">… încă '+(rs.rows.length-o.limit)+' rânduri</td></tr>';
+  if(!rows.length)h+='<tr><td class="more" colspan="'+idx.length+'">niciun rând</td></tr>';
+  return h+'</tbody></table>';
+}
+function tableRS(db,name){
+  const t=db.tables[name];if(!t)return null;
+  return{cols:t.cols.map(c=>c.name),rows:t.rows,num:t.cols.map(c=>!!c.num)};
+}
+
+(function(){
+  const db=newDB();
+  $$('[data-tbl]').forEach(el=>{
+    const rs=tableRS(db,el.dataset.tbl);if(!rs)return;
+    el.innerHTML=rsHTML(rs,{hl:(el.dataset.hl||'').split(','),cols:el.dataset.cols?el.dataset.cols.split(','):null,limit:el.dataset.limit?+el.dataset.limit:0});
+  });
+})();
+
+let simDb=newDB();
+const term=$('#term'),ta=$('#sql');
+function print(text,cls){
+  const d=document.createElement('div');d.className='ln'+(cls?' '+cls:'');d.textContent=text;term.appendChild(d);
+  term.scrollTop=term.scrollHeight;return d;
+}
+function banner(){
+  print('Simulator în stil Oracle SQL*Plus\nConectat ca DEMO. Tabele: ANGAJATI, DEPARTAMENTE.\nScrie o comandă SQL terminată cu ; și apasă Rulează.','dim');
+}
+function refreshState(){
+  $('#state').innerHTML=Object.keys(simDb.tables).map(n=>{
+    const rs=tableRS(simDb,n);
+    return '<div><p class="cap">'+esc(n)+' · '+rs.rows.length+' rânduri</p><div class="tbl-wrap">'+rsHTML(rs)+'</div></div>';
+  }).join('')||'<p class="muted">Nu există tabele.</p>';
+}
+function echo(text){
+  const lines=text.split('\n');
+  const d=document.createElement('div');d.className='ln';
+  lines.forEach((l,i)=>{
+    const s=document.createElement('span');s.className='p';s.textContent=i===0?'SQL> ':String(i+1).padStart(3)+'  ';
+    d.appendChild(s);d.appendChild(document.createTextNode(l+(i<lines.length-1?'\n':'')));
+  });
+  term.appendChild(d);
+}
+function runSim(){
+  const text=ta.value.replace(/\s+$/,'');
+  if(!text.trim())return;
+  echo(text);
+  for(const o of execScript(simDb,text)){
+    if(o.kind==='rs')print(formatRS(o));
+    else if(o.kind==='err')print(o.text,'err');
+    else print(o.text);
+  }
+  refreshState();
+}
+$('#run').addEventListener('click',runSim);
+ta.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();runSim()}});
+$('#clear').addEventListener('click',()=>{term.innerHTML='';banner()});
+$('#reset').addEventListener('click',()=>{simDb=newDB();print('Baza a fost readusă la starea inițială.','dim');refreshState()});
+const CHIPS=[
+  'SELECT * FROM angajati;',
+  'DESC angajati;',
+  'SELECT nume, salariu FROM angajati WHERE salariu > 6000 ORDER BY salariu DESC;',
+  'INSERT INTO angajati VALUES (11, \'Test OK\', 10, 4500, 2024);',
+  'DELETE FROM angajati WHERE id = 11;',
+  'DELETE FROM departamente WHERE id_dep = 30;'
+];
+$('#chips').innerHTML=CHIPS.map(c=>'<button class="chip" type="button">'+esc(c)+'</button>').join('');
+$$('#chips .chip').forEach((b,i)=>b.addEventListener('click',()=>{ta.value=CHIPS[i];runSim()}));
+banner();refreshState();
+
+$$('.code .load').forEach(b=>b.addEventListener('click',()=>{
+  ta.value=b.closest('.code').querySelector('pre').textContent;
+  $('#simulator').scrollIntoView({behavior:reduce?'auto':'smooth'});
+  ta.focus({preventScroll:true});
+}));
+
+const solved=new Set();
+$('#exs').innerHTML=EXERCISES.map((x,i)=>
+  '<article class="ex" id="ex'+i+'">'+
+  '<h3><span class="ex-num">'+(i+1)+'</span> Exercițiul '+(i+1)+'</h3>'+
+  '<p class="q">'+esc(x.q)+'</p>'+
+  '<p class="muted small">Indiciu: '+esc(x.hint)+'.</p>'+
+  '<label class="sr" for="ta'+i+'">Codul tău SQL pentru exercițiul '+(i+1)+'</label>'+
+  '<textarea id="ta'+i+'" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="-- scrie interogarea aici"></textarea>'+
+  '<div class="row"><button class="btn ghost run" type="button">Rulează</button><button class="btn check" type="button">Verifică</button><button class="btn ghost show" type="button" aria-expanded="false">Rezolvare</button></div>'+
+  '<div class="out" aria-live="polite"></div>'+
+  '<div class="out sol" hidden></div></article>').join('');
+
+function resultBlock(got){
+  return got.map(o=>{
+    if(o.kind==='rs')return '<div class="tbl-wrap">'+rsHTML(o)+'</div>';
+    if(o.kind==='err')return '<div class="err">'+esc(o.text)+'</div>';
+    return '<div class="muted small">'+esc(o.text)+'</div>';
+  }).join('');
+}
+function updateScore(){
+  const n=solved.size;
+  $('#score').querySelector('span').textContent='Rezolvate: '+n+' / '+EXERCISES.length;
+  $('#scoreFill').style.width=(n/EXERCISES.length*100)+'%';
+}
+$$('.ex').forEach((el,i)=>{
+  const ex=EXERCISES[i],t=$('textarea',el),out=$('.out',el),sol=$('.sol',el),showBtn=$('.show',el);
+  showBtn.addEventListener('click',()=>{
+    const open=sol.hidden;
+    if(open){
+      const expRS=execScript(newDB(),ex.sol).find(o=>o.kind==='rs');
+      sol.innerHTML='<p class="cap">Rezolvarea corectă</p><figure class="code"><pre>'+hl(ex.sol)+'</pre></figure>'+
+        '<p class="cap">Rezultatul ei</p><div class="tbl-wrap">'+rsHTML(expRS)+'</div>'+
+        '<div class="row"><button class="btn ghost sm copy" type="button">Copiază în caseta mea</button></div>';
+      $('.copy',sol).addEventListener('click',()=>{t.value=ex.sol;t.focus()});
+    }
+    sol.hidden=!open;
+    showBtn.textContent=open?'Ascunde rezolvarea':'Rezolvare';
+    showBtn.setAttribute('aria-expanded',String(open));
+  });
+  $('.run',el).addEventListener('click',()=>{
+    if(!t.value.trim()){out.innerHTML='<div class="muted small">Scrie mai întâi o interogare.</div>';return}
+    out.innerHTML='<p class="cap">Răspunsul tău</p>'+resultBlock(execScript(newDB(),t.value));
+  });
+  $('.check',el).addEventListener('click',()=>{
+    if(!t.value.trim()){out.innerHTML='<div class="muted small">Scrie mai întâi o interogare.</div>';return}
+    const v=verifyAnswer(ex,t.value);
+    if(v.ok)solved.add(i);
+    updateScore();
+    out.innerHTML=
+      '<p class="cap">Răspunsul tău</p>'+resultBlock(v.got)+
+      '<div class="verdict '+(v.ok?'ok':'bad')+'">'+(v.ok?'Corect':'Încă nu este corect')+(v.ok?'':'<span>'+esc(v.msg)+' Încearcă din nou sau apasă Rezolvare.</span>')+'</div>';
+  });
+});
+</script>
+</body>
+</html>
