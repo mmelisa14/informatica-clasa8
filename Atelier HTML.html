@@ -1,0 +1,1693 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Atelier HTML</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Instrument+Sans:wght@400..600&family=JetBrains+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+/* Layout: bară laterală cu lecțiile + coloană de lucru. În coloană: foaia cu explicații (margine roșie ca la caiet), apoi atelierul: editor | previzualizare, iar dedesubt controale și provocări. */
+:root{
+  --bg:#F1F4EA; --grid:#E0E6D4; --sheet:#FCFDF8; --fg:#15203A; --muted:#566280; --line:#CFD6C2;
+  --accent:#1D4ED8; --accent-fg:#FFFFFF; --accent-soft:#DCE6FB;
+  --red:#C62839; --red-soft:#EDB3BB; --hl:#FFE45C; --hl-soft:#FFF1A0; --attr-c:#9A5B00;
+  --ok:#1B8A52; --ok-fg:#FFFFFF; --ok-soft:#D5F0E1;
+  --ed-bg:#17213A; --ed-fg:#E7ECF7; --ed-gut:#7F8CAB; --ed-line:#26324F; --ed-sel:#5B84E066;
+  --t-tag:#FF8FA6; --t-attr:#FFD479; --t-str:#8EE6B4; --t-com:#7B88A8; --t-css:#8DB8FF; --t-doc:#B9A0FF;
+  --chrome:#DCE1D0; --win:#FFFFFF; --win-fg:#1A1A1A; --win-mut:#6B7280;
+  --sans:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --disp:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  --code-size:14px; --cs:var(--code-size); --ws-h:26rem;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1322; --grid:#141C31; --sheet:#141B2E; --fg:#E7EBF6; --muted:#98A4C4; --line:#27314D;
+    --accent:#7EA2FF; --accent-fg:#0D1322; --accent-soft:#1B2850;
+    --red:#FF7A8A; --red-soft:#5A2A35; --hl:#6F5F12; --hl-soft:#4A4210; --attr-c:#FFC46B;
+    --ok:#4ADE9A; --ok-fg:#0D1322; --ok-soft:#173A2C;
+    --ed-bg:#0A0F1D; --ed-fg:#E7ECF7; --ed-gut:#6B7899; --ed-line:#1B2540; --ed-sel:#5B84E077;
+    --chrome:#1D2640;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D1322; --grid:#141C31; --sheet:#141B2E; --fg:#E7EBF6; --muted:#98A4C4; --line:#27314D;
+  --accent:#7EA2FF; --accent-fg:#0D1322; --accent-soft:#1B2850;
+  --red:#FF7A8A; --red-soft:#5A2A35; --hl:#6F5F12; --hl-soft:#4A4210; --attr-c:#FFC46B;
+  --ok:#4ADE9A; --ok-fg:#0D1322; --ok-soft:#173A2C;
+  --ed-bg:#0A0F1D; --ed-fg:#E7ECF7; --ed-gut:#6B7899; --ed-line:#1B2540; --ed-sel:#5B84E077;
+  --chrome:#1D2640;
+  color-scheme:dark;
+}
+@media (max-width:700px){:root{--cs:max(var(--code-size),16px)}}
+
+*{box-sizing:border-box}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+html.present{font-size:18px;--ws-h:34rem}
+body{
+  background-color:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+  color:var(--fg);
+  font:400 1rem/1.6 var(--sans);
+  padding-block:20px 48px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+code{font:500 .88em var(--mono);background:var(--accent-soft);padding:.1em .38em;border-radius:3px;overflow-wrap:anywhere}
+mark{background:linear-gradient(transparent 55%,var(--hl) 55%);color:inherit;padding:0 .1em}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.app{display:grid;grid-template-columns:15.5rem minmax(0,1fr);gap:2rem;max-width:1480px;margin:0 auto}
+.side{position:sticky;top:calc(20px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:1.1rem;max-height:calc(100vh - 40px);overflow-y:auto;padding-right:2px}
+.brand{font:800 1.75rem/1 var(--disp);letter-spacing:-.02em;margin:0}
+.brand span{color:var(--accent)}
+.sub{margin:.35rem 0 0;color:var(--muted);font-size:.9rem}
+.prog{display:flex;flex-direction:column;gap:.35rem;font:500 .78rem var(--mono);color:var(--muted)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .4s}
+.nav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.nl{display:grid;grid-template-columns:1.9rem minmax(0,1fr) 1rem;align-items:center;gap:.35rem;width:100%;padding:.45rem .55rem;border:0;border-radius:6px;background:transparent;text-align:left}
+.nl:hover{background:var(--accent-soft)}
+.nl .n{font:600 .8rem var(--mono);color:var(--muted)}
+.nl .tt{font-size:.93rem;line-height:1.25}
+.nl .ck{font-size:.85rem;color:var(--ok);text-align:center}
+.nl.dn .ck::before{content:"✓"}
+.nl.on{background:var(--accent);color:var(--accent-fg)}
+.nl.on .n,.nl.on .ck{color:inherit}
+.nl.free{margin-top:.5rem;border:1px dashed var(--line)}
+
+.main{min-width:0;display:flex;flex-direction:column;gap:1.75rem}
+.top{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:.5rem}
+.btn{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--line);background:var(--sheet);border-radius:6px;padding:.4rem .8rem;font-size:.88rem;font-weight:500}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.btn svg{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.lh{display:flex;flex-direction:column;gap:.6rem}
+.kick{margin:0;font:600 .78rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+.lh h1{margin:0;font:800 clamp(2.1rem,5vw,3.4rem)/1.02 var(--disp);letter-spacing:-.025em;text-wrap:balance}
+.lead{margin:0;font-size:1.15rem;max-width:60ch;color:var(--muted)}
+
+.sheet{position:relative;display:flex;flex-direction:column;gap:1rem;background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:1.5rem 1.5rem 1.6rem 3.6rem}
+.sheet::before{content:"";position:absolute;left:2.4rem;top:0;bottom:0;width:1px;background:var(--red-soft)}
+.sheet>*{margin:0;min-width:0}
+.sheet>:is(p,ul,ol){max-width:66ch}
+.sheet h2{font:700 1.45rem/1.2 var(--disp);letter-spacing:-.01em;margin-top:.9rem;text-wrap:balance}
+.sheet>h2:first-child{margin-top:0}
+.sheet ul{padding-left:1.2rem;display:flex;flex-direction:column;gap:.3rem}
+@media (max-width:700px){.sheet{padding:1.1rem 1rem 1.2rem 2.4rem}.sheet::before{left:1.6rem}}
+
+.cmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(13.5rem,1fr));gap:.75rem}
+.cmd{background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:.7rem .85rem;display:flex;flex-direction:column;gap:.2rem;min-width:0}
+.cmd b{font:600 1rem var(--mono);color:var(--accent);overflow-wrap:anywhere}
+.cmd span{font-size:.9rem;color:var(--muted)}
+.sec-t{display:flex;align-items:baseline;gap:.75rem;margin:0 0 .6rem;font:700 1.15rem var(--disp)}
+.sec-t small{font:500 .85rem var(--sans);color:var(--muted)}
+
+/* widgets */
+.wg{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:1rem;display:flex;flex-direction:column;gap:.85rem;min-width:0}
+.seg{display:flex;flex-wrap:wrap;gap:.4rem}
+.seg button{border:1px solid var(--line);background:var(--sheet);border-radius:6px;padding:.4rem .75rem;font-size:.9rem;font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.cap{margin:0;font-size:.95rem}
+.cline{font:600 clamp(1rem,3.6vw,1.6rem)/1.7 var(--mono);display:flex;flex-wrap:wrap;align-items:baseline;overflow-wrap:anywhere}
+.sg{font:inherit;background:none;border:0;border-bottom:3px solid transparent;padding:0 1px;color:var(--fg);white-space:pre-wrap}
+.sg[data-k="open"],.sg[data-k="close"]{color:var(--accent)}
+.sg[data-k="attr"]{color:var(--attr-c)}
+.sg.on{background:linear-gradient(transparent 55%,var(--hl) 55%)}
+.stage{background:var(--win);color:var(--win-fg);border:1px solid var(--line);border-radius:6px;padding:1.25rem;min-height:11.5rem;display:grid;place-items:center}
+.mini{width:min(100%,20rem)}
+.mini .cnt{display:none;margin:.6rem 0 0}
+.stage[data-layer="html"] .mini :is(h3,p,button){all:revert}
+.stage[data-layer="html"] .mini :is(h3,p){color:var(--win-fg)}
+.stage:not([data-layer="html"]) .mini{background:#FFF4E5;border:2px solid #F59E0B;border-radius:14px;padding:1rem 1.25rem}
+.stage:not([data-layer="html"]) .mini h3{margin:0 0 .25rem;font:700 1.3rem var(--disp);color:#B45309}
+.stage:not([data-layer="html"]) .mini p{margin:0 0 .75rem;color:#44403C}
+.stage:not([data-layer="html"]) .mini button{background:#F59E0B;border:0;border-radius:999px;padding:.5rem 1.1rem;font-weight:600;color:#1C1917}
+.stage[data-layer="js"] .mini p.cnt{display:block;font-weight:600;margin:.75rem 0 0}
+.create{display:grid;grid-template-columns:repeat(auto-fill,minmax(10.5rem,1fr));gap:.5rem}
+.create button{border:1px solid var(--line);background:var(--sheet);border-radius:6px;padding:.55rem .7rem;text-align:left;font-weight:500;font-size:.92rem}
+.create button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}
+.flow div{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:.8rem;display:flex;flex-direction:column;gap:.3rem;font-size:.93rem}
+.flow b{font:600 .8rem var(--mono);color:var(--red);letter-spacing:.08em}
+@media (max-width:700px){.flow{grid-template-columns:1fr}}
+.mix{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem}
+@media (max-width:700px){.mix{grid-template-columns:1fr}}
+.mix .sl{display:grid;grid-template-columns:1.4rem minmax(0,1fr) 2.6rem;gap:.5rem;align-items:center;font:500 .85rem var(--mono)}
+.mix .sl output{text-align:right}
+.swatch{height:4.5rem;border-radius:6px;border:1px solid var(--line)}
+.mix .out{display:flex;flex-direction:column;gap:.4rem}
+.mix .out code{background:var(--sheet);border:1px solid var(--line);font-size:.95rem;padding:.3rem .5rem}
+.xp{margin:0;background:var(--ed-bg);color:var(--ed-fg);border-radius:6px;padding:.7rem 0;font:400 .92rem/1.7 var(--mono);overflow-x:auto}
+.xp .ln{display:block;padding:0 1rem;white-space:pre}
+.xp .ln.on{background:#FFE45C33}
+
+
+.tw{overflow-x:auto;max-width:100%}
+table.ref{border-collapse:collapse;width:100%;font-size:.92rem;background:var(--sheet)}
+.ref th,.ref td{border:1px solid var(--line);padding:.45rem .7rem;text-align:left;vertical-align:top}
+.ref th{background:var(--accent-soft);font-weight:600}
+.props-d{border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.props-d>summary{cursor:pointer;padding:.85rem 1rem;font:700 1.15rem var(--disp);list-style:none;display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap}
+.props-d>summary::-webkit-details-marker{display:none}
+.props-d>summary::before{content:"▸";color:var(--accent)}
+.props-d[open]>summary::before{content:"▾"}
+.props-d>summary small{font:500 .85rem var(--sans);color:var(--muted)}
+.props{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,21rem),1fr));gap:.9rem;padding:0 1rem 1rem}
+.props.solo{padding:0}
+.pc{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:.9rem 1rem;display:flex;flex-direction:column;gap:.6rem;min-width:0}
+.pc-h{display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap}
+.pn{font:600 1.02rem var(--mono);color:var(--accent);background:none;padding:0;overflow-wrap:anywhere}
+.pk{font:600 .68rem var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:.15rem .45rem;border-radius:3px;border:1px solid var(--line);color:var(--muted)}
+.pk-css{color:var(--accent);border-color:var(--accent)}
+.pk-val{color:var(--attr-c);border-color:var(--attr-c)}
+.pk-html{color:var(--red);border-color:var(--red)}
+.pd{margin:0;font-size:.93rem}
+.pv{margin:0;display:grid;gap:.25rem;font-size:.88rem}
+.pv>div{display:grid;grid-template-columns:minmax(0,9.5rem) minmax(0,1fr);gap:.6rem;border-top:1px dashed var(--line);padding-top:.25rem}
+.pv dt,.pv dd{margin:0;min-width:0}
+.pv dt code{background:none;padding:0;color:var(--fg);font-weight:600;overflow-wrap:anywhere}
+.pe{margin:0;background:var(--ed-bg);color:var(--ed-fg);border-radius:5px;padding:.6rem .8rem;font:400 .82rem/1.6 var(--mono);overflow-x:auto;white-space:pre}
+.pt{margin:0;font-size:.88rem;background:var(--hl-soft);border-radius:4px;padding:.4rem .6rem}
+.pa{margin-top:auto;padding-top:.2rem}
+.mist{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:1rem}
+.mi{display:flex;flex-direction:column;gap:.4rem;min-width:0}
+.mi-c{display:flex;flex-direction:column;gap:.3rem}
+.mi-w{margin:0;font-size:.9rem}
+.bad,.good{font:600 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.bad{color:var(--red)}
+.good{color:var(--ok)}
+.dq{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end}
+.bm{display:grid;place-items:center;padding:.5rem 0;overflow-x:auto}
+.bm-m{background:#F9CC9D;padding:24px;position:relative}
+.bm-b{background:#FDDD9B;border:8px solid #D9A441;position:relative}
+.bm-p{background:#C3D08B;padding:20px;position:relative}
+.bm-c{background:#8CB6C0;color:#10343C;padding:.9rem 1.5rem;font:600 .85rem var(--mono);text-align:center}
+.bm-l{position:absolute;top:2px;left:5px;font:600 .62rem var(--mono);color:#3b2a14;text-transform:uppercase;letter-spacing:.06em}
+.bm-sl{display:grid;grid-template-columns:5rem minmax(0,1fr) 3.2rem;gap:.5rem;align-items:center;font:500 .85rem var(--mono)}
+.bm-sl output{text-align:right}
+
+/* atelier */
+.lab{display:flex;flex-direction:column;gap:1rem}
+.lab-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.6rem}
+.lab-bar h2{margin:0;font:700 1.35rem var(--disp)}
+.tools{display:flex;flex-wrap:wrap;gap:.4rem}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem}
+@media (max-width:900px){.split{grid-template-columns:1fr}}
+.pane{display:flex;flex-direction:column;height:var(--ws-h);min-height:0;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+@media (max-width:900px){.pane{height:22rem}}
+.ph{display:flex;align-items:flex-end;gap:.75rem;padding:.45rem .75rem 0;background:var(--ed-line)}
+.ph .ft{background:var(--ed-bg);color:var(--ed-fg);font:500 .8rem var(--mono);padding:.4rem .9rem;border-radius:6px 6px 0 0}
+.ph .hint-e{margin-left:auto;font-size:.72rem;color:var(--ed-gut);padding-bottom:.4rem;text-align:right}
+.edbox{flex:1;display:flex;min-height:0;background:var(--ed-bg)}
+.edbox:focus-within{box-shadow:inset 0 0 0 2px var(--accent)}
+.gut{width:3rem;flex:none;padding:12px 10px 12px 0;text-align:right;color:var(--ed-gut);font:400 var(--cs)/1.65 var(--mono);white-space:pre;overflow:hidden;user-select:none;border-right:1px solid var(--ed-line)}
+.edin{position:relative;flex:1;min-width:0}
+.edin pre,.edin textarea{position:absolute;inset:0;margin:0;padding:12px 14px;font:400 var(--cs)/1.65 var(--mono);white-space:pre;tab-size:2;border:0;background:transparent;overflow:auto;border-radius:0}
+.edin pre{pointer-events:none;color:var(--ed-fg);overflow:hidden}
+.edin textarea{color:transparent;-webkit-text-fill-color:transparent;caret-color:var(--ed-fg);resize:none;outline:none}
+.edin textarea::selection{background:var(--ed-sel)}
+.edin pre i{font-style:normal}
+.t{color:var(--t-tag)}.a{color:var(--t-attr)}.s{color:var(--t-str)}.c{color:var(--t-com)}.p{color:var(--t-css)}.sel{color:var(--t-attr)}.d{color:var(--t-doc)}
+.pv{background:var(--win)}
+.chrome{display:flex;align-items:flex-end;gap:.75rem;padding:.45rem .75rem 0;background:var(--chrome)}
+.dots{display:flex;gap:5px;padding-bottom:.65rem}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--muted);opacity:.45}
+.tab{background:var(--win);color:var(--win-fg);font-size:.8rem;padding:.4rem .9rem;border-radius:8px 8px 0 0;max-width:65%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.addr{padding:.35rem .75rem;background:var(--win);border-bottom:1px solid #0001;font:.74rem var(--mono);color:var(--win-mut)}
+.pv iframe{flex:1;min-height:0;width:100%;border:0;background:#fff}
+.files{display:flex;flex-direction:column;gap:.5rem}
+.files .row{display:flex;flex-wrap:wrap;gap:.6rem}
+.files button{display:flex;flex-direction:column;align-items:center;gap:.25rem;background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:.4rem;font:500 .78rem var(--mono)}
+.files button:hover{border-color:var(--accent)}
+.files img{width:64px;height:64px;border-radius:4px;display:block}
+.under{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;align-items:start}
+.under.one{grid-template-columns:1fr}
+@media (max-width:900px){.under{grid-template-columns:1fr}}
+.box-p{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:1rem 1.15rem;display:flex;flex-direction:column;gap:.8rem;min-width:0}
+.box-p h3{margin:0;font:700 1.1rem var(--disp)}
+.box-p .note{margin:0;font-size:.88rem;color:var(--muted)}
+.th{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem}
+.th .cnt{font:600 .82rem var(--mono);color:var(--red)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.85rem}
+.ctl{display:flex;flex-direction:column;gap:.3rem;min-width:0}
+.ctl label{font:600 .82rem var(--sans)}
+.ctl .row{display:flex;align-items:center;gap:.6rem}
+.ctl input[type=color]{width:2.6rem;height:2.2rem;padding:0;border:1px solid var(--line);border-radius:4px;background:var(--sheet)}
+.ctl input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
+.ctl input[type=text],.ctl select{width:100%;font:inherit;font-size:.92rem;padding:.4rem .55rem;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg)}
+.ctl .val{background:none;padding:0;font-size:.82rem;color:var(--muted);min-width:3.4rem}
+.ctl.off{opacity:.45}
+.sw{display:flex;flex-wrap:wrap;gap:.35rem}
+.swb{width:1.7rem;height:1.7rem;border-radius:50%;border:2px solid var(--line);padding:0}
+.swb:hover{border-color:var(--fg)}
+.tasks-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.7rem}
+.tk{display:grid;grid-template-columns:1.4rem minmax(0,1fr);gap:.65rem;align-items:start}
+.tk .box{width:1.3rem;height:1.3rem;margin-top:.15rem;border:2px solid var(--muted);border-radius:4px;display:grid;place-items:center;font-size:.8rem;line-height:1}
+.tk.ok .box{background:var(--ok);border-color:var(--ok);color:var(--ok-fg);animation:pop .35s}
+.tk.ok .box::before{content:"✓"}
+.tk .tx{margin:0}
+.hint{font-size:.88rem;color:var(--muted)}
+.hint summary{cursor:pointer;width:max-content;color:var(--red);font-weight:500}
+.hint p{margin:.3rem 0 0}
+.win{background:var(--ok-soft);border:1px solid var(--ok);border-radius:6px;padding:.8rem 1rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem}
+.win p{margin:0;font-weight:600}
+@keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.pager{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.pager .btn{padding:.6rem 1rem}
+
+@media (max-width:980px){
+  .app{grid-template-columns:minmax(0,1fr);gap:1rem}
+  .side{position:static;max-height:none;overflow:visible}
+  .nav ol{flex-direction:row;overflow-x:auto;padding-bottom:.4rem}
+  .nl{width:auto;flex:none;grid-template-columns:auto auto auto;white-space:nowrap;border:1px solid var(--line);background:var(--sheet)}
+  .nl.free{margin-top:0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="app">
+  <aside class="side">
+    <div>
+      <p class="brand"><span>&lt;</span>Atelier HTML<span>&gt;</span></p>
+      <p class="sub">Curs pas cu pas, de la zero</p>
+    </div>
+    <div class="prog"><span id="progtxt">0 din 12 lecții terminate</span><div class="bar"><i id="progbar"></i></div></div>
+    <nav class="nav" aria-label="Lecții"><ol id="nav"></ol></nav>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <button class="btn" id="tFont" type="button" aria-label="Micșorează codul">A−</button>
+      <button class="btn" id="tFontUp" type="button" aria-label="Mărește codul">A+</button>
+      <button class="btn" id="tPresent" type="button" aria-pressed="false">Mod prezentare</button>
+      <button class="btn" id="tTheme" type="button" aria-label="Schimbă tema"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>Temă</button>
+    </div>
+    <div id="lesson" class="main" style="gap:1.75rem"></div>
+  </main>
+</div>
+
+<script>
+(function(){
+'use strict';
+document.documentElement.lang='ro';
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')};
+var qa=function(s){return esc(s).replace(/"/g,'&quot;')};
+var fmt=function(s){return esc(s).replace(/`([^`]+)`/g,'<code>$1</code>')};
+var OC='<'+'!--';
+
+/* ---------- stare salvată ---------- */
+var KEY='atelier-html-v1';
+var S={code:{},done:{},font:14,theme:'',present:false};
+try{var raw=localStorage.getItem(KEY);if(raw){S=Object.assign(S,JSON.parse(raw));}}catch(e){}
+var saveT=null;
+function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}},250)}
+
+/* ---------- imagini disponibile în lecții ---------- */
+var svg=function(s){return 'data:image/svg+xml;utf8,'+encodeURIComponent(s)};
+var IMGS={
+ 'soare.svg':svg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#BFE3FF"/><g stroke="#F59E0B" stroke-width="6" stroke-linecap="round"><path d="M60 12v14M60 94v14M12 60h14M94 60h14M26 26l10 10M84 84l10 10M94 26l-10 10M36 84l-10 10"/></g><circle cx="60" cy="60" r="24" fill="#FBBF24"/></svg>'),
+ 'luna.svg':svg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#1E2A5A"/><circle cx="56" cy="62" r="30" fill="#FDE68A"/><circle cx="70" cy="52" r="26" fill="#1E2A5A"/><circle cx="26" cy="24" r="3" fill="#fff"/><circle cx="96" cy="30" r="2.5" fill="#fff"/><circle cx="88" cy="94" r="3" fill="#fff"/></svg>'),
+ 'casa.svg':svg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#DFF3E3"/><rect x="26" y="54" width="68" height="48" fill="#E4572E"/><path d="M18 56L60 20l42 36z" fill="#3D2B56"/><rect x="52" y="72" width="16" height="30" fill="#FDE68A"/><rect x="32" y="64" width="14" height="14" fill="#BFE3FF"/><rect x="74" y="64" width="14" height="14" fill="#BFE3FF"/></svg>'),
+ 'copac.svg':svg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#E6F4FF"/><rect x="54" y="62" width="12" height="42" fill="#7C4A21"/><circle cx="60" cy="48" r="26" fill="#2E9E5B"/><circle cx="42" cy="58" r="16" fill="#38B26A"/><circle cx="78" cy="58" r="16" fill="#38B26A"/></svg>')
+};
+var IMG_ALT={'soare.svg':'Un soare galben','luna.svg':'Luna pe cerul de noapte','casa.svg':'O căsuță roșie','copac.svg':'Un copac verde'};
+function withImages(code){
+  return code.replace(/(\bsrc\s*=\s*["'])([^"']+)(["'])/gi,function(m,a,n,b){var k=n.trim();return IMGS[k]?a+IMGS[k]+b:m})
+    .replace(/url\(\s*(["']?)([^)"']+)\1\s*\)/gi,function(m,q,n){var k=n.trim();return IMGS[k]?'url("'+IMGS[k]+'")':m});
+}
+
+/* ---------- schelet de pagină folosit în lecții ---------- */
+function sk(body,o){o=o||{};
+  return '<!DOCTYPE html>\n<html lang="ro">\n<head>\n  <meta charset="UTF-8">\n  <title>'+(o.title||'Pagina mea')+'</title>'+(o.head||'')+'\n</head>\n<body'+(o.battr||'')+'>\n'+body+'\n</body>\n</html>';
+}
+
+/* ---------- LECȚII ---------- */
+var LESSONS=[
+
+/* 0 */
+{id:'lectia-0',num:0,nav:'Ce este HTML?',title:'Ce este HTML?',
+ lead:'Începem de la zero: ce este, la ce ne ajută și cum arată primul cod. Totul se poate încerca pe loc.',
+ intro:
+ '<h2>Un limbaj de marcare, nu de programare</h2>'+
+ '<p><mark>HTML</mark> vine de la <em>HyperText Markup Language</em>, adică „limbaj de marcare a textului”. Nu îi dai ordine calculatorului. Îi spui browserului ce este fiecare bucată din pagină: asta e un titlu, asta e o poză, asta e un buton.</p>'+
+ '<p>Gândește-te la un document Word. Selectezi un rând și îl faci „Titlu”, alt text îl faci „Listă”. HTML face același lucru, dar eticheta o scrii cu mâna, în text simplu. Apasă pe părțile de mai jos ca să vezi din ce e făcută o etichetă.</p>'+
+ '<div class="wg" data-wg="anat"></div>'+
+ '<h2>Trei straturi, ca la o casă</h2>'+
+ '<p>O pagină web se construiește din trei limbaje care lucrează împreună: zidurile (HTML), vopseaua și mobila (CSS) și instalația electrică (JavaScript). Apasă pe butoane și vezi aceeași pagină în trei etape.</p>'+
+ '<div class="wg" data-wg="layers"></div>'+
+ '<p>În acest curs învățăm <mark>HTML</mark> și primele comenzi de <mark>CSS</mark>: culori, fundal, text. JavaScript vine după.</p>'+
+ '<h2>Ce putem crea cu HTML?</h2>'+
+ '<div class="wg" data-wg="create"></div>'+
+ '<h2>Cum ajunge codul pe ecran?</h2>'+
+ '<div class="flow"><div><b>PASUL 1</b>Scrii codul într-un fișier text cu extensia <code>.html</code>.</div><div><b>PASUL 2</b>Browserul citește fișierul de sus în jos, rând cu rând.</div><div><b>PASUL 3</b>Desenează pe ecran fiecare element, în ordinea în care apare.</div></div>'+
+ '<h2>Ce ai nevoie ca să începi</h2>'+
+ '<ul><li>Un editor de text: Notepad, sau mai bine Visual Studio Code.</li><li>Un browser: Chrome, Edge sau Firefox.</li><li>Salvezi fișierul ca <code>pagina.html</code> și îl deschizi cu dublu-click.</li></ul>'+
+ '<p>Mai jos ai atelierul. Scrii cod în stânga, iar în dreapta pagina se actualizează pe loc. Rezolvă cele trei provocări.</p>',
+ cmds:[{t:'<h1>',d:'Titlu principal'},{t:'<p>',d:'Paragraf de text'},{t:'<strong>',d:'Text îngroșat, important'}],
+ starter:'<h1>Salut, lume!</h1>\n<p>Aceasta este prima mea pagină HTML.</p>',
+ controls:[{type:'text',label:'Textul titlului (h1)',re:/(<h1>)([^<]*)(<\/h1>)/}],
+ tasks:[
+  {text:'Schimbă textul din titlul `h1` cu numele tău.',hint:'Șterge „lume” din prima linie și scrie în loc numele tău. Lasă `<h1>` și `</h1>` neatinse.',
+   test:function(c){var h=c.q('h1');return !!h&&h.textContent.trim()!==''&&h.textContent.trim()!=='Salut, lume!'}},
+  {text:'Adaugă un al doilea paragraf între `<p>` și `</p>`.',hint:'Pe un rând nou scrie `<p>Textul tău</p>`.',
+   test:function(c){return c.qa('p').length>=2}},
+  {text:'Pune un cuvânt între `<strong>` și `</strong>` ca să apară îngroșat.',hint:'Exemplu: `<p>Îmi place <strong>muzica</strong>.</p>`',
+   test:function(c){return !!c.q('strong')}}
+ ]},
+
+/* 1 */
+{id:'lectia-1',num:1,nav:'Structura paginii',title:'Structura unei pagini',
+ lead:'Orice pagină HTML are același schelet. Îl scriem o dată și îl folosim mereu.',
+ intro:
+ '<h2>Scheletul oricărei pagini</h2>'+
+ '<p>Gândește-te la un plic: pe o parte ai informații despre scrisoare (<code>head</code>), pe cealaltă ai scrisoarea însăși (<code>body</code>). Apasă pe părți și vezi ce rol are fiecare.</p>'+
+ '<div class="wg" data-wg="explorer"></div>'+
+ '<p>Regula de aur: <mark>tot ce se deschide trebuie și închis</mark>. Dacă ai scris <code>&lt;body&gt;</code>, undeva mai jos trebuie să existe <code>&lt;/body&gt;</code>. Elementele se așază unul în altul ca păpușile matrioșka și nu se încrucișează niciodată.</p>'+
+ '<p>În atelier ai scheletul complet. Tot ce scrii între <code>&lt;body&gt;</code> și <code>&lt;/body&gt;</code> apare în pagină. Ce e în <code>&lt;head&gt;</code> nu apare în pagină, dar are efect: uită-te la tab-ul din previzualizare.</p>',
+ cmds:[{t:'<!DOCTYPE html>',d:'Spune că este o pagină HTML modernă'},{t:'<html>',d:'Conține toată pagina'},{t:'<head>',d:'Informații despre pagină'},{t:'<meta charset>',d:'Codarea literelor (ă, î, ș, ț)'},{t:'<title>',d:'Numele din tab'},{t:'<body>',d:'Tot ce se vede în pagină'}],
+ starter:sk('  '+OC+' Tot ce scrii aici apare în pagină -->\n  <p>Salut! Sunt în interiorul lui body.</p>',{title:'Structura'}),
+ controls:[{type:'text',label:'Titlul din tab (title)',re:/(<title>)([^<]*)(<\/title>)/}],
+ tasks:[
+  {text:'Codul începe cu `<!DOCTYPE html>`.',hint:'Este prima linie din editor. Nu o șterge.',test:function(c){return /^\s*<!DOCTYPE html>/i.test(c.code)}},
+  {text:'Ai `html`, `head` și `body`, fiecare cu eticheta de închidere.',hint:'Verifică să existe `</head>`, `</body>` și `</html>`.',test:function(c){return /<html[\s>][\s\S]*<head>[\s\S]*<\/head>[\s\S]*<body[\s>][\s\S]*<\/body>[\s\S]*<\/html>/i.test(c.code)}},
+  {text:'Adaugă un titlu `<h1>` în interiorul lui `body`.',hint:'Scrie `<h1>Titlul meu</h1>` între `<body>` și `</body>`.',test:function(c){return !!c.doc.body.querySelector('h1')}},
+  {text:'Schimbă `<title>` și observă tab-ul din previzualizare.',hint:'Textul se află între `<title>` și `</title>`, în `head`.',test:function(c){var t=(c.doc.title||'').trim();return t!==''&&t!=='Structura'}}
+ ]},
+
+/* 2 */
+{id:'lectia-2',num:2,nav:'Titlul și titlurile',title:'Titlul paginii și titlurile',
+ lead:'Două lucruri care se numesc la fel și sunt diferite: ce scrie în tab și ce scrie pe pagină.',
+ intro:
+ '<h2>Două feluri de „titlu”</h2>'+
+ '<p>Pagina are un <code>&lt;title&gt;</code> care apare în tab și în rezultatele Google. Apoi are titluri în interior: <code>&lt;h1&gt;</code> până la <code>&lt;h6&gt;</code>. Sunt lucruri diferite.</p>'+
+ '<p>Titlurile funcționează ca un cuprins: <code>h1</code> este titlul cărții, <code>h2</code> capitolele, <code>h3</code> subcapitolele. Folosește un singur <code>h1</code> pe pagină și nu sări peste niveluri.</p>'+
+ '<p><mark>Alegi nivelul după importanță, nu după cât de mare arată.</mark> Mărimea o schimbăm mai târziu, cu CSS.</p>',
+ cmds:[{t:'<title>',d:'Numele paginii, în tab'},{t:'<h1>',d:'Titlul principal, unul singur'},{t:'<h2>',d:'Subtitlu, un capitol'},{t:'<h3> … <h6>',d:'Niveluri tot mai mici'}],
+ starter:sk('  <h1>Titlul principal</h1>\n  <h2>Un subtitlu</h2>\n  <h3>Un titlu mai mic</h3>',{title:'Pagina mea'}),
+ controls:[{type:'text',label:'Titlul din tab (title)',re:/(<title>)([^<]*)(<\/title>)/},{type:'text',label:'Titlul principal (h1)',re:/(<h1>)([^<]*)(<\/h1>)/}],
+ tasks:[
+  {text:'Schimbă textul din `<title>`.',hint:'Se află în `head`. Rezultatul îl vezi în tab-ul din previzualizare.',test:function(c){var t=(c.doc.title||'').trim();return t!==''&&t!=='Pagina mea'}},
+  {text:'Adaugă un titlu `<h4>`.',hint:'`<h4>Un titlu și mai mic</h4>`',test:function(c){return !!c.q('h4')}},
+  {text:'Scrie în `<h1>` un titlu al tău, diferit de „Titlul principal”, păstrând un singur `<h1>`.',hint:'Schimbă textul dintre `<h1>` și `</h1>`. Dacă ai mai multe `h1`, transformă-le în `h2`.',test:function(c){var h=c.qa('h1');return h.length===1&&h[0].textContent.trim()!==''&&h[0].textContent.trim()!=='Titlul principal'}},
+  {text:'Adaugă încă un `<h2>`, ca să ai cel puțin două capitole.',hint:'`<h2>Al doilea capitol</h2>`',test:function(c){return c.qa('h2').length>=2}}
+ ]},
+
+/* 3 */
+{id:'lectia-3',num:3,nav:'Text și paragrafe',title:'Paragrafe și text',
+ lead:'Browserul nu citește textul ca tine. Hai să vedem cum îl înțelege.',
+ intro:
+ '<h2>Text pe înțelesul browserului</h2>'+
+ '<p>Browserul <mark>ignoră spațiile în plus și rândurile goale</mark>. Uite primul paragraf din atelier: în cod are multe spații și rânduri, dar pe ecran apare normal. Pentru un paragraf nou folosești <code>&lt;p&gt;</code>, iar pentru o simplă trecere pe rând nou, <code>&lt;br&gt;</code>.</p>'+
+ '<p><code>br</code> și <code>hr</code> sunt elemente „singuratice”: n-au conținut, deci nici etichetă de închidere. Textul îngroșat se face cu <code>strong</code>, cel înclinat cu <code>em</code>.</p>'+
+ '<p>Poți lăsa note pentru tine în cod, între <code>&lt;!--</code> și <code>--&gt;</code>. Browserul le sare, iar în editor apar gri.</p>',
+ cmds:[{t:'<p>',d:'Paragraf'},{t:'<br>',d:'Rând nou, fără paragraf nou'},{t:'<hr>',d:'Linie orizontală'},{t:'<strong>',d:'Îngroșat, important'},{t:'<em>',d:'Înclinat, accentuat'},{t:OC+' … -->',d:'Comentariu, nu se vede'}],
+ starter:sk('  <h1>Despre pisici</h1>\n  <p>Acest   text   are   spații   multe,\n     și rânduri noi,\n\n     dar browserul le strânge pe toate.</p>\n  <p>Al doilea paragraf începe pe un rând nou.</p>',{title:'Text'}),
+ controls:[],
+ tasks:[
+  {text:'Ai cel puțin trei paragrafe `<p>`.',hint:'Copiază un paragraf și schimbă textul.',test:function(c){return c.qa('p').length>=3}},
+  {text:'Scrie un cuvânt îngroșat cu `<strong>`.',hint:'`<p>Pisicile sunt <strong>curioase</strong>.</p>`',test:function(c){return !!c.q('strong')}},
+  {text:'Scrie un cuvânt înclinat cu `<em>`.',hint:'`<em>înclinat</em>`',test:function(c){return !!c.q('em')}},
+  {text:'Pune un rând nou cu `<br>` în mijlocul unui paragraf.',hint:'`<p>Primul rând<br>Al doilea rând</p>`',test:function(c){return !!c.q('p br')}},
+  {text:'Adaugă o linie orizontală `<hr>`.',hint:'Pune `<hr>` între două paragrafe.',test:function(c){return !!c.q('hr')}},
+  {text:'Scrie un comentariu pentru tine.',hint:'Scrie `'+OC+' nota mea -->`. Nu apare în pagină.',test:function(c){return new RegExp('<\\!--[\\s\\S]*?-->').test(c.code)}}
+ ]},
+
+/* 4 */
+{id:'lectia-4',num:4,nav:'Culoarea de fundal',title:'Culoarea de fundal',
+ lead:'Prima comandă de aspect. De aici pagina începe să arate ca a ta.',
+ intro:
+ '<h2>Atributul style</h2>'+
+ '<p>Până acum am scris doar structură. Pentru culori folosim atributul <code>style</code>, adăugat în eticheta de deschidere. Are forma <code>style="proprietate: valoare;"</code>. Pentru fundal, proprietatea este <code>background-color</code>.</p>'+
+ '<p>Culoarea o poți scrie în trei feluri, toate corecte. Mută cursoarele și vezi cum se schimbă codurile.</p>'+
+ '<div class="wg" data-wg="mixer"></div>'+
+ '<p>Numele în engleză sunt ușor de ținut minte (<code>red</code>, <code>lightblue</code>, <code>pink</code>), dar sunt doar vreo 140. Codurile hexazecimale și <code>rgb()</code> pot da orice culoare.</p>'+
+ '<p>Atenție la punct și virgulă: fiecare proprietate se încheie cu <code>;</code>.</p>',
+ cmds:[{t:'style="…"',d:'Aspectul unui element'},{t:'background-color',d:'Culoarea de fundal'},{t:'#FF6347',d:'Cod hexadecimal'},{t:'rgb(255, 99, 71)',d:'Roșu, verde, albastru'}],
+ starter:sk('  <h1>Pagina mea colorată</h1>\n  <p>Fundalul acestei pagini este galben deschis.</p>',{title:'Fundal',battr:' style="background-color: lightyellow;"'}),
+ controls:[
+  {type:'color',label:'Fundalul paginii',re:/(<body\b[^>]*?background-color:\s*)([^;"]+)()/},
+  {type:'swatches',label:'Culori rapide',re:/(<body\b[^>]*?background-color:\s*)([^;"]+)()/,values:['lightyellow','lightblue','lightgreen','pink','lavender','white','#222222']},
+  {type:'color',label:'Fundalul titlului (h1)',re:/(<h1\b[^>]*?background-color:\s*)([^;"]+)()/}
+ ],
+ tasks:[
+  {text:'Schimbă fundalul paginii în altă culoare.',hint:'Pe linia `<body style="…">` înlocuiește `lightyellow`.',test:function(c){var b=c.cs(c.doc.body,'backgroundColor');return b!=='rgb(255, 255, 224)'&&b!=='rgba(0, 0, 0, 0)'}},
+  {text:'Dă un fundal titlului `h1`.',hint:'Scrie `<h1 style="background-color: orange;">`.',test:function(c){var h=c.q('h1');return !!h&&c.cs(h,'backgroundColor')!=='rgba(0, 0, 0, 0)'}},
+  {text:'Folosește un cod hexadecimal (care începe cu `#`) undeva în cod.',hint:'Exemplu: `background-color: #FFB6C1;`',test:function(c){return /#[0-9a-f]{3,6}\b/i.test(c.code)}}
+ ]},
+
+/* 5 */
+{id:'lectia-5',num:5,nav:'Stilul textului',title:'Culoarea și stilul textului',
+ lead:'Același atribut style, alte proprietăți: culoare, mărime, font și aliniere.',
+ intro:
+ '<h2>Mai multe proprietăți, un singur style</h2>'+
+ '<p>Poți pune mai multe proprietăți în același atribut, separate prin <code>;</code>. <code>color</code> schimbă culoarea literelor, nu a fundalului. <code>font-size</code> schimbă mărimea, în <code>px</code> (pixeli). <code>font-family</code> alege fontul, cu variante de rezervă pentru cazul în care calculatorul nu îl are. <code>text-align</code> aliniază textul.</p>'+
+ '<p><mark>Contrastul contează.</mark> Literele trebuie să se vadă pe fundal. Un text galben pe fundal alb arată bine în cod și se citește greu pe ecran.</p>',
+ cmds:[{t:'color',d:'Culoarea literelor'},{t:'font-size',d:'Mărimea, de ex. 24px'},{t:'font-family',d:'Fontul (Arial, Georgia…)'},{t:'text-align',d:'left, center sau right'}],
+ starter:sk('  <h1 style="color: royalblue; text-align: left;">Titlu colorat</h1>\n  <p style="font-size: 18px; font-family: Georgia, serif; color: #333333;">Acesta este un paragraf cu stil propriu. Schimbă mărimea, fontul și culoarea.</p>',{title:'Text stilat'}),
+ controls:[
+  {type:'color',label:'Culoarea titlului',re:/(<h1\b[^>]*?(?<![-\w])color:\s*)([^;"]+)()/},
+  {type:'select',label:'Alinierea titlului',options:[['left','la stânga'],['center','centrat'],['right','la dreapta']],re:/(<h1\b[^>]*?text-align:\s*)([^;"]+)()/},
+  {type:'range',label:'Mărimea paragrafului (px)',min:10,max:60,re:/(<p\b[^>]*?font-size:\s*)(\d+)(px)/},
+  {type:'select',label:'Fontul paragrafului',options:[['Georgia, serif','Georgia'],['Arial, sans-serif','Arial'],["'Courier New', monospace",'Courier New'],['Verdana, sans-serif','Verdana'],["'Times New Roman', serif",'Times New Roman']],re:/(<p\b[^>]*?font-family:\s*)([^;"]+)()/},
+  {type:'color',label:'Culoarea paragrafului',re:/(<p\b[^>]*?(?<![-\w])color:\s*)([^;"]+)()/}
+ ],
+ tasks:[
+  {text:'Centrează titlul cu `text-align: center`.',hint:'În `<h1 style="…">` înlocuiește `left` cu `center`.',test:function(c){var h=c.q('h1');return !!h&&c.cs(h,'textAlign')==='center'}},
+  {text:'Fă paragraful mai mare de 22 de pixeli.',hint:'Schimbă `18px` în `24px` sau mai mult.',test:function(c){var p=c.q('p');return !!p&&parseFloat(c.cs(p,'fontSize'))>22}},
+  {text:'Schimbă culoarea titlului în alta decât `royalblue`.',hint:'Încearcă `crimson`, `seagreen` sau `#ff8800`.',test:function(c){var h=c.q('h1');return !!h&&c.cs(h,'color')!=='rgb(65, 105, 225)'}},
+  {text:'Schimbă culoarea paragrafului.',hint:'Înlocuiește `#333333` cu altă culoare.',test:function(c){var p=c.q('p');return !!p&&c.cs(p,'color')!=='rgb(51, 51, 51)'}}
+ ]},
+
+/* 6 */
+{id:'lectia-6',num:6,nav:'Liste',title:'Liste',
+ lead:'Liste cu buline, liste numerotate și liste în liste.',
+ intro:
+ '<h2>Buline sau numere?</h2>'+
+ '<p>Sunt două feluri: <code>&lt;ul&gt;</code> (<em>unordered list</em>) pentru buline, când ordinea nu contează, și <code>&lt;ol&gt;</code> (<em>ordered list</em>) pentru pași numerotați. Fiecare punct este un <code>&lt;li&gt;</code> (<em>list item</em>).</p>'+
+ '<p>Listele se pot pune una în alta: un <code>ul</code> poate sta chiar în interiorul unui <code>li</code>. Indentarea din cod te ajută să vezi ce e în ce.</p>'+
+ '<p>La <code>ol</code>, atributul <code>type</code> schimbă numerotarea: <code>1</code>, <code>A</code>, <code>a</code>, <code>I</code>, <code>i</code>.</p>',
+ cmds:[{t:'<ul>',d:'Listă cu buline'},{t:'<ol>',d:'Listă numerotată'},{t:'<li>',d:'Un punct din listă'},{t:'type="A"',d:'Numerotare cu litere'}],
+ starter:sk('  <h1>Lista de cumpărături</h1>\n  <ul>\n    <li>Pâine</li>\n    <li>Lapte</li>\n    <li>Mere</li>\n  </ul>\n  <h2>Pașii rețetei</h2>\n  <ol type="1">\n    <li>Amestecă ouăle</li>\n    <li>Adaugă făina</li>\n    <li>Coace 30 de minute</li>\n  </ol>',{title:'Liste'}),
+ controls:[{type:'select',label:'Numerotarea listei ol',options:[['1','1, 2, 3'],['A','A, B, C'],['a','a, b, c'],['I','I, II, III'],['i','i, ii, iii']],re:/(<ol\b[^>]*?type=")([^"]*)(")/}],
+ tasks:[
+  {text:'Lista cu buline are cel puțin cinci puncte.',hint:'Adaugă `<li>…</li>` între `<ul>` și `</ul>`.',test:function(c){return c.qa('ul > li').length>=5}},
+  {text:'Schimbă numerotarea listei `ol` în litere sau cifre romane.',hint:'La `<ol type="1">` pune `A` sau `I`.',test:function(c){var o=c.q('ol');return !!o&&(o.getAttribute('type')||'1')!=='1'}},
+  {text:'Pune o listă în interiorul unui `li`.',hint:'`<li>Fructe<ul><li>Mere</li></ul></li>`',test:function(c){return !!c.q('li ul, li ol')}}
+ ]},
+
+/* 7 */
+{id:'lectia-7',num:7,nav:'Linkuri',title:'Linkuri',
+ lead:'Linkurile sunt ceea ce face din pagini o rețea.',
+ intro:
+ '<h2>Elementul a, de la „anchor”</h2>'+
+ '<p>Elementul <code>&lt;a&gt;</code> face un link. Adresa merge în atributul <code>href</code>, iar textul pe care se dă click stă între etichete: <code>&lt;a href="adresa"&gt;text&lt;/a&gt;</code>.</p>'+
+ '<p>Un link poate duce la alt site, la altă pagină a ta sau la un loc din aceeași pagină (<code>href="#jos"</code> duce la elementul cu <code>id="jos"</code>). Cu <code>target="_blank"</code> se deschide într-un tab nou.</p>'+
+ '<p>În previzualizare, linkurile către alte site-uri sunt blocate din motive de securitate. În browserul tău, după ce salvezi fișierul, merg normal. Linkul către <code>#jos</code> funcționează și aici.</p>',
+ cmds:[{t:'<a href="…">',d:'Link către o adresă'},{t:'target="_blank"',d:'Se deschide în tab nou'},{t:'#jos',d:'Salt în aceeași pagină'},{t:'id="jos"',d:'Numele unui loc din pagină'}],
+ starter:sk('  <h1>Linkuri utile</h1>\n  <p>Citește despre HTML pe <a href="https://ro.wikipedia.org">Wikipedia</a>.</p>\n  <p>Alt link: <a href="https://developer.mozilla.org" target="_blank">MDN Web Docs</a></p>\n  <p><a href="#jos">Sari la sfârșitul paginii</a></p>\n  <div style="height: 300px;"></div>\n  <p id="jos">Ai ajuns jos! Aici este ținta linkului.</p>',{title:'Linkuri'}),
+ controls:[
+  {type:'text',label:'Textul primului link',re:/(<a\b[^>]*>)([^<]*)(<\/a>)/},
+  {type:'text',label:'Adresa primului link',re:/(<a\b[^>]*?href=")([^"]*)(")/}
+ ],
+ tasks:[
+  {text:'Pagina are cel puțin patru linkuri `<a href="…">`.',hint:'Copiază un paragraf cu link și schimbă adresa.',test:function(c){return c.qa('a[href]').length>=4}},
+  {text:'Un link se deschide în tab nou cu `target="_blank"`.',hint:'Adaugă `target="_blank"` în eticheta `<a …>`.',test:function(c){return c.qa('a[target="_blank"]').length>=2}},
+  {text:'Dă unui link altă culoare cu `style="color: …"`.',hint:'`<a href="#jos" style="color: crimson;">`',test:function(c){return c.qa('a').some(function(a){var k=c.cs(a,'color');return k!=='rgb(0, 0, 238)'&&k!=='rgb(85, 26, 139)'})}}
+ ]},
+
+/* 8 */
+{id:'lectia-8',num:8,nav:'Imagini',title:'Imagini',
+ lead:'O poză spune cât o mie de cuvinte, dar browserul trebuie să știe ce este.',
+ intro:
+ '<h2>Elementul img</h2>'+
+ '<p><code>&lt;img&gt;</code> nu are etichetă de închidere. Are nevoie de două atribute: <code>src</code> (fișierul cu poza) și <code>alt</code> (descrierea ei în cuvinte, citită de cititoarele de ecran și afișată dacă poza nu se încarcă). Cu <code>width</code> setezi lățimea, în pixeli.</p>'+
+ '<p>În realitate, poza trebuie să stea în același folder cu <code>pagina.html</code>. Aici ai patru poze gata făcute, în „folderul” de sub editor. Apasă pe una ca s-o adaugi în pagină.</p>',
+ cmds:[{t:'<img>',d:'O imagine'},{t:'src="poza.svg"',d:'Fișierul cu poza'},{t:'alt="…"',d:'Descrierea imaginii'},{t:'width="150"',d:'Lățimea în pixeli'}],
+ files:true,
+ starter:sk('  <h1>Galeria mea</h1>\n  <img src="soare.svg" alt="Un soare galben" width="150">\n  <img src="casa.svg" alt="O căsuță roșie" width="150">',{title:'Galerie'}),
+ controls:[
+  {type:'select',label:'Poza primei imagini',options:[['soare.svg','soare.svg'],['luna.svg','luna.svg'],['casa.svg','casa.svg'],['copac.svg','copac.svg']],re:/(<img\b[^>]*?src=")([^"]*)(")/},
+  {type:'range',label:'Lățimea primei imagini (px)',min:50,max:400,step:10,re:/(<img\b[^>]*?width=")(\d+)(")/},
+  {type:'text',label:'Descrierea primei imagini (alt)',re:/(<img\b[^>]*?alt=")([^"]*)(")/}
+ ],
+ tasks:[
+  {text:'Pagina are cel puțin trei imagini.',hint:'Apasă pe o poză din folder ca s-o adaugi.',test:function(c){return c.qa('img').length>=3}},
+  {text:'Schimbă `alt`-ul primei imagini cu o descriere scrisă de tine.',hint:'Scrie în `alt="…"` ce se vede în poză, cu cuvintele tale.',test:function(c){var i=c.q('img');var a=i?(i.getAttribute('alt')||'').trim():'';return a!==''&&a!=='Un soare galben'}},
+  {text:'O imagine este mai lată de 200 de pixeli.',hint:'Schimbă `width="150"` în `250`.',test:function(c){return c.qa('img').some(function(i){return parseFloat(c.cs(i,'width'))>=200})}}
+ ]},
+
+/* 9 */
+{id:'lectia-9',num:9,nav:'Formulare',title:'Butoane și formulare',
+ lead:'Până acum pagina doar arăta ceva. Acum primește și răspunsuri.',
+ intro:
+ '<h2>Câmpuri, etichete, butoane</h2>'+
+ '<p><code>&lt;input&gt;</code> este o căsuță în care scrie utilizatorul. Atributul <code>type</code> decide ce fel de câmp este: text, email, parolă, număr, dată, căsuță bifabilă. <code>placeholder</code> pune un text-exemplu gri.</p>'+
+ '<p><code>&lt;label&gt;</code> este eticheta câmpului. Legătura se face cu <code>for</code>, care trebuie să fie identic cu <code>id</code>-ul câmpului. Apoi un click pe etichetă activează câmpul. <code>&lt;button&gt;</code> este butonul.</p>'+
+ '<p>Încearcă în previzualizare să scrii în câmp. Trimiterea datelor nu merge aici, pentru că are nevoie de un server, dar formularul se simte ca pe un site real.</p>',
+ cmds:[{t:'<input>',d:'Un câmp de completat'},{t:'type="email"',d:'Felul câmpului'},{t:'placeholder="…"',d:'Text-exemplu în câmp'},{t:'<label for="…">',d:'Eticheta câmpului'},{t:'<button>',d:'Un buton'}],
+ starter:sk('  <h1>Înscriere la club</h1>\n  <label for="nume">Numele tău:</label><br>\n  <input type="text" id="nume" placeholder="Ex: Maria"><br><br>\n  <button>Trimite</button>',{title:'Înscriere'}),
+ controls:[
+  {type:'select',label:'Felul primului câmp',options:[['text','text'],['email','email'],['password','parolă'],['number','număr'],['date','dată'],['color','culoare'],['checkbox','căsuță bifabilă']],re:/(<input\b[^>]*?type=")([^"]*)(")/},
+  {type:'text',label:'Textul-exemplu (placeholder)',re:/(placeholder=")([^"]*)(")/},
+  {type:'text',label:'Textul butonului',re:/(<button\b[^>]*>)([^<]*)(<\/button>)/}
+ ],
+ tasks:[
+  {text:'Ai cel puțin două câmpuri `<input>`.',hint:'Adaugă un al doilea `<input type="email">`.',test:function(c){return c.qa('input').length>=2}},
+  {text:'Ai cel puțin două etichete `label` legate de câmpuri prin `for` și `id`.',hint:'`<label for="mail">…</label>` și `<input id="mail">`.',test:function(c){return c.qa('label[for]').filter(function(l){return !!c.doc.getElementById(l.getAttribute('for'))}).length>=2}},
+  {text:'Adaugă o căsuță bifabilă: `type="checkbox"`.',hint:'`<input type="checkbox" id="acord"> <label for="acord">Sunt de acord</label>`',test:function(c){return !!c.q('input[type="checkbox"]')}},
+  {text:'Schimbă textul butonului.',hint:'Între `<button>` și `</button>` scrie altceva decât „Trimite”.',test:function(c){var b=c.q('button');return !!b&&b.textContent.trim()!==''&&b.textContent.trim()!=='Trimite'}}
+ ]},
+
+/* 10 */
+{id:'lectia-10',num:10,nav:'Containere și clase',title:'Containere și clase',
+ lead:'Cum scrii stilul o singură dată și îl aplici la zece elemente.',
+ intro:
+ '<h2>div, span și class</h2>'+
+ '<p><code>&lt;div&gt;</code> este o cutie invizibilă care grupează elemente. <code>&lt;span&gt;</code> este o cutie mică, în interiorul unui rând, pentru a marca doar câteva cuvinte.</p>'+
+ '<p>Să scriem <code>style</code> la fiecare element devine obositor. Soluția: dăm elementelor un nume de grup, o <mark>clasă</mark> (<code>class="card"</code>), iar stilul îl scriem o singură dată într-un bloc <code>&lt;style&gt;</code> din <code>head</code>: <code>.card { … }</code>. Punctul din fața numelui înseamnă „toate elementele cu această clasă”.</p>'+
+ '<p>Schimbă o valoare în <code>.card</code> și vezi cum se schimbă toate cardurile deodată. Asta este puterea CSS.</p>',
+ cmds:[{t:'<div>',d:'Cutie care grupează'},{t:'<span>',d:'Cutie mică, în rând'},{t:'class="card"',d:'Numele unui grup de elemente'},{t:'<style>',d:'Aici scrii stilul, în head'},{t:'border-radius',d:'Colțuri rotunjite'},{t:'padding',d:'Spațiu în interiorul cutiei'}],
+ starter:sk('  <div class="card">\n    <h2>Prima carte</h2>\n    <p>Un <span class="alert">cuvânt roșu</span> într-un paragraf.</p>\n  </div>\n  <div class="card">\n    <h2>A doua carte</h2>\n    <p>Aceeași clasă, același aspect.</p>\n  </div>',{title:'Carduri',head:'\n  <style>\n    body { font-family: Arial, sans-serif; background-color: #EEF3FB; }\n    .card {\n      background-color: white;\n      border: 2px solid steelblue;\n      border-radius: 12px;\n      padding: 16px;\n      margin: 12px;\n    }\n    .alert { color: crimson; font-weight: bold; }\n  </style>'}),
+ controls:[
+  {type:'range',label:'Rotunjirea colțurilor (px)',min:0,max:60,re:/(\.card\s*\{[^}]*?border-radius:\s*)(\d+)(px)/},
+  {type:'range',label:'Spațiul din interior (px)',min:0,max:60,re:/(\.card\s*\{[^}]*?padding:\s*)(\d+)(px)/},
+  {type:'color',label:'Fundalul cardurilor',re:/(\.card\s*\{[^}]*?background-color:\s*)([^;]+)(;)/}
+ ],
+ tasks:[
+  {text:'Ai trei elemente cu clasa `card`.',hint:'Copiază un `<div class="card">…</div>` întreg.',test:function(c){return c.qa('.card').length>=3}},
+  {text:'Rotunjește colțurile cardurilor la 24 de pixeli sau mai mult.',hint:'În `.card`, schimbă `border-radius: 12px`.',test:function(c){var d=c.q('.card');return !!d&&parseFloat(c.cs(d,'borderTopLeftRadius'))>=24}},
+  {text:'Scrie o a treia clasă nouă în blocul `<style>`.',hint:'`.mare { font-size: 28px; }`, apoi `<p class="mare">`.',test:function(c){return (c.code.match(/\.[a-zA-Z][\w-]*\s*\{/g)||[]).length>=3}}
+ ]},
+
+/* 11 */
+{id:'lectia-11',num:11,nav:'Proiect final',title:'Proiect final: pagina ta',
+ lead:'Folosești tot ce ai învățat. Fără butoane de ajutor, doar tu și codul.',
+ intro:
+ '<h2>Pagina ta de prezentare</h2>'+
+ '<p>Fă o pagină despre tine sau despre un hobby. Lista de mai jos se bifează singură pe măsură ce îndeplinești cerințele, iar tabelul de comenzi te ajută să-ți amintești etichetele.</p>'+
+ '<p>Când termini, apasă „Copiază codul”, lipește-l într-un fișier text, salvează-l ca <code>prezentare.html</code> și deschide-l cu dublu-click.</p>',
+ cmds:[{t:'<title> <h1> <p>',d:'Titlu și text'},{t:'<strong> <em>',d:'Accente în text'},{t:'<ul> <ol> <li>',d:'Liste'},{t:'<a href>',d:'Linkuri'},{t:'<img src alt>',d:'Imagini'},{t:'<button> <input>',d:'Butoane și câmpuri'},{t:'<div class>',d:'Containere'},{t:'style, <style>',d:'Culori, fundal, text'}],
+ files:true,
+ starter:sk('  <h1>Numele tău aici</h1>\n  <p>Scrie câteva rânduri despre tine.</p>',{title:'Despre mine'}),
+ controls:[],
+ tasks:[
+  {text:'Schimbă `<title>`-ul paginii.',hint:'Se află în `head`.',test:function(c){var t=(c.doc.title||'').trim();return t!==''&&t!=='Despre mine'}},
+  {text:'Pune numele tău în `h1`.',hint:'Înlocuiește „Numele tău aici”.',test:function(c){var h=c.q('h1');return !!h&&h.textContent.trim()!==''&&h.textContent.trim()!=='Numele tău aici'}},
+  {text:'Alege o culoare de fundal pentru pagină.',hint:'`<body style="background-color: …">` sau `body { … }` în `<style>`.',test:function(c){return c.cs(c.doc.body,'backgroundColor')!=='rgba(0, 0, 0, 0)'}},
+  {text:'Dă titlului o culoare diferită de negru.',hint:'`<h1 style="color: …">`',test:function(c){var h=c.q('h1');return !!h&&c.cs(h,'color')!=='rgb(0, 0, 0)'}},
+  {text:'Scrie cel puțin două paragrafe.',hint:'Despre tine, școală, hobby.',test:function(c){return c.qa('p').length>=2}},
+  {text:'Adaugă o listă cu cel puțin trei puncte.',hint:'Hobby-urile tale, într-un `ul`.',test:function(c){return c.qa('li').length>=3}},
+  {text:'Pune o imagine cu `alt`.',hint:'Apasă pe o poză din folder.',test:function(c){return c.qa('img').some(function(i){return (i.getAttribute('alt')||'').trim()!==''})}},
+  {text:'Adaugă un link cu `href`.',hint:'`<a href="https://…">…</a>`',test:function(c){return !!c.q('a[href]')}},
+  {text:'Pune un buton sau un câmp de formular.',hint:'`<button>Salută</button>` sau un `<input>`.',test:function(c){return !!c.q('button, input')}}
+ ]},
+
+/* teren liber */
+{id:'teren-liber',num:'∞',nav:'Teren liber',free:true,title:'Teren liber',
+ lead:'Aici nu există provocări. Scrie, încearcă, strică, repară.',
+ intro:
+ '<h2>Idei de pornit</h2>'+
+ '<ul><li>Pagina animalului tău preferat, cu poză, listă de însușiri și un link.</li><li>Meniul unui restaurant imaginar, cu secțiuni și prețuri.</li><li>Un formular de înscriere la o excursie.</li><li>Invitația ta de aniversare, cu culori și titluri mari.</li></ul>'+
+ '<p>Dacă uiți o etichetă, deschide lecțiile din stânga. Codul tău se salvează automat în acest browser.</p>',
+ cmds:[],files:true,
+ starter:sk('  <h1>Terenul meu de joacă</h1>\n  <p>Aici scriu ce vreau.</p>',{title:'Teren liber'}),
+ controls:[],tasks:[]}
+];
+
+/* ---------- CONȚINUT DETALIAT: proprietăți, greșeli, lecții noi ---------- */
+function K(s){return '<code>'+esc(s)+'</code>'}
+function TBL(head,rows){return '<div class="tw"><table class="ref"><thead><tr>'+head.map(function(h){return '<th>'+h+'</th>'}).join('')+'</tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table></div>'}
+function TREE(lines){return '<pre class="xp">'+lines.map(function(l){return '<span class="ln">'+esc(l)+' </span>'}).join('')+'</pre>'}
+
+var EXTRA={};
+
+/* ===== LECȚIA 0 ===== */
+EXTRA['lectia-0']={
+ deep:[
+  '<h2>Cuvintele pe care le vei auzi la curs</h2>',
+  TBL(['Termen','Ce înseamnă','Exemplu'],[
+   ['Etichetă (tag)','Cuvântul scris între < și >.',K('<p>')],
+   ['Element','Eticheta de deschidere, conținutul și eticheta de închidere, luate împreună.',K('<p>Salut</p>')],
+   ['Atribut','Informație în plus, scrisă în eticheta de deschidere.',K('class="mare"')],
+   ['Valoare','Ce scrie între ghilimele, după semnul =.',K('"mare"')],
+   ['Conținut','Ce se află între eticheta de deschidere și cea de închidere.',K('Salut')],
+   ['Imbricare','Un element scris în interiorul altui element.',K('<p><strong>Hei</strong></p>')]
+  ]),
+  '<h2>HTML sau CSS: cine ce face?</h2>',
+  '<ul><li><b>HTML</b> răspunde la întrebarea „ce este?”: titlu, paragraf, listă, poză, link.</li><li><b>CSS</b> răspunde la întrebarea „cum arată?”: roșu, mare, centrat, cu fundal, cu chenar.</li></ul>',
+  '<p>Regula de lucru: dacă vrei să schimbi <em>sensul</em> unei bucăți, schimbi eticheta. Dacă vrei să schimbi <em>aspectul</em>, schimbi stilul.</p>',
+  '<h2>Elemente de bloc și elemente în rând</h2>',
+  '<p>Elementele sunt de două feluri. Cele de <b>bloc</b> ocupă tot rândul și încep pe rând nou: '+K('h1')+', '+K('p')+', '+K('div')+', '+K('ul')+', '+K('table')+'. Cele <b>în rând</b> (inline) stau în mijlocul textului și ocupă doar cât au nevoie: '+K('strong')+', '+K('em')+', '+K('a')+', '+K('span')+', '+K('img')+'. Vom folosi asta tot cursul.</p>'
+ ].join(''),
+ props:[
+  {n:'<h1>',k:'html',d:'Titlul principal al paginii. Se scrie o singură dată. Browserul îl afișează mare și îngroșat.',ex:'<h1>Salut, lume!</h1>',tip:'Mărimea o poți schimba cu CSS, dar nivelul `h1` rămâne cel care spune cât de important este titlul.'},
+  {n:'<p>',k:'html',d:'Un paragraf de text. Browserul lasă automat un spațiu gol înainte și după el.',ex:'<p>Acesta este un paragraf.</p>',tip:'Un paragraf nou înseamnă un `<p>` nou, nu un rând gol în cod.'},
+  {n:'<strong>',k:'html',d:'Marchează un text important. Browserul îl afișează îngroșat.',ex:'<p>Ia <strong>caietul</strong> mâine.</p>',tip:'Este un element în rând: se poate scrie în mijlocul unui paragraf.'},
+  {n:'atribut',k:'html',d:'Informație în plus despre un element. Se scrie doar în eticheta de deschidere, sub forma `nume="valoare"`. Mai multe atribute se separă prin spațiu.',v:[['nume','ce fel de informație: class, id, style, href, src, alt…'],['=','semnul egal leagă numele de valoare'],['"valoare"','valoarea se scrie între ghilimele']],ex:'<p title="Mă vezi la mouse" style="color: crimson;">Treci cu mouse-ul peste mine</p>',tip:'Atributul `title` afișează un mic text când treci cu mouse-ul peste element.'},
+  {n:'lang',k:'html',d:'Limba în care este scrisă pagina. Se pune în eticheta `html`. Ajută cititoarele de ecran, traducerea automată și corectorul ortografic.',v:[['ro','română'],['en','engleză'],['fr','franceză'],['de','germană'],['hu','maghiară']],ex:'<html lang="ro">',ins:false}
+ ],
+ mist:[
+  ['<p>Salut','<p>Salut</p>','Lipsește eticheta de închidere. Browserul nu știe unde se termină paragraful și tot ce urmează se lipește de el.'],
+  ['<p class=mare>Text</p>','<p class="mare">Text</p>','Valorile atributelor se scriu între ghilimele. Fără ele merge doar în cazuri simple și se strică ușor.'],
+  ['<p><strong>Text</p></strong>','<p><strong>Text</strong></p>','Elementele nu se încrucișează. Se închide mai întâi cel deschis ultimul.'],
+  ['pagina.html.txt','pagina.html','Windows poate ascunde extensia. Dacă fișierul se numește de fapt pagina.html.txt, se deschide ca text simplu, nu ca pagină. Activează afișarea extensiilor în Explorer.']
+ ]
+};
+
+/* ===== LECȚIA 1 ===== */
+EXTRA['lectia-1']={
+ deep:[
+  '<h2>Arborele paginii</h2>',
+  '<p>Elementele stau unele în altele ca într-un arbore genealogic. '+K('html')+' este strămoșul, iar '+K('head')+' și '+K('body')+' sunt copiii lui. Indentarea (spațiile din fața rândului) nu contează pentru browser, dar te ajută pe tine să vezi cine în cine stă.</p>',
+  TREE(['html','├─ head','│   ├─ meta  (codarea literelor)','│   └─ title (numele din tab)','└─ body','    ├─ h1','    └─ p']),
+  '<h2>Ce se întâmplă dacă uiți o parte?</h2>',
+  TBL(['Ce lipsește','Ce se întâmplă'],[
+   [K('<!DOCTYPE html>'),'Browserul intră în „modul vechi” și poate afișa pagina diferit față de cum te aștepți.'],
+   [K('<meta charset="UTF-8">'),'Literele ă, î, ș, ț pot apărea ca semne ciudate (Ã„, È™).'],
+   [K('<title>'),'Tab-ul afișează numele fișierului, iar în Google pagina apare fără nume.'],
+   [K('</body>')+' sau '+K('</html>'),'De obicei merge, dar codul este greșit și poate da probleme mai târziu.']
+  ])
+ ].join(''),
+ props:[
+  {n:'<!DOCTYPE html>',k:'html',d:'Prima linie din fișier. Spune browserului să citească pagina după regulile HTML modern (HTML5). Nu este o etichetă obișnuită și nu se închide.',ex:'<!DOCTYPE html>',tip:'Se scrie exact așa, la începutul fișierului, înaintea oricărui alt rând.',ins:false},
+  {n:'<html>',k:'html',d:'Elementul rădăcină: conține toată pagina. Are exact doi copii, `head` și `body`.',ex:'<html lang="ro">\n  …\n</html>',tip:'Adaugă `lang="ro"` ca să știe toată lumea în ce limbă este pagina.',ins:false},
+  {n:'<head>',k:'html',d:'Capul paginii. Conține informații despre pagină: `title`, `meta`, `style`, `link`. Nimic din `head` nu apare în pagină, cu excepția titlului din tab.',ex:'<head>\n  <meta charset="UTF-8">\n  <title>Pagina mea</title>\n</head>',ins:false},
+  {n:'<meta charset="UTF-8">',k:'html',d:'Spune ce codare au literele. UTF-8 conține toate caracterele: ă, î, ș, ț, €, chiar și emoji. Nu se închide.',ex:'<meta charset="UTF-8">',tip:'Se pune primul în `head`. Salvează și fișierul ca UTF-8 în editor.',ins:false},
+  {n:'<meta name="viewport">',k:'html',d:'Pentru telefoane. Spune paginii să folosească lățimea reală a ecranului, nu una „de calculator” micșorată.',v:[['width=device-width','lățimea paginii = lățimea ecranului'],['initial-scale=1.0','fără zoom la început']],ex:'<meta name="viewport" content="width=device-width, initial-scale=1.0">',ins:false},
+  {n:'<title>',k:'html',d:'Numele paginii. Se vede în tab-ul browserului, în lista de favorite și în rezultatele Google.',ex:'<title>Prima mea pagină</title>',tip:'Nu apare în pagină. Pentru un titlu vizibil folosești `h1`.',ins:false},
+  {n:'<body>',k:'html',d:'Corpul paginii. Tot ce vede omul stă aici: texte, imagini, butoane, liste. Poate primi atributul `style` pentru fundalul întregii pagini.',ex:'<h2>Aici este corpul paginii</h2>\n<p>Orice scriu aici se vede.</p>'},
+  {n:'Comentariu',k:'html',d:'O notă pentru tine, în cod. Browserul o sare. Se scrie între `'+OC+'` și `-->`.',ex:OC+' Nota mea: aici începe meniul -->',tip:'Util ca să dezactivezi temporar o bucată de cod fără să o ștergi.'}
+ ],
+ mist:[
+  ['<body>\n  <title>Pagina</title>\n</body>','<head>\n  <title>Pagina</title>\n</head>','`title` aparține capului paginii, nu corpului.'],
+  ['<html>\n  <body>…</body>\n  <head>…</head>\n</html>','<html>\n  <head>…</head>\n  <body>…</body>\n</html>','Ordinea contează: întâi `head`, apoi `body`.'],
+  ['<head>\n  <title>Pagina</title>\n<body>','<head>\n  <title>Pagina</title>\n</head>\n<body>','Capul trebuie închis înainte să înceapă corpul.'],
+  ['Pagină cu „Ã„” în loc de ă','<meta charset="UTF-8">','Lipsește `meta charset` sau fișierul nu este salvat ca UTF-8.']
+ ]
+};
+
+/* ===== LECȚIA 2 ===== */
+EXTRA['lectia-2']={
+ deep:[
+  '<h2>Cele șase niveluri de titlu</h2>',
+  TBL(['Element','Mărime implicită','Când îl folosești'],[
+   [K('<h1>'),'2em (32 px)','titlul paginii, o singură dată'],
+   [K('<h2>'),'1.5em (24 px)','capitolele'],
+   [K('<h3>'),'1.17em (≈ 19 px)','subcapitolele'],
+   [K('<h4>'),'1em (16 px)','părți dintr-un subcapitol'],
+   [K('<h5>'),'0.83em (≈ 13 px)','rar folosit'],
+   [K('<h6>'),'0.67em (≈ 11 px)','rar folosit']
+  ]),
+  '<h2>De ce nu alegem titlul după mărime?</h2>',
+  '<p>Google, cititoarele de ecran folosite de persoanele cu deficiențe de vedere și chiar tu, mai târziu, vă orientați după nivelurile titlurilor. Un titlu '+K('h4')+' ales doar pentru că „arată bine” încurcă tot cuprinsul. Dacă vrei un titlu mai mic sau mai mare, păstrezi nivelul corect și schimbi mărimea cu '+K('font-size')+'.</p>',
+  '<h2>Title sau h1?</h2>',
+  TBL(['',esc('<title>'),esc('<h1>')],[
+   ['Unde se vede','În tab-ul browserului și în Google','În pagină, sus'],
+   ['Unde se scrie',K('head'),K('body')],
+   ['Câte pe pagină','Unul','Unul']
+  ])
+ ].join(''),
+ props:[
+  {n:'<title>',k:'html',d:'Numele paginii din tab. Se scrie în `head`.',ex:'<title>Clubul de robotică</title>',tip:'Fă-l scurt și clar: sub 60 de caractere.',ins:false},
+  {n:'<h1>',k:'html',d:'Titlul principal din pagină. Unul singur.',ex:'<h1>Clubul de robotică</h1>'},
+  {n:'<h2>',k:'html',d:'Titlu de capitol. Poți avea oricâte.',ex:'<h2>Cine suntem</h2>'},
+  {n:'<h3>',k:'html',d:'Titlu de subcapitol, în interiorul unui `h2`.',ex:'<h3>Echipa de programare</h3>'},
+  {n:'<h4> – <h6>',k:'html',d:'Niveluri mai mici. Se folosesc rar, doar când ai nevoie de subîmpărțiri foarte fine.',ex:'<h4>Nivelul 4</h4>\n<h5>Nivelul 5</h5>\n<h6>Nivelul 6</h6>'},
+  {n:'<meta name="description">',k:'html',d:'Descrierea paginii, afișată de Google sub titlu în rezultatele căutării. Se scrie în `head`.',ex:'<meta name="description" content="Pagina clubului de robotică din școala noastră.">',ins:false},
+  {n:'font-size',k:'css',d:'Schimbă mărimea textului fără să schimbe nivelul titlului. Se scrie în atributul `style`.',v:[['32px','32 de pixeli'],['2em','de două ori mărimea textului din jur'],['150%','o dată și jumătate']],ex:'<h2 style="font-size: 48px;">Subtitlu uriaș</h2>',tip:'Detalii despre unități în lecția despre stilul textului.'},
+  {n:'text-align',k:'css',d:'Aliniază titlul: `left`, `center` sau `right`.',ex:'<h2 style="text-align: center;">Titlu centrat</h2>'}
+ ],
+ mist:[
+  ['<h1>Meniu</h1>\n<h1>Cum ajung</h1>','<h1>Pagina mea</h1>\n<h2>Meniu</h2>\n<h2>Cum ajung</h2>','Un singur `h1` pe pagină. Restul sunt `h2`.'],
+  ['<h1>Titlu</h1>\n<h4>Subtitlu</h4>','<h1>Titlu</h1>\n<h2>Subtitlu</h2>','Nu sări peste niveluri.'],
+  ['<h3>Text mare</h3>  (doar ca să arate mare)','<p style="font-size: 28px;">Text mare</p>','Nivelul se alege după importanță. Mărimea se schimbă cu CSS.'],
+  ['<title>Salut</title> în body','<title> în head, <h1> în body','`title` și `h1` sunt două lucruri diferite, în locuri diferite.']
+ ]
+};
+
+/* ===== LECȚIA 3 ===== */
+EXTRA['lectia-3']={
+ deep:[
+  '<h2>Cum citește browserul textul</h2>',
+  '<ul><li>Mai multe <b>spații</b> la rând devin unul singur.</li><li>Un <b>rând nou</b> din cod este tratat ca un spațiu.</li><li>Un <b>rând gol</b> din cod nu produce niciun rând gol pe ecran.</li><li>Un <b>paragraf nou</b> apare doar când scrii un nou '+K('<p>')+'.</li></ul>',
+  '<h2>Semnificație sau aspect?</h2>',
+  TBL(['Element','Ce spune','Cum se vede'],[
+   [K('<strong>'),'text important','îngroșat'],
+   [K('<b>'),'doar aspect, fără importanță','îngroșat'],
+   [K('<em>'),'text accentuat','înclinat'],
+   [K('<i>'),'doar aspect (termen străin, gând)','înclinat']
+  ]),
+  '<p>Pentru cititoarele de ecran, '+K('strong')+' și '+K('em')+' schimbă tonul vocii. '+K('b')+' și '+K('i')+' nu. Preferă-le pe primele când textul chiar contează.</p>'
+ ].join(''),
+ props:[
+  {n:'<p>',k:'html',d:'Paragraf. Element de bloc: începe pe rând nou și lasă spațiu înainte și după.',ex:'<p>Un paragraf nou.</p>'},
+  {n:'<br>',k:'html',d:'Rând nou în interiorul unui paragraf. Nu are conținut, deci nici etichetă de închidere.',ex:'<p>Strada Florilor 12<br>București<br>România</p>',tip:'Nu folosi `br` ca să faci spațiu gol între blocuri. Pentru asta există `margin` în CSS.'},
+  {n:'<hr>',k:'html',d:'Linie orizontală care separă două părți. Nu se închide.',ex:'<p>Capitolul 1</p>\n<hr>\n<p>Capitolul 2</p>'},
+  {n:'<strong>',k:'html',d:'Text important, îngroșat.',ex:'<p>Termen limită: <strong>vineri</strong>.</p>'},
+  {n:'<em>',k:'html',d:'Text accentuat, înclinat.',ex:'<p>Eu <em>chiar</em> am spus asta.</p>'},
+  {n:'<b>, <i>',k:'html',d:'Îngroșat, respectiv înclinat, doar pentru aspect, fără sens în plus.',ex:'<p>Cuvântul <i>laptop</i> este <b>englezesc</b>.</p>'},
+  {n:'<u>',k:'html',d:'Text subliniat.',ex:'<p>Acesta este un cuvânt <u>subliniat</u>.</p>',tip:'Un text subliniat care nu este link îi încurcă pe cititori, pentru că linkurile sunt subliniate implicit.'},
+  {n:'<mark>',k:'html',d:'Evidențiază textul ca și cum l-ai marca cu textmarkerul.',ex:'<p>Nu uita de <mark>test</mark>.</p>'},
+  {n:'<small>',k:'html',d:'Text mai mic, pentru precizări și note.',ex:'<p>Preț: 20 lei <small>(TVA inclus)</small></p>'},
+  {n:'<sub>, <sup>',k:'html',d:'Indice (jos), respectiv exponent (sus).',ex:'<p>H<sub>2</sub>O și m<sup>2</sup></p>'},
+  {n:'<del>, <ins>',k:'html',d:'Text șters (tăiat), respectiv text adăugat (subliniat).',ex:'<p>Preț: <del>50 lei</del> <ins>35 lei</ins></p>'},
+  {n:'<blockquote>',k:'html',d:'Un citat mai lung. Browserul îl indentează.',ex:'<blockquote>Cine citește mult știe mult.</blockquote>'},
+  {n:'<pre>',k:'html',d:'Text preformatat. Păstrează spațiile și rândurile exact ca în cod și folosește un font cu litere de aceeași lățime.',ex:'<pre>Rând 1\n   Rând 2, indentat\nRând 3</pre>',tip:'Se folosește pentru cod și poezii.'},
+  {n:'Entități (&…;)',k:'html',d:'Coduri pentru caractere care ar încurca HTML-ul sau care nu sunt pe tastatură. Încep cu `&` și se termină cu `;`.',v:[['&lt;','semnul <'],['&gt;','semnul >'],['&amp;','semnul &'],['&nbsp;','spațiu care nu se rupe pe rând nou'],['&copy;','©'],['&euro;','€']],ex:'<p>5 &lt; 8 și 9 &gt; 2 &copy; 2026 &euro;</p>',tip:'Dacă scrii `<` direct în text, browserul crede că începe o etichetă.'},
+  {n:'Comentariu',k:'html',d:'Notă în cod, invizibilă în pagină.',ex:OC+' De adăugat: poza de la excursie -->'}
+ ],
+ mist:[
+  ['<p>Rând 1\n\n\n\nRând 2</p>','<p>Rând 1</p>\n<p>Rând 2</p>','Rândurile goale din cod sunt ignorate. Pentru paragraf nou folosești un nou `p`.'],
+  ['<p>Text</p><br><br><br><p>Text</p>','<p style="margin-bottom: 60px;">Text</p>\n<p>Text</p>','Nu folosi `br` pentru a crea spațiu. Folosește `margin`.'],
+  ['<p>3 < 5</p>','<p>3 &lt; 5</p>','Semnul < trebuie scris ca entitate, altfel este luat drept început de etichetă.'],
+  ['<br></br>','<br>','`br` și `hr` nu au etichetă de închidere.']
+ ]
+};
+
+/* ===== LECȚIA 4 ===== */
+EXTRA['lectia-4']={
+ deep:[
+  '<h2>Cum citești o declarație CSS</h2>',
+  '<pre class="xp"><span class="ln">background-color: lightblue;</span><span class="ln">└── proprietate ──┘ └─ valoare ─┘└ ; închide</span></pre>',
+  '<p>Proprietatea este „ce schimb”, iar valoarea este „în ce”. Între ele pui <code>:</code>, iar la final <code>;</code>. Poți pune mai multe declarații, una după alta, în același '+K('style')+'.</p>',
+  '<h2>Unde pui fundalul?</h2>',
+  '<ul><li>Pe '+K('body')+': se colorează toată pagina.</li><li>Pe un '+K('p')+' sau '+K('h1')+': se colorează doar cutia acelui element.</li><li>Pe un '+K('div')+': se colorează grupul de elemente din el.</li></ul>',
+  '<h2>Contrast</h2>',
+  '<p>Textul trebuie să se vadă pe fundal. Regula practică: un fundal închis cere text deschis, iar unul deschis cere text închis. Evită perechile apropiate ca luminozitate (galben pe alb, gri deschis pe alb, roșu pe verde).</p>',
+  '<h2>Ordinea contează</h2>',
+  '<p>Dacă scrii aceeași proprietate de două ori, <mark>ultima câștigă</mark>: '+K('style="background-color: red; background-color: blue;"')+' dă fundal albastru.</p>'
+ ].join(''),
+ props:[
+  {n:'style',k:'html',d:'Atribut care îi dă unui element stilul lui propriu. Conține una sau mai multe declarații CSS.',v:[['proprietate: valoare;','o declarație'],['mai multe','se scriu una după alta, fiecare cu ;']],ex:'<p style="color: white; background-color: navy;">Text alb pe fundal bleumarin</p>',tip:'Toate declarațiile stau în același `style`, între aceleași ghilimele.'},
+  {n:'background-color',k:'css',d:'Culoarea de fundal a elementului. Acceptă orice format de culoare din cardurile de mai jos.',v:[['red','nume de culoare'],['#FF0000','cod hexadecimal'],['rgb(255, 0, 0)','roșu, verde, albastru'],['transparent','fără culoare']],ex:'<p style="background-color: lightgreen;">Paragraf cu fundal verde deschis</p>'},
+  {n:'nume de culori',k:'val',d:'Aproximativ 140 de nume în engleză. Ușor de ținut minte, dar limitate.',v:[['red, green, blue','culori de bază'],['orange, gold, pink','calde'],['lightblue, lightgreen','variante deschise'],['darkblue, darkred','variante închise'],['black, white, gray','neutre'],['tomato, orchid, seagreen','nume mai neobișnuite']],ex:'<p style="background-color: tomato;">tomato</p>\n<p style="background-color: orchid;">orchid</p>\n<p style="background-color: seagreen; color: white;">seagreen</p>'},
+  {n:'#RRGGBB',k:'val',d:'Cod hexadecimal. După `#` urmează trei perechi de cifre: roșu, verde, albastru. Cifrele sunt 0–9 și A–F. `00` înseamnă deloc, iar `FF` înseamnă maxim.',v:[['#FF0000','roșu'],['#00FF00','verde'],['#0000FF','albastru'],['#000000','negru'],['#FFFFFF','alb'],['#808080','gri'],['#FFD700','auriu']],ex:'<p style="background-color: #FFD700;">auriu: #FFD700</p>',tip:'Majusculele sau literele mici nu contează. `#ff0000` este la fel cu `#FF0000`.'},
+  {n:'#RGB',k:'val',d:'Varianta scurtă a codului hexadecimal, când fiecare pereche are cifre identice. `#F00` înseamnă `#FF0000`.',v:[['#F00','roșu'],['#0F0','verde'],['#00F','albastru'],['#FFF','alb']],ex:'<p style="background-color: #0AF; color: #FFF;">#0AF = #00AAFF</p>'},
+  {n:'rgb(r, g, b)',k:'val',d:'Roșu, verde și albastru, fiecare între 0 și 255. La fel ca hex, dar cu numere obișnuite.',v:[['rgb(255, 0, 0)','roșu'],['rgb(0, 0, 0)','negru'],['rgb(255, 255, 255)','alb'],['rgb(255, 165, 0)','portocaliu']],ex:'<p style="background-color: rgb(255, 165, 0);">rgb(255, 165, 0)</p>'},
+  {n:'rgba(r, g, b, a)',k:'val',d:'La fel ca `rgb`, plus un al patrulea număr, transparența (`a` de la alpha), între 0 (invizibil) și 1 (opac).',v:[['rgba(0, 0, 0, 0.5)','negru pe jumătate transparent'],['rgba(255, 0, 0, 0.2)','roșu foarte pal']],ex:'<p style="background-color: rgba(220, 20, 60, 0.3);">Roșu transparent</p>'},
+  {n:'hsl(h, s%, l%)',k:'val',d:'Nuanța (unghi de la 0 la 360), saturația și luminozitatea. Cel mai ușor format de ajustat: schimbi doar luminozitatea ca să faci culoarea mai închisă sau mai deschisă.',v:[['hsl(0, 100%, 50%)','roșu (0°)'],['hsl(120, 100%, 50%)','verde (120°)'],['hsl(240, 100%, 50%)','albastru (240°)'],['hsl(240, 100%, 90%)','același albastru, foarte deschis']],ex:'<p style="background-color: hsl(200, 80%, 85%);">hsl(200, 80%, 85%)</p>'},
+  {n:'transparent',k:'val',d:'Fără culoare. Se vede ce este în spate.',ex:'<p style="background-color: transparent;">Fără fundal</p>'},
+  {n:'background-image',k:'css',d:'Pune o imagine sau un gradient ca fundal.',v:[['url(poza.svg)','o imagine din folder'],['linear-gradient(...)','trecere lină între culori'],['radial-gradient(...)','gradient circular']],ex:'<div style="height: 120px; background-image: linear-gradient(to right, gold, tomato);"></div>',tip:'Elementul are nevoie de o înălțime, altfel nu se vede imaginea.'},
+  {n:'linear-gradient()',k:'val',d:'Gradient în linie dreaptă. Primul parametru este direcția, apoi două sau mai multe culori.',v:[['to right','de la stânga la dreapta'],['to bottom','de sus în jos (implicit)'],['45deg','sub un unghi de 45°']],ex:'<div style="height: 120px; background-image: linear-gradient(45deg, navy, deepskyblue, white);"></div>'},
+  {n:'background-repeat',k:'css',d:'Dacă imaginea de fundal se repetă ca niște plăci.',v:[['repeat','se repetă în ambele direcții (implicit)'],['no-repeat','o singură dată'],['repeat-x','doar pe orizontală'],['repeat-y','doar pe verticală']],ex:'<div style="height: 200px; background-image: url(soare.svg); background-repeat: repeat-x; background-size: 80px;"></div>'},
+  {n:'background-size',k:'css',d:'Mărimea imaginii de fundal.',v:[['cover','umple tot elementul, taie ce depășește'],['contain','se vede întreagă, poate lăsa goluri'],['100px','lățime fixă'],['50%','jumătate din lățimea elementului']],ex:'<div style="height: 180px; background-image: url(casa.svg); background-size: cover;"></div>'},
+  {n:'background-position',k:'css',d:'Unde se așază imaginea de fundal în element.',v:[['center','la mijloc'],['top','sus'],['left bottom','stânga jos'],['20px 40px','la 20 px de stânga și 40 px de sus']],ex:'<div style="height: 180px; background-image: url(luna.svg); background-repeat: no-repeat; background-size: 100px; background-position: center;"></div>'},
+  {n:'background',k:'css',d:'Prescurtare: scrii într-o singură proprietate culoarea, imaginea, repetarea și poziția.',ex:'<div style="height: 160px; background: lightblue url(copac.svg) no-repeat center / 120px;"></div>',tip:'Util când ai deja experiență. Până atunci folosește proprietățile separate.'}
+ ],
+ mist:[
+  ['<p style="background-color = red">','<p style="background-color: red;">','Între proprietate și valoare se pune două puncte, nu semnul egal.'],
+  ['<p style="background-colour: red;">','<p style="background-color: red;">','CSS folosește ortografia americană: color, nu colour.'],
+  ['<p style="color: red;">  (vrei fundal roșu)','<p style="background-color: red;">','`color` colorează literele, `background-color` colorează fundalul.'],
+  ['<p style="background-color: #FF00;">','<p style="background-color: #FF0000;">','Codul hexadecimal are 3 sau 6 cifre, nu 4 sau 5.'],
+  ['<p style="background-color: rgb(255, 0, 0;">','<p style="background-color: rgb(255, 0, 0);">','Lipsește paranteza de închidere.'],
+  ['<p style="background-color: red background-color: blue;">','<p style="background-color: red; color: white;">','Fiecare declarație se încheie cu `;`.']
+ ]
+};
+
+/* ===== LECȚIA 5 ===== */
+EXTRA['lectia-5']={
+ starter:sk('  <h1 style="color: royalblue; text-align: left; text-transform: none; letter-spacing: 0px;">Titlu colorat</h1>\n  <p style="font-size: 18px; font-family: Georgia, serif; color: #333333; font-weight: normal; line-height: 1.5; text-decoration: none;">Acesta este un paragraf cu stil propriu. Schimbă mărimea, fontul, grosimea și spațiul dintre rânduri și vezi cum se modifică pagina.</p>',{title:'Text stilat'}),
+ controls:[
+  {type:'color',label:'Culoarea titlului',re:/(<h1\b[^>]*?(?<![-\w])color:\s*)([^;"]+)()/},
+  {type:'select',label:'Alinierea titlului',options:[['left','la stânga'],['center','centrat'],['right','la dreapta']],re:/(<h1\b[^>]*?text-align:\s*)([^;"]+)()/},
+  {type:'select',label:'Litere titlu (text-transform)',options:[['none','normale'],['uppercase','MAJUSCULE'],['lowercase','litere mici'],['capitalize','Prima Literă Mare']],re:/(<h1\b[^>]*?text-transform:\s*)([^;"]+)()/},
+  {type:'range',label:'Spațiu între litere (px)',min:0,max:20,re:/(<h1\b[^>]*?letter-spacing:\s*)(\d+)(px)/},
+  {type:'range',label:'Mărimea paragrafului (px)',min:10,max:60,re:/(<p\b[^>]*?font-size:\s*)(\d+)(px)/},
+  {type:'select',label:'Fontul paragrafului',options:[['Georgia, serif','Georgia'],['Arial, sans-serif','Arial'],["'Courier New', monospace",'Courier New'],['Verdana, sans-serif','Verdana'],["'Times New Roman', serif",'Times New Roman']],re:/(<p\b[^>]*?font-family:\s*)([^;"]+)()/},
+  {type:'color',label:'Culoarea paragrafului',re:/(<p\b[^>]*?(?<![-\w])color:\s*)([^;"]+)()/},
+  {type:'select',label:'Grosimea (font-weight)',options:[['normal','normal'],['bold','bold'],['300','300 subțire'],['900','900 foarte gros']],re:/(<p\b[^>]*?font-weight:\s*)([^;"]+)()/},
+  {type:'range',label:'Spațiu între rânduri (line-height)',min:1,max:3,step:0.1,unit:'',re:/(<p\b[^>]*?line-height:\s*)([\d.]+)()/},
+  {type:'select',label:'Decorare (text-decoration)',options:[['none','niciuna'],['underline','subliniat'],['line-through','tăiat'],['overline','linie deasupra']],re:/(<p\b[^>]*?text-decoration:\s*)([^;"]+)()/}
+ ],
+ cmds:[{t:'color',d:'Culoarea literelor'},{t:'font-size',d:'Mărimea, de ex. 24px'},{t:'font-family',d:'Fontul (Arial, Georgia…)'},{t:'font-weight',d:'Grosimea: normal, bold'},{t:'text-align',d:'left, center, right, justify'},{t:'text-decoration',d:'underline, line-through, none'},{t:'text-transform',d:'uppercase, lowercase, capitalize'},{t:'line-height',d:'Spațiul dintre rânduri'}],
+ tasks:[
+  {text:'Centrează titlul cu `text-align: center`.',hint:'În `<h1 style="…">` înlocuiește `left` cu `center`.',test:function(c){var h=c.q('h1');return !!h&&c.cs(h,'textAlign')==='center'}},
+  {text:'Fă paragraful mai mare de 22 de pixeli.',hint:'Schimbă `18px` în `24px` sau mai mult.',test:function(c){var p=c.q('p');return !!p&&parseFloat(c.cs(p,'fontSize'))>22}},
+  {text:'Schimbă culoarea titlului în alta decât `royalblue`.',hint:'Încearcă `crimson`, `seagreen` sau `#ff8800`.',test:function(c){var h=c.q('h1');return !!h&&c.cs(h,'color')!=='rgb(65, 105, 225)'}},
+  {text:'Schimbă culoarea paragrafului.',hint:'Înlocuiește `#333333` cu altă culoare.',test:function(c){var p=c.q('p');return !!p&&c.cs(p,'color')!=='rgb(51, 51, 51)'}},
+  {text:'Scrie titlul cu majuscule folosind `text-transform: uppercase`.',hint:'Înlocuiește `none` din `text-transform` cu `uppercase`.',test:function(c){var h=c.q('h1');return !!h&&c.cs(h,'textTransform')==='uppercase'}},
+  {text:'Îngroașă paragraful cu `font-weight: bold`.',hint:'Înlocuiește `normal` din `font-weight` cu `bold`.',test:function(c){var p=c.q('p');return !!p&&parseInt(c.cs(p,'fontWeight'),10)>=600}},
+  {text:'Mărește spațiul dintre rânduri: `line-height` de cel puțin 2.',hint:'Schimbă `1.5` în `2` sau `2.2`.',test:function(c){var p=c.q('p');if(!p)return false;return parseFloat(c.cs(p,'lineHeight'))/parseFloat(c.cs(p,'fontSize'))>=1.95}},
+  {text:'Subliniază paragraful cu `text-decoration: underline`.',hint:'Înlocuiește `none` din `text-decoration` cu `underline`.',test:function(c){var p=c.q('p');return !!p&&String(c.cs(p,'textDecorationLine')).indexOf('underline')>-1}}
+ ],
+ deep:[
+  '<h2>Unități de măsură pentru mărime</h2>',
+  TBL(['Unitate','Ce înseamnă','Când o folosești'],[
+   [K('px'),'pixel, o mărime fixă pe ecran','când vrei control exact'],
+   [K('em'),'de atâtea ori mărimea textului părintelui','spații care se scalează cu textul'],
+   [K('rem'),'de atâtea ori mărimea textului din '+K('html')+' (16 px implicit)','mărimi consecvente în toată pagina'],
+   [K('%'),'procent din mărimea părintelui','mărimi relative'],
+   [K('vw'),'1% din lățimea ferestrei','titluri care cresc cu ecranul']
+  ]),
+  '<h2>Fonturi sigure</h2>',
+  '<p>Browserul poate folosi doar fonturile instalate pe calculatorul celui care deschide pagina. Pentru siguranță scrii mai multe, separate prin virgulă, iar ultimul este o <b>familie generică</b>: '+K('serif')+' (cu serife, ca Times), '+K('sans-serif')+' (fără serife, ca Arial) sau '+K('monospace')+' (litere de aceeași lățime, ca în cod). Dacă primul font lipsește, se încearcă următorul.</p>',
+  '<h2>Moștenirea</h2>',
+  '<p>Proprietățile de text (<code>color</code>, <code>font-size</code>, <code>font-family</code>, <code>line-height</code>, <code>text-align</code>) se <mark>moștenesc</mark>: dacă le pui pe <code>body</code>, le primesc toate elementele din el. Nu mai repeți aceeași culoare la fiecare paragraf. Fundalul și chenarul nu se moștenesc.</p>'
+ ].join(''),
+ props:[
+  {n:'color',k:'css',d:'Culoarea literelor (nu a fundalului). Acceptă aceleași formate ca fundalul.',v:[['red','nume'],['#333333','hex'],['rgb(51, 51, 51)','rgb'],['rgba(0, 0, 0, 0.6)','cu transparență']],ex:'<p style="color: crimson;">Text roșu închis</p>'},
+  {n:'font-size',k:'css',d:'Mărimea literelor.',v:[['16px','pixeli'],['1.5em','de 1,5 ori textul din jur'],['2rem','de 2 ori mărimea rădăcinii'],['150%','procent'],['large','cuvinte: small, medium, large, x-large']],ex:'<p style="font-size: 28px;">Text de 28 de pixeli</p>',tip:'Textul obișnuit de citit are 16–18 px.'},
+  {n:'font-family',k:'css',d:'Fontul. Scrie mai multe variante, separate prin virgulă. Numele cu spații stau între ghilimele.',v:[['Arial, sans-serif','fără serife'],['Georgia, serif','cu serife'],["'Courier New', monospace",'litere de aceeași lățime'],['Verdana, sans-serif','lat, ușor de citit'],["'Trebuchet MS', sans-serif",'rotunjit']],ex:'<p style="font-family: Georgia, serif;">Text în Georgia</p>\n<p style="font-family: Verdana, sans-serif;">Text în Verdana</p>\n<p style="font-family: \'Courier New\', monospace;">Text în Courier New</p>'},
+  {n:'font-weight',k:'css',d:'Grosimea literelor.',v:[['normal','400, grosimea obișnuită'],['bold','700, îngroșat'],['100 … 900','grosimi intermediare (depinde de font)'],['lighter / bolder','mai subțire / mai gros decât părintele']],ex:'<p style="font-weight: bold;">Text îngroșat cu CSS</p>'},
+  {n:'font-style',k:'css',d:'Înclinarea literelor.',v:[['normal','dreaptă'],['italic','înclinată'],['oblique','înclinată artificial']],ex:'<p style="font-style: italic;">Text înclinat</p>'},
+  {n:'text-align',k:'css',d:'Alinierea textului în cutia lui.',v:[['left','la stânga (implicit)'],['center','centrat'],['right','la dreapta'],['justify','aliniat la ambele margini']],ex:'<p style="text-align: center;">Text centrat</p>\n<p style="text-align: right;">Text la dreapta</p>',tip:'Aliniază textul din interiorul elementului, nu elementul în pagină.'},
+  {n:'text-decoration',k:'css',d:'Linii pe text.',v:[['none','fără (scoate sublinierea linkurilor)'],['underline','subliniat'],['overline','linie deasupra'],['line-through','tăiat'],['underline wavy red','ondulat, roșu']],ex:'<p style="text-decoration: underline;">Subliniat</p>\n<p style="text-decoration: line-through;">Tăiat</p>'},
+  {n:'text-transform',k:'css',d:'Schimbă literele mari/mici fără să schimbe textul din cod.',v:[['none','cum a fost scris'],['uppercase','TOT CU MAJUSCULE'],['lowercase','tot cu litere mici'],['capitalize','Fiecare Cuvânt Cu Majusculă']],ex:'<p style="text-transform: uppercase;">text cu majuscule</p>'},
+  {n:'line-height',k:'css',d:'Înălțimea unui rând de text, deci spațiul dintre rânduri.',v:[['1.5','de 1,5 ori mărimea literelor (recomandat, fără unitate)'],['24px','fix'],['150%','procent']],ex:'<p style="line-height: 2;">Un text lung cu spațiu mare între rânduri, ca să se vadă diferența dintre rânduri atunci când se rupe pe mai multe linii în pagină.</p>',tip:'Un text este plăcut de citit la 1.4–1.6.'},
+  {n:'letter-spacing',k:'css',d:'Spațiul dintre litere.',v:[['0','normal'],['2px','mai rărit'],['-1px','mai strâns']],ex:'<p style="letter-spacing: 4px;">T I T L U  R Ă R I T</p>'},
+  {n:'word-spacing',k:'css',d:'Spațiul dintre cuvinte.',v:[['normal','implicit'],['10px','mai mare']],ex:'<p style="word-spacing: 14px;">Cuvinte mai depărtate între ele</p>'},
+  {n:'text-indent',k:'css',d:'Alineat: spațiul gol din fața primului rând al paragrafului.',v:[['30px','30 de pixeli'],['2em','două litere late']],ex:'<p style="text-indent: 30px;">Primul rând începe mai spre dreapta, ca la începutul unui paragraf dintr-o carte, iar restul rândurilor rămân lipite de margine.</p>'},
+  {n:'text-shadow',k:'css',d:'Umbra textului. Valori în ordine: deplasare pe orizontală, deplasare pe verticală, estompare, culoare.',ex:'<h2 style="text-shadow: 2px 2px 4px gray;">Titlu cu umbră</h2>'}
+ ],
+ mist:[
+  ['<p style="font-size: 20">','<p style="font-size: 20px;">','Mărimea fără unitate nu funcționează. Scrie `px`, `em` sau `%`.'],
+  ['<p style="font-family: Courier New;">','<p style="font-family: \'Courier New\', monospace;">','Numele de font cu spații se pune între ghilimele simple, iar la final adaugi o familie generică.'],
+  ['<p style="text-align: middle;">','<p style="text-align: center;">','Valorile corecte sunt `left`, `center`, `right`, `justify`. `middle` nu există aici.'],
+  ['<p style="font-weight: strong;">','<p style="font-weight: bold;">','`strong` este o etichetă HTML, nu o valoare CSS.'],
+  ['<p style="color: yellow;"> pe fundal alb','<p style="color: #222222;"> pe fundal alb','Contrast prea mic: textul nu se mai citește.'],
+  ['<p style="text-align: center;"> (vrei să centrezi o poză)','<div style="text-align: center;"><img …></div>','`text-align` aliniază conținutul din interior, deci îl pui pe elementul-părinte.']
+ ]
+};
+
+/* ===== LECȚIA 6 (liste) ===== */
+EXTRA['lectia-6']={
+ deep:[
+  '<h2>Cum alegi tipul de listă?</h2>',
+  TBL(['Întrebare','Răspuns','Etichetă'],[
+   ['Contează ordinea?','Nu: ingrediente, hobby-uri, cumpărături',K('<ul>')],
+   ['Contează ordinea?','Da: pași, clasament, instrucțiuni',K('<ol>')],
+   ['Ai termen + explicație?','Da: glosar, întrebări și răspunsuri',K('<dl>')]
+  ]),
+  '<h2>Reguli de aur</h2>',
+  '<ul><li>În '+K('ul')+' și '+K('ol')+' stau <b>doar</b> elemente '+K('li')+'. Nu pui text direct în listă.</li><li>Orice vrei să pui în interiorul unui punct (text, link, altă listă) merge în '+K('li')+'.</li><li>Lista în listă se scrie <b>în interiorul</b> unui '+K('li')+', nu între două.</li></ul>'
+ ].join(''),
+ props:[
+  {n:'<ul>',k:'html',d:'Listă neordonată, cu buline. „ul” vine de la unordered list.',ex:'<ul>\n  <li>Pâine</li>\n  <li>Lapte</li>\n</ul>'},
+  {n:'<ol>',k:'html',d:'Listă ordonată, numerotată automat. „ol” vine de la ordered list.',ex:'<ol>\n  <li>Spală mâinile</li>\n  <li>Amestecă ouăle</li>\n  <li>Coace</li>\n</ol>'},
+  {n:'<li>',k:'html',d:'Un punct din listă (list item). Apare doar în `ul`, `ol` sau `menu`.',ex:'<ul>\n  <li>Un punct</li>\n</ul>'},
+  {n:'type (la ol)',k:'html',d:'Felul numerotării pentru `ol`.',v:[['1','1, 2, 3 (implicit)'],['A','A, B, C'],['a','a, b, c'],['I','I, II, III'],['i','i, ii, iii']],ex:'<ol type="I">\n  <li>Capitolul unu</li>\n  <li>Capitolul doi</li>\n</ol>'},
+  {n:'start',k:'html',d:'Numărul de la care începe numerotarea unei liste `ol`.',ex:'<ol start="5">\n  <li>Cinci</li>\n  <li>Șase</li>\n</ol>'},
+  {n:'reversed',k:'html',d:'Numerotează descrescător, ca într-un clasament cu numărătoare inversă.',ex:'<ol reversed>\n  <li>Locul 3</li>\n  <li>Locul 2</li>\n  <li>Locul 1</li>\n</ol>'},
+  {n:'liste imbricate',k:'html',d:'O listă pusă în interiorul unui `li`. Se creează un subnivel, cu indentare automată.',ex:'<ul>\n  <li>Fructe\n    <ul>\n      <li>Mere</li>\n      <li>Pere</li>\n    </ul>\n  </li>\n  <li>Legume</li>\n</ul>'},
+  {n:'list-style-type',k:'css',d:'Felul bulinei sau al numărului, din CSS. Se aplică pe `ul` sau `ol`.',v:[['disc','bulină plină (implicit la ul)'],['circle','cerc gol'],['square','pătrat'],['none','fără buline'],['decimal','1, 2, 3'],['lower-alpha','a, b, c'],['upper-roman','I, II, III']],ex:'<ul style="list-style-type: square;">\n  <li>Pătrat</li>\n  <li>Pătrat</li>\n</ul>'},
+  {n:'<dl>, <dt>, <dd>',k:'html',d:'Listă de definiții. `dt` este termenul, `dd` este explicația lui.',ex:'<dl>\n  <dt>HTML</dt>\n  <dd>Limbajul care descrie structura paginii</dd>\n  <dt>CSS</dt>\n  <dd>Limbajul care descrie aspectul</dd>\n</dl>'}
+ ],
+ mist:[
+  ['<ul>\n  Pâine\n  <li>Lapte</li>\n</ul>','<ul>\n  <li>Pâine</li>\n  <li>Lapte</li>\n</ul>','Fiecare punct din listă trebuie să fie într-un `li`.'],
+  ['<ul>\n  <li>Fructe</li>\n  <ul><li>Mere</li></ul>\n</ul>','<ul>\n  <li>Fructe\n    <ul><li>Mere</li></ul>\n  </li>\n</ul>','Lista interioară stă în interiorul unui `li`, nu între două `li`.'],
+  ['<li>Pâine</li>','<ul><li>Pâine</li></ul>','`li` are nevoie de `ul` sau `ol` în jurul lui.'],
+  ['<ol type="a1">','<ol type="a">','`type` primește exact una dintre valorile 1, A, a, I, i.']
+ ]
+};
+
+/* ===== LECȚIA 7 (linkuri) ===== */
+EXTRA['lectia-7']={
+ deep:[
+  '<h2>Tipuri de adrese în href</h2>',
+  TBL(['Tip','Exemplu','Unde duce'],[
+   ['Absolută',K('https://ro.wikipedia.org'),'Pe alt site. Se scrie cu https://'],
+   ['Relativă',K('contact.html'),'La altă pagină din același folder'],
+   ['Relativă în subfolder',K('poze/vacanta.html'),'La o pagină din folderul „poze”'],
+   ['Un folder mai sus',K('../index.html'),'La o pagină din folderul-părinte'],
+   ['În aceeași pagină',K('#jos'),'La elementul cu '+K('id="jos"')],
+   ['E-mail',K('mailto:nume@exemplu.ro'),'Deschide programul de e-mail'],
+   ['Telefon',K('tel:+40712345678'),'Pornește un apel de pe telefon']
+  ]),
+  '<h2>Text de link bun</h2>',
+  '<p>Textul linkului trebuie să spună unde duce. „Citește regulamentul” este mai bun decât „apasă aici”. Cititoarele de ecran citesc lista linkurilor fără restul textului, deci „aici” nu ajută pe nimeni.</p>'
+ ].join(''),
+ props:[
+  {n:'<a>',k:'html',d:'Linkul (de la „anchor”). Textul dintre etichete este partea pe care se dă click.',ex:'<a href="https://ro.wikipedia.org">Wikipedia</a>'},
+  {n:'href',k:'html',d:'Adresa la care duce linkul (de la „hypertext reference”). Fără `href`, `a` nu este link.',ex:'<a href="#sus">Spre început</a>',tip:'Adresele externe încep cu `https://`.'},
+  {n:'target',k:'html',d:'Unde se deschide linkul.',v:[['_self','în același tab (implicit)'],['_blank','într-un tab nou']],ex:'<a href="https://developer.mozilla.org" target="_blank">MDN într-un tab nou</a>'},
+  {n:'rel',k:'html',d:'Relația cu pagina țintă. Pentru `target="_blank"` se adaugă `noopener`, din motive de securitate.',v:[['noopener','pagina nouă nu controlează pagina ta'],['nofollow','Google nu urmărește linkul']],ex:'<a href="https://exemplu.ro" target="_blank" rel="noopener">Link sigur</a>'},
+  {n:'title',k:'html',d:'Text care apare când treci cu mouse-ul peste link.',ex:'<a href="#sus" title="Mergi la început">Sus</a>'},
+  {n:'id și #',k:'html',d:'`id` dă unui element un nume unic. Un link cu `href="#nume"` sare la acel element.',ex:'<a href="#capitol2">Sari la capitolul 2</a>\n<div style="height: 200px;"></div>\n<h2 id="capitol2">Capitolul 2</h2>',tip:'Un `id` se folosește o singură dată pe pagină.'},
+  {n:'mailto: și tel:',k:'html',d:'Linkuri care deschid programul de e-mail sau aplicația de telefon.',ex:'<a href="mailto:nume@exemplu.ro">Scrie-ne</a>\n<a href="tel:+40712345678">Sună-ne</a>'},
+  {n:'link cu imagine',k:'html',d:'Poți pune o imagine în interiorul lui `a`. Toată imaginea devine link.',ex:'<a href="https://ro.wikipedia.org"><img src="soare.svg" alt="Soare" width="80"></a>'},
+  {n:'text-decoration (pe link)',k:'css',d:'Linkurile sunt subliniate implicit. Cu `none` scoți sublinierea.',ex:'<a href="#sus" style="text-decoration: none; color: crimson;">Link fără subliniere</a>'},
+  {n:':hover',k:'css',d:'Stil care se aplică doar când treci cu mouse-ul peste element. Se scrie în blocul `<style>`, nu în `style=""`.',ex:'<a href="#sus" class="salt">Treci cu mouse-ul peste mine</a>\n<style>\n  .salt:hover { color: crimson; text-decoration: underline; }\n</style>',tip:'Culori diferite pentru normal, vizitat și hover ajută cititorul să vadă ce a deschis deja.'}
+ ],
+ mist:[
+  ['<a href="google.com">Google</a>','<a href="https://google.com">Google</a>','Fără `https://`, browserul caută un fișier numit google.com în folderul tău.'],
+  ['<a>Click aici</a>','<a href="pagina.html">Click aici</a>','Fără `href` nu este link.'],
+  ['<a href="#jos">…</a> dar <p id="Jos">','<a href="#jos">…</a> și <p id="jos">','Numele din `href` și din `id` trebuie să fie identice, inclusiv literele mari și mici.'],
+  ['<a href="pagina.html">Mergi</a>  (pagina.html lipsește)','Fișierul pagina.html în același folder','La linkurile relative, fișierul trebuie să existe exact acolo unde indici.']
+ ]
+};
+
+/* ===== LECȚIA 8 (imagini) ===== */
+EXTRA['lectia-8']={
+ deep:[
+  '<h2>Formate de imagine</h2>',
+  TBL(['Format','Folosit pentru','Observații'],[
+   [K('.jpg'),'fotografii','mică, fără transparență'],
+   [K('.png'),'capturi de ecran, logo-uri','păstrează transparența'],
+   [K('.gif'),'animații scurte','maxim 256 de culori'],
+   [K('.svg'),'iconițe, desene','se mărește fără să se pixeleze'],
+   [K('.webp'),'fotografii moderne','foarte mică, suportată peste tot acum']
+  ]),
+  '<h2>Calea către imagine</h2>',
+  TBL(['Cum scrii','Unde este poza'],[
+   [K('src="poza.jpg"'),'în același folder cu pagina'],
+   [K('src="imagini/poza.jpg"'),'în subfolderul „imagini”'],
+   [K('src="../poza.jpg"'),'cu un folder mai sus'],
+   [K('src="https://…/poza.jpg"'),'pe alt site']
+  ]),
+  '<p>Imaginea nu apare, de cele mai multe ori, din patru motive: numele nu este scris identic (<code>Poza.jpg</code> nu este <code>poza.jpg</code>), extensia lipsește sau este greșită, fișierul este în alt folder sau are spații în nume.</p>'
+ ].join(''),
+ props:[
+  {n:'<img>',k:'html',d:'Afișează o imagine. Nu are etichetă de închidere.',ex:'<img src="soare.svg" alt="Un soare galben" width="120">'},
+  {n:'src',k:'html',d:'Calea către fișierul cu imaginea (de la „source”).',ex:'<img src="luna.svg" alt="Luna" width="120">',tip:'În atelier ai patru imagini: soare.svg, luna.svg, casa.svg, copac.svg.'},
+  {n:'alt',k:'html',d:'Descrierea imaginii în cuvinte. O citesc cititoarele de ecran și apare dacă poza nu se încarcă. Este obligatoriu.',ex:'<img src="copac.svg" alt="Un copac cu coroana verde" width="120">',tip:'Descrie ce se vede și ce rost are imaginea. Pentru imagini doar decorative se scrie `alt=""`.'},
+  {n:'width, height',k:'html',d:'Lățimea și înălțimea, în pixeli. Dacă pui doar una, cealaltă se calculează singură și poza nu se deformează.',ex:'<img src="casa.svg" alt="Casă" width="200">\n<img src="casa.svg" alt="Casă" width="100" height="200">',tip:'A doua poză este deformată: ai schimbat proporțiile.'},
+  {n:'title',k:'html',d:'Text care apare la trecerea cu mouse-ul peste imagine.',ex:'<img src="soare.svg" alt="Soare" width="100" title="Soarele de vară">'},
+  {n:'loading',k:'html',d:'Cum se încarcă imaginea. Cu `lazy`, imaginea se încarcă abia când ajungi cu scroll-ul aproape de ea.',v:[['lazy','încărcare când este nevoie'],['eager','imediat (implicit)']],ex:'<img src="luna.svg" alt="Luna" width="100" loading="lazy">'},
+  {n:'<figure>, <figcaption>',k:'html',d:'Imagine cu legendă. `figure` grupează, `figcaption` este textul de sub poză.',ex:'<figure>\n  <img src="copac.svg" alt="Un copac" width="140">\n  <figcaption>Stejarul din curtea școlii</figcaption>\n</figure>'},
+  {n:'border-radius (pe imagine)',k:'css',d:'Rotunjește colțurile. Cu `50%` o imagine pătrată devine cerc.',ex:'<img src="soare.svg" alt="Soare" width="120" style="border-radius: 50%;">'},
+  {n:'border (pe imagine)',k:'css',d:'Chenar în jurul imaginii: grosime, stil, culoare.',ex:'<img src="casa.svg" alt="Casă" width="120" style="border: 4px solid crimson;">'},
+  {n:'max-width: 100%',k:'css',d:'Imaginea nu depășește niciodată lățimea elementului în care stă. Util pe telefoane.',ex:'<img src="copac.svg" alt="Copac" style="max-width: 100%;">',tip:'Fără el, o poză mare iese din ecran pe telefon.'}
+ ],
+ mist:[
+  ['<img src="soare.svg">','<img src="soare.svg" alt="Soare galben">','Lipsește `alt`.'],
+  ['<img src="Soare.SVG" …>  (fișierul este soare.svg)','<img src="soare.svg" …>','Numele trebuie scris exact, cu litere mari/mici identice.'],
+  ['<img src="poza.jpg" width="200" height="50">','<img src="poza.jpg" width="200">','Dacă setezi ambele dimensiuni cu alte proporții, poza se deformează.'],
+  ['<img src="poza.jpg"></img>','<img src="poza.jpg">','`img` nu se închide.']
+ ]
+};
+
+/* ===== LECȚIA 9 (formulare) ===== */
+EXTRA['lectia-9']={
+ deep:[
+  '<h2>Cum funcționează un formular</h2>',
+  '<p>Elementul '+K('<form>')+' grupează câmpurile. Când apeși pe butonul de trimitere, browserul ia valoarea fiecărui câmp, o pune lângă <b>numele</b> câmpului (atributul '+K('name')+') și trimite totul la adresa din '+K('action')+'. Un câmp fără '+K('name')+' nu își trimite valoarea. În atelier nu avem server, deci trimiterea este oprită, dar câmpurile se completează normal.</p>',
+  '<h2>label, for și id</h2>',
+  '<p>Eticheta este legată de câmp prin două valori identice: '+K('for="nume"')+' pe '+K('label')+' și '+K('id="nume"')+' pe câmp. Când apeși pe etichetă, câmpul se activează, iar la căsuțele bifabile asta mărește mult zona pe care poți apăsa.</p>'
+ ].join(''),
+ props:[
+  {n:'<form>',k:'html',d:'Grupează câmpurile unui formular.',v:[['action','adresa unde se trimit datele'],['method','get (în adresă) sau post (în corpul cererii)']],ex:'<form>\n  <label for="nume2">Nume:</label>\n  <input type="text" id="nume2" name="nume">\n  <button type="submit">Trimite</button>\n</form>'},
+  {n:'<input>',k:'html',d:'Un câmp de completat. Felul lui îl decide `type`. Nu are etichetă de închidere.',ex:'<input type="text" placeholder="Scrie aici">'},
+  {n:'type',k:'html',d:'Felul câmpului `input`.',v:[['text','text pe un rând'],['password','parolă, cu puncte'],['email','adresă de e-mail'],['number','număr'],['tel','telefon'],['url','adresă web'],['date','dată cu calendar'],['color','selector de culoare'],['range','cursor'],['checkbox','căsuță bifabilă'],['radio','alegere unică dintr-un grup'],['file','alege un fișier'],['submit','buton de trimitere'],['search','căutare']],ex:'<input type="date">\n<input type="color" value="#1d4ed8">\n<input type="range" min="0" max="100" value="40">'},
+  {n:'<label>',k:'html',d:'Eticheta unui câmp. Se leagă de câmp prin `for` și `id`.',ex:'<label for="mail1">E-mail:</label>\n<input type="email" id="mail1">'},
+  {n:'name',k:'html',d:'Numele câmpului, folosit la trimiterea datelor. La butoanele radio, același `name` leagă butoanele într-un grup.',ex:'<input type="text" name="prenume" placeholder="Prenume">'},
+  {n:'value',k:'html',d:'Valoarea implicită din câmp.',ex:'<input type="text" value="Maria">'},
+  {n:'placeholder',k:'html',d:'Text-exemplu gri, care dispare când începi să scrii.',ex:'<input type="text" placeholder="Ex: Maria Ionescu">',tip:'Nu înlocuiește `label`.'},
+  {n:'required',k:'html',d:'Câmpul trebuie completat înainte de trimitere.',ex:'<input type="text" placeholder="Obligatoriu" required>'},
+  {n:'disabled, readonly',k:'html',d:'`disabled`: câmpul este stins și nu se trimite. `readonly`: se vede și se trimite, dar nu poate fi modificat.',ex:'<input type="text" value="Nu mă poți edita" readonly>\n<input type="text" value="Sunt stins" disabled>'},
+  {n:'maxlength',k:'html',d:'Numărul maxim de caractere.',ex:'<input type="text" maxlength="5" placeholder="Maxim 5 litere">'},
+  {n:'min, max, step',k:'html',d:'Limitele unui câmp de număr, dată sau cursor, și pasul de creștere.',ex:'<input type="number" min="1" max="10" step="1" value="5">'},
+  {n:'checked',k:'html',d:'Căsuța (`checkbox`) sau butonul (`radio`) este bifat de la început.',ex:'<input type="checkbox" id="ac1" checked>\n<label for="ac1">Sunt de acord</label>'},
+  {n:'radio',k:'html',d:'Butoane din care se alege unul singur. Toate din același grup au același `name`.',ex:'<p>Nivelul tău:</p>\n<input type="radio" id="n1" name="nivel" value="1" checked>\n<label for="n1">Începător</label>\n<input type="radio" id="n2" name="nivel" value="2">\n<label for="n2">Avansat</label>'},
+  {n:'<select>, <option>',k:'html',d:'Listă derulantă. Fiecare variantă este un `option`. Cu `selected` alegi varianta de la început.',ex:'<label for="cls">Clasa:</label>\n<select id="cls">\n  <option>a V-a</option>\n  <option selected>a VI-a</option>\n  <option>a VII-a</option>\n</select>'},
+  {n:'<textarea>',k:'html',d:'Câmp de text pe mai multe rânduri. Are etichetă de închidere. Mărimea se dă cu `rows` și `cols`.',ex:'<textarea rows="4" cols="30" placeholder="Mesajul tău"></textarea>'},
+  {n:'<button>',k:'html',d:'Un buton.',v:[['submit','trimite formularul (implicit)'],['button','nu face nimic singur'],['reset','golește câmpurile']],ex:'<button type="button">Apasă-mă</button>'},
+  {n:'cursor',k:'css',d:'Forma săgeții mouse-ului deasupra elementului.',v:[['pointer','mână, pentru butoane și linkuri'],['default','săgeată'],['text','cursor de text'],['not-allowed','interzis']],ex:'<button style="cursor: pointer; padding: 8px 16px;">Mână la trecere</button>'}
+ ],
+ mist:[
+  ['<input type="text"></input>','<input type="text">','`input` nu se închide.'],
+  ['<label for="a">Nume</label>\n<input id="b">','<label for="a">Nume</label>\n<input id="a">','`for` și `id` trebuie să fie identice.'],
+  ['<input type="radio" name="a">\n<input type="radio" name="b">','<input type="radio" name="a">\n<input type="radio" name="a">','Butoanele din același grup au același `name`. Altfel se pot bifa toate.'],
+  ['<textarea rows="3" />','<textarea rows="3"></textarea>','`textarea` are nevoie de etichetă de închidere.'],
+  ['<input type="mail">','<input type="email">','Valoarea se scrie `email`. O valoare necunoscută devine câmp de text.']
+ ],
+ tasksAdd:[
+  {text:'Adaugă o listă derulantă `<select>` cu cel puțin două `<option>`.',hint:'`<select><option>Unu</option><option>Doi</option></select>`',test:function(c){return !!c.q('select')&&c.qa('option').length>=2}},
+  {text:'Adaugă un câmp `<textarea>`.',hint:'`<textarea rows="4" cols="30"></textarea>`',test:function(c){return !!c.q('textarea')}},
+  {text:'Adaugă două butoane `radio` cu același `name`.',hint:'`<input type="radio" name="grup">` de două ori.',test:function(c){var r=c.qa('input[type="radio"]');return r.length>=2&&r[0].name!==''&&r[0].name===r[1].name}},
+  {text:'Fă un câmp obligatoriu cu `required`.',hint:'`<input type="text" required>`',test:function(c){return !!c.q('[required]')}}
+ ]
+};
+
+/* ===== LECȚIA 10 (clase) ===== */
+EXTRA['lectia-10']={
+ starter:sk('  <div class="card">\n    <h2>Prima carte</h2>\n    <p>Un <span class="alert">cuvânt roșu</span> într-un paragraf.</p>\n  </div>\n  <div class="card">\n    <h2>A doua carte</h2>\n    <p>Aceeași clasă, același aspect. Treci cu mouse-ul peste mine.</p>\n  </div>',{title:'Carduri',head:'\n  <style>\n    body { font-family: Arial, sans-serif; background-color: #EEF3FB; }\n    .card {\n      background-color: white;\n      border: 2px solid steelblue;\n      border-radius: 12px;\n      padding: 16px;\n      margin: 12px;\n    }\n    .card:hover { background-color: #FFF8E1; }\n    .alert { color: crimson; font-weight: bold; }\n  </style>'}),
+ deep:[
+  '<h2>Unde scrii CSS-ul?</h2>',
+  TBL(['Loc','Cum arată','Când îl folosești'],[
+   ['În linie (inline)',K('<p style="color: red;">'),'Pentru o schimbare rapidă, la un singur element'],
+   ['În pagină (intern)',K('<style> p { color: red; } </style>'),'Pentru o pagină cu mai multe elemente la fel'],
+   ['Fișier separat (extern)',K('<link rel="stylesheet" href="stil.css">'),'Pentru un site cu mai multe pagini, care împart același stil']
+  ]),
+  '<h2>Selectori: cum alegi elementele</h2>',
+  TBL(['Selector','Alege','Exemplu'],[
+   ['Etichetă','toate elementele de felul acela',K('p { color: navy; }')],
+   ['Clasă (punct)','toate cu '+K('class="nume"'),K('.card { padding: 16px; }')],
+   ['Id (diez)','elementul cu acel id, unic',K('#antet { color: red; }')],
+   ['Grup','mai mulți selectori deodată',K('h1, h2 { color: navy; }')],
+   ['Descendent','elementele dintr-un alt element',K('.card p { margin: 0; }')],
+   ['Pseudo-clasă','o stare, de ex. mouse deasupra',K('.card:hover { color: red; }')]
+  ]),
+  '<h2>Cine câștigă când se bat două reguli?</h2>',
+  '<p>În ordine de la cel mai puternic: <b>stilul în linie</b> (<code>style=""</code>) bate <b>id-ul</b>, care bate <b>clasa</b>, care bate <b>eticheta</b>. Dacă două reguli au aceeași putere, câștigă cea scrisă <b>mai jos</b> în cod.</p>'
+ ].join(''),
+ props:[
+  {n:'<div>',k:'html',d:'Cutie de bloc fără sens propriu. Grupează elemente ca să le poți stila sau așeza împreună.',ex:'<div class="cutie" style="background-color: lightyellow; padding: 12px;">\n  <h3>Titlu în cutie</h3>\n  <p>Text în cutie</p>\n</div>'},
+  {n:'<span>',k:'html',d:'Cutie în rând, fără sens propriu. Marchează câteva cuvinte din interiorul unui paragraf.',ex:'<p>Un cuvânt <span style="color: crimson; font-weight: bold;">roșu</span> în text.</p>'},
+  {n:'class',k:'html',d:'Numele unui grup de elemente. Mai multe elemente pot avea aceeași clasă, iar un element poate avea mai multe clase, separate prin spațiu.',ex:'<p class="alert">Cu clasa alert</p>\n<p class="card alert">Cu două clase</p>',tip:'Clasa trebuie să existe într-un `<style>` ca să aibă efect.'},
+  {n:'id',k:'html',d:'Nume unic al unui singur element. Se folosește pentru linkuri interne și pentru elemente unice.',ex:'<p id="intro">Elementul cu id-ul intro</p>',tip:'Același `id` nu se repetă pe pagină.'},
+  {n:'<style>',k:'html',d:'Blocul în care scrii regulile CSS ale paginii. Se pune în `head`.',ex:'<style>\n  .nou { color: seagreen; font-size: 24px; }\n</style>\n<p class="nou">Stilat cu o clasă</p>'},
+  {n:'<link rel="stylesheet">',k:'html',d:'Leagă pagina de un fișier CSS separat. Se scrie în `head`.',ex:'<link rel="stylesheet" href="stil.css">',ins:false},
+  {n:'.clasa { … }',k:'css',d:'Regulă pentru toate elementele cu o clasă. Punctul din față înseamnă „clasă”.',ex:'<style>\n  .evidentiat { background-color: gold; padding: 4px; }\n</style>\n<p class="evidentiat">Text evidențiat</p>'},
+  {n:'#id { … }',k:'css',d:'Regulă pentru elementul cu un anumit id. Diezul din față înseamnă „id”.',ex:'<style>\n  #titlu-special { color: darkorange; }\n</style>\n<h2 id="titlu-special">Titlu special</h2>'},
+  {n:'h1, h2 { … }',k:'css',d:'Regulă pentru mai mulți selectori deodată, separați prin virgulă.',ex:'<style>\n  h2, h3 { color: navy; }\n</style>\n<h2>Titlu 2</h2>\n<h3>Titlu 3</h3>'},
+  {n:'.a .b { … }',k:'css',d:'Selector descendent: elementele `.b` care se află în interiorul unui `.a`.',ex:'<style>\n  .cutie2 p { color: purple; }\n</style>\n<div class="cutie2"><p>Mov, pentru că este în cutie2</p></div>\n<p>Negru, pentru că este în afară</p>'},
+  {n:':hover',k:'css',d:'Starea „mouse deasupra”. Se adaugă după selector.',ex:'<style>\n  .buton:hover { background-color: crimson; color: white; }\n</style>\n<button class="buton" style="padding: 8px 16px; cursor: pointer;">Treci peste mine</button>'},
+  {n:'cursor',k:'css',d:'Forma săgeții mouse-ului deasupra elementului. `pointer` (mână) spune că se poate apăsa.',ex:'<div style="padding: 12px; cursor: pointer; background: lightblue;">Aici cursorul este o mână</div>'}
+ ],
+ mist:[
+  ['<p class="card">  fără regula .card în style','.card { … } în <style>','Clasa este doar un nume. Fără regula CSS nu face nimic.'],
+  ['card { padding: 10px; }','.card { padding: 10px; }','Lipsește punctul. Fără el, „card” este o etichetă, nu o clasă.'],
+  ['<div class="card"> … (fără </div>)','<div class="card"> … </div>','`div`-urile nelinchise strică toată structura de dedesubt.'],
+  ['.card { padding: 10px }  .alert { … }','.card { padding: 10px; }\n.alert { … }','Fiecare declarație se încheie cu `;` și fiecare regulă cu `}`.']
+ ]
+};
+
+/* ===== LECȚIA 11 (proiect) ===== */
+EXTRA['lectia-11']={
+ deep:[
+  '<h2>Cum salvezi pagina pe calculator</h2>',
+  '<ol><li>Apasă „Copiază codul” din atelier.</li><li>Deschide Notepad (sau Visual Studio Code) și lipește codul.</li><li>Alege <i>Save as</i>. La nume scrie <code>prezentare.html</code>.</li><li>La <i>Encoding</i> alege <b>UTF-8</b>, ca să se vadă ă, î, ș, ț.</li><li>Dă dublu-click pe fișier: se deschide în browser.</li></ol>',
+  '<h2>Verificare înainte să predai</h2>',
+  '<ul><li>Pagina are <code>DOCTYPE</code>, <code>html</code>, <code>head</code>, <code>body</code>.</li><li>Fiecare etichetă deschisă este și închisă.</li><li>Fiecare imagine are <code>alt</code>.</li><li>Există un singur <code>h1</code> și un <code>title</code>.</li><li>Textul se citește bine pe fundal.</li></ul>'
+ ].join(''),
+ props:[],
+ tasksAdd:[
+  {text:'Folosește o clasă: o regulă `.nume { … }` în `<style>` și un element cu acea clasă.',hint:'În `head`: `<style> .mare { font-size: 24px; } </style>`. În `body`: `<p class="mare">`.',test:function(c){return /\.[a-zA-Z][\w-]*\s*\{/.test(c.code)&&c.qa('[class]').length>=1}},
+  {text:'Adaugă un tabel `<table>` cu cel puțin două rânduri.',hint:'`<table><tr><td>A</td></tr><tr><td>B</td></tr></table>`',test:function(c){return c.qa('table tr').length>=2}}
+ ]
+};
+
+/* ---------- LECȚII NOI ---------- */
+var TABELE={id:'lectia-tabele',num:0,nav:'Tabele',title:'Tabele',
+ lead:'Pentru date așezate pe rânduri și coloane: orare, prețuri, clasamente.',
+ intro:
+ '<h2>Rânduri, apoi celule</h2>'+
+ '<p>Tabelul se construiește rând cu rând. <code>&lt;table&gt;</code> este tabelul, <code>&lt;tr&gt;</code> (<em>table row</em>) este un rând, <code>&lt;td&gt;</code> (<em>table data</em>) este o celulă obișnuită, iar <code>&lt;th&gt;</code> (<em>table header</em>) este o celulă de antet, îngroșată și centrată implicit. Coloanele nu se scriu nicăieri: apar singure din celulele rândurilor.</p>'+
+ '<p>Fără CSS, tabelul nu are linii. Chenarul îl adăugăm cu <code>border</code>, iar <code>border-collapse: collapse</code> lipește liniile duble într-una singură. <mark>Toate rândurile trebuie să aibă același număr de celule</mark>, sau folosești <code>colspan</code> și <code>rowspan</code> ca să uneși celule.</p>'+
+ '<p>Tabelele sunt pentru <em>date</em>, nu pentru a aranja pagina. Pentru așezarea paginii se folosesc <code>div</code> și CSS.</p>',
+ cmds:[{t:'<table>',d:'Tabelul'},{t:'<tr>',d:'Un rând'},{t:'<th>',d:'Celulă de antet'},{t:'<td>',d:'Celulă obișnuită'},{t:'colspan',d:'Celula se întinde pe mai multe coloane'},{t:'border-collapse',d:'Liniile se lipesc'}],
+ files:false,
+ starter:sk('  <table>\n    <caption>Orarul de luni</caption>\n    <thead>\n      <tr><th>Ora</th><th>Clasa a V-a</th><th>Clasa a VI-a</th></tr>\n    </thead>\n    <tbody>\n      <tr><td>8:00</td><td>Română</td><td>Matematică</td></tr>\n      <tr><td>9:00</td><td>Engleză</td><td>Informatică</td></tr>\n      <tr><td>10:00</td><td>Sport</td><td>Istorie</td></tr>\n    </tbody>\n  </table>',{title:'Orar',head:'\n  <style>\n    body { font-family: Arial, sans-serif; padding: 12px; }\n    table { border-collapse: collapse; width: 100%; }\n    th, td { border: 1px solid #333333; padding: 8px; text-align: left; }\n    th { background-color: lightsteelblue; }\n    tr:nth-child(even) { background-color: #F3F4F6; }\n  </style>'}),
+ controls:[
+  {type:'select',label:'Liniile (border-collapse)',options:[['collapse','lipite (collapse)'],['separate','separate']],re:/(table\s*\{[^}]*?border-collapse:\s*)([^;]+)(;)/},
+  {type:'range',label:'Grosimea liniilor (px)',min:0,max:8,re:/(th,\s*td\s*\{[^}]*?border:\s*)(\d+)(px)/},
+  {type:'range',label:'Spațiul din celule (padding, px)',min:0,max:30,re:/(th,\s*td\s*\{[^}]*?padding:\s*)(\d+)(px)/},
+  {type:'color',label:'Fundalul antetului',re:/(\bth\s*\{[^}]*?background-color:\s*)([^;]+)(;)/},
+  {type:'select',label:'Alinierea în celule',options:[['left','la stânga'],['center','centrat'],['right','la dreapta']],re:/(th,\s*td\s*\{[^}]*?text-align:\s*)([^;]+)(;)/}
+ ],
+ tasks:[
+  {text:'Adaugă cel puțin două rânduri noi, ca să ai minimum 6 `<tr>`.',hint:'Copiază un `<tr>…</tr>` și schimbă textul.',test:function(c){return c.qa('tr').length>=6}},
+  {text:'Adaugă o coloană nouă: fiecare rând primește încă o celulă.',hint:'Pune un `<th>` în antet și câte un `<td>` pe fiecare rând.',test:function(c){var r=c.qa('tr');return r.length>0&&r.every(function(x){return x.children.length>=4})}},
+  {text:'Unește două celule cu `colspan="2"`.',hint:'`<td colspan="2">Pauză</td>` ia locul a două celule din rând.',test:function(c){return !!c.q('[colspan]')}},
+  {text:'Schimbă culoarea antetului.',hint:'În regula `th { … }` schimbă `lightsteelblue`.',test:function(c){var t=c.q('th');return !!t&&c.cs(t,'backgroundColor')!=='rgb(176, 196, 222)'}}
+ ]};
+EXTRA['lectia-tabele']={
+ deep:[
+  '<h2>Structura unui tabel</h2>',
+  TREE(['table','├─ caption   (titlul tabelului)','├─ thead     (antetul)','│   └─ tr','│       └─ th, th, th','├─ tbody     (corpul)','│   └─ tr','│       └─ td, td, td','└─ tfoot     (subsolul, opțional)']),
+  '<h2>Cum se unesc celulele?</h2>',
+  TBL(['Atribut','Efect','Exemplu'],[
+   [K('colspan'),'celula se întinde pe mai multe <b>coloane</b>',K('<td colspan="2">')],
+   [K('rowspan'),'celula se întinde pe mai multe <b>rânduri</b>',K('<td rowspan="3">')]
+  ]),
+  '<p>Când unești celule, rândul respectiv are mai puține etichete '+K('td')+'. Numără întotdeauna coloanele: fiecare rând trebuie să ajungă la același total.</p>'
+ ].join(''),
+ props:[
+  {n:'<table>',k:'html',d:'Tabelul, cutia care conține totul.',ex:'<table style="border-collapse: collapse;">\n  <tr><td style="border: 1px solid black; padding: 6px;">A</td><td style="border: 1px solid black; padding: 6px;">B</td></tr>\n</table>'},
+  {n:'<tr>',k:'html',d:'Un rând (table row). Conține celule `th` sau `td`.',ex:'<table border="1">\n  <tr><td>Rândul 1</td></tr>\n  <tr><td>Rândul 2</td></tr>\n</table>'},
+  {n:'<th>',k:'html',d:'Celulă de antet (table header). Textul este îngroșat și centrat.',ex:'<table border="1">\n  <tr><th>Nume</th><th>Vârstă</th></tr>\n</table>'},
+  {n:'<td>',k:'html',d:'Celulă de date (table data).',ex:'<table border="1">\n  <tr><td>Ana</td><td>11</td></tr>\n</table>'},
+  {n:'<caption>',k:'html',d:'Titlul tabelului, afișat deasupra lui.',ex:'<table border="1">\n  <caption>Clasamentul clasei</caption>\n  <tr><td>Ana</td><td>10</td></tr>\n</table>'},
+  {n:'<thead>, <tbody>, <tfoot>',k:'html',d:'Împart tabelul în antet, corp și subsol. Nu se văd, dar ajută la structură și la stilare.',ex:'<table border="1">\n  <thead><tr><th>Produs</th><th>Preț</th></tr></thead>\n  <tbody><tr><td>Caiet</td><td>5 lei</td></tr></tbody>\n  <tfoot><tr><td>Total</td><td>5 lei</td></tr></tfoot>\n</table>'},
+  {n:'colspan',k:'html',d:'Celula se întinde pe mai multe coloane.',ex:'<table border="1">\n  <tr><th colspan="2">Antet pe două coloane</th></tr>\n  <tr><td>A</td><td>B</td></tr>\n</table>'},
+  {n:'rowspan',k:'html',d:'Celula se întinde pe mai multe rânduri.',ex:'<table border="1">\n  <tr><td rowspan="2">Luni</td><td>8:00</td></tr>\n  <tr><td>9:00</td></tr>\n</table>'},
+  {n:'border (atribut)',k:'html',d:'Metoda veche: `border="1"` pune linii în jurul tuturor celulelor. Merge, dar este înlocuită de CSS.',ex:'<table border="1">\n  <tr><td>Cu chenar</td><td>vechi</td></tr>\n</table>',tip:'Folosește `border` din CSS, care îți dă control pe culoare, grosime și stil.'},
+  {n:'border (CSS pe td/th)',k:'css',d:'Liniile celulelor.',v:[['1px solid black','1 pixel, linie continuă, neagră'],['2px dashed gray','linie întreruptă'],['3px double navy','linie dublă']],ex:'<table style="border-collapse: collapse;">\n  <tr><td style="border: 2px solid crimson; padding: 8px;">Celulă cu chenar roșu</td></tr>\n</table>'},
+  {n:'border-collapse',k:'css',d:'Cum se comportă liniile celulelor vecine.',v:[['collapse','se lipesc într-o singură linie (recomandat)'],['separate','rămân două linii cu spațiu între ele (implicit)']],ex:'<table style="border-collapse: collapse;" border="1">\n  <tr><td>A</td><td>B</td></tr>\n</table>\n<br>\n<table style="border-collapse: separate;" border="1">\n  <tr><td>A</td><td>B</td></tr>\n</table>'},
+  {n:'padding (pe celule)',k:'css',d:'Spațiul dintre text și marginea celulei. Face tabelul mai aerisit.',ex:'<table style="border-collapse: collapse;">\n  <tr><td style="border: 1px solid black; padding: 20px;">Aerisit</td></tr>\n</table>'},
+  {n:'width (pe table)',k:'css',d:'Lățimea tabelului. Cu `100%` ocupă toată lățimea disponibilă.',ex:'<table style="width: 100%; border-collapse: collapse;">\n  <tr><td style="border: 1px solid black;">Lat</td><td style="border: 1px solid black;">Lat</td></tr>\n</table>'},
+  {n:'tr:nth-child(even)',k:'css',d:'Selectează fiecare al doilea rând, ca să faci un tabel cu dungi, mai ușor de citit pe rând. Se scrie în `<style>`.',ex:'<style>\n  .dungi tr:nth-child(even) { background-color: #E5E7EB; }\n</style>\n<table class="dungi" style="width: 100%;">\n  <tr><td>Unu</td></tr>\n  <tr><td>Doi</td></tr>\n  <tr><td>Trei</td></tr>\n  <tr><td>Patru</td></tr>\n</table>'}
+ ],
+ mist:[
+  ['<table>\n  <td>A</td><td>B</td>\n</table>','<table>\n  <tr><td>A</td><td>B</td></tr>\n</table>','Celulele stau în rânduri. Fiecare rând are `tr`.'],
+  ['<tr><td>A</td><td>B</td></tr>\n<tr><td>C</td></tr>','<tr><td>A</td><td>B</td></tr>\n<tr><td>C</td><td>D</td></tr>','Fiecare rând trebuie să aibă același număr de celule (ținând cont de `colspan`).'],
+  ['table { border: 1px solid black; }   (liniile dintre celule lipsesc)','th, td { border: 1px solid black; }','`border` pe `table` pune chenar doar în jurul tabelului. Liniile dintre celule se pun pe `th` și `td`.'],
+  ['<table> pentru a pune două coloane de text în pagină','<div> cu CSS','Tabelele sunt pentru date, nu pentru layout.']
+ ]};
+
+var CUTIA={id:'lectia-cutia',num:0,nav:'Modelul cutiei',title:'Modelul cutiei',
+ lead:'Cum se măsoară un element: conținut, spațiu interior, chenar și spațiu exterior.',
+ intro:
+ '<h2>Fiecare element este o cutie</h2>'+
+ '<p>Pentru browser, orice element (un paragraf, o poză, un titlu) este un dreptunghi cu patru straturi, de la interior spre exterior: <b>conținutul</b>, <b>padding</b> (spațiul din interior, între conținut și chenar), <b>border</b> (chenarul) și <b>margin</b> (spațiul din exterior, între cutie și vecinii ei). Mută cursoarele și vezi straturile.</p>'+
+ '<div class="wg" data-wg="boxm"></div>'+
+ '<p>Diferența dintre <code>padding</code> și <code>margin</code> se vede cel mai bine cu fundal: <mark>fundalul colorează conținutul și padding-ul, dar nu și margin-ul</mark>. Marginea este întotdeauna transparentă.</p>',
+ cmds:[{t:'width, height',d:'Lățimea și înălțimea conținutului'},{t:'padding',d:'Spațiu în interior'},{t:'margin',d:'Spațiu în exterior'},{t:'border',d:'Chenar: grosime, stil, culoare'},{t:'border-radius',d:'Colțuri rotunjite'},{t:'box-shadow',d:'Umbra cutiei'},{t:'opacity',d:'Transparența 0–1'}],
+ files:false,
+ starter:sk('  <div class="box">Eu sunt o cutie</div>\n  <div class="box">A doua cutie</div>',{title:'Cutii',head:'\n  <style>\n    body { font-family: Arial, sans-serif; background-color: #F3F4F6; }\n    .box {\n      width: 200px;\n      height: 80px;\n      padding: 16px;\n      margin: 20px;\n      border: 4px solid #1D4ED8;\n      border-radius: 10px;\n      background-color: white;\n      box-shadow: 4px 4px 0px #9CA3AF;\n    }\n  </style>'}),
+ controls:[
+  {type:'range',label:'Lățimea (width, px)',min:60,max:400,step:10,re:/(\.box\s*\{[^}]*?width:\s*)(\d+)(px)/},
+  {type:'range',label:'Înălțimea (height, px)',min:30,max:260,step:10,re:/(\.box\s*\{[^}]*?height:\s*)(\d+)(px)/},
+  {type:'range',label:'Spațiul interior (padding, px)',min:0,max:60,re:/(\.box\s*\{[^}]*?padding:\s*)(\d+)(px)/},
+  {type:'range',label:'Spațiul exterior (margin, px)',min:0,max:60,re:/(\.box\s*\{[^}]*?margin:\s*)(\d+)(px)/},
+  {type:'range',label:'Grosimea chenarului (px)',min:0,max:20,re:/(\.box\s*\{[^}]*?border:\s*)(\d+)(px)/},
+  {type:'color',label:'Culoarea chenarului',re:/(\.box\s*\{[^}]*?border:\s*\d+px\s+solid\s+)([^;]+)(;)/},
+  {type:'range',label:'Rotunjirea colțurilor (px)',min:0,max:100,re:/(\.box\s*\{[^}]*?border-radius:\s*)(\d+)(px)/},
+  {type:'color',label:'Fundalul cutiei',re:/(\.box\s*\{[^}]*?background-color:\s*)([^;]+)(;)/}
+ ],
+ tasks:[
+  {text:'Fă prima cutie mai lată de 300 de pixeli.',hint:'În regula `.box` schimbă `width: 200px`.',test:function(c){var b=c.q('.box');return !!b&&parseFloat(c.cs(b,'width'))>=300}},
+  {text:'Rotunjește colțurile la 24 de pixeli sau mai mult.',hint:'Schimbă `border-radius: 10px`.',test:function(c){var b=c.q('.box');return !!b&&parseFloat(c.cs(b,'borderTopLeftRadius'))>=24}},
+  {text:'Schimbă culoarea chenarului în alta decât albastrul inițial.',hint:'Schimbă `#1D4ED8` din `border`.',test:function(c){var b=c.q('.box');return !!b&&c.cs(b,'borderTopColor')!=='rgb(29, 78, 216)'}},
+  {text:'Mărește margin-ul la 30 de pixeli sau mai mult.',hint:'Schimbă `margin: 20px`.',test:function(c){var b=c.q('.box');return !!b&&parseFloat(c.cs(b,'marginTop'))>=30}},
+  {text:'Adaugă o a treia cutie.',hint:'Copiază un `<div class="box">…</div>`.',test:function(c){return c.qa('.box').length>=3}},
+  {text:'Fă o cutie transparentă pe jumătate cu `opacity: 0.5`.',hint:'Adaugă `opacity: 0.5;` în regula `.box`.',test:function(c){var b=c.q('.box');return !!b&&parseFloat(c.cs(b,'opacity'))<1}},
+  {text:'Fă un cerc: lățime egală cu înălțimea și `border-radius: 50%`.',hint:'Pune `width: 120px; height: 120px; border-radius: 50%;` într-o regulă nouă sau în `style` pe o cutie.',test:function(c){return c.qa('div').some(function(b){var w=parseFloat(c.cs(b,'width')),h=parseFloat(c.cs(b,'height')),r=c.cs(b,'borderTopLeftRadius');if(!(w>20&&Math.abs(w-h)<1))return false;return r.indexOf('%')>-1?parseFloat(r)>=50:parseFloat(r)>=w/2})}}
+ ]};
+EXTRA['lectia-cutia']={
+ deep:[
+  '<h2>Forme scurte pentru padding și margin</h2>',
+  '<p>La <code>padding</code> și <code>margin</code> poți scrie una, două, trei sau patru valori. Ordinea este cea a acelor de ceasornic, începând de sus: <b>sus, dreapta, jos, stânga</b>.</p>',
+  TBL(['Scrii','Înseamnă'],[
+   [K('margin: 10px;'),'10 px pe toate părțile'],
+   [K('margin: 10px 20px;'),'10 px sus și jos, 20 px stânga și dreapta'],
+   [K('margin: 10px 20px 30px;'),'10 px sus, 20 px stânga și dreapta, 30 px jos'],
+   [K('margin: 10px 20px 30px 40px;'),'sus 10, dreapta 20, jos 30, stânga 40'],
+   [K('margin: 0 auto;'),'0 sus și jos, iar stânga și dreapta egale, deci cutia (cu width) este centrată']
+  ]),
+  '<h2>Cât de lată este, de fapt, o cutie?</h2>',
+  '<p>Implicit, '+K('width')+' măsoară doar <b>conținutul</b>. Lățimea totală pe ecran este: <code>width + padding stânga și dreapta + border stânga și dreapta</code>. Marginea nu se numără în lățimea cutiei, dar ocupă loc în jurul ei. Exemplu: <code>width: 200px; padding: 16px; border: 4px</code> înseamnă 200 + 32 + 8 = 240 px pe ecran.</p>',
+  '<p>Cu '+K('box-sizing: border-box')+' '+K('width')+' include și padding-ul și chenarul, deci cutia are exact lățimea scrisă. Mulți programatori îl pun pe toate elementele, pentru că socotelile devin mai ușoare.</p>',
+  '<h2>Elemente de bloc, în rând și inline-block</h2>',
+  TBL(['display','Cum se comportă'],[
+   [K('block'),'ocupă tot rândul, începe pe rând nou, acceptă width, height, margin, padding'],
+   [K('inline'),'stă în rând cu textul, nu acceptă width și height, margin sus/jos nu are efect'],
+   [K('inline-block'),'stă în rând, dar acceptă width, height, margin și padding'],
+   [K('none'),'elementul dispare complet din pagină']
+  ])
+ ].join(''),
+ props:[
+  {n:'width',k:'css',d:'Lățimea conținutului cutiei.',v:[['200px','fixă'],['50%','jumătate din părinte'],['100%','toată lățimea părintelui'],['auto','se potrivește singură (implicit)']],ex:'<div style="width: 250px; background-color: lightblue; padding: 8px;">Lată de 250px</div>'},
+  {n:'height',k:'css',d:'Înălțimea conținutului. De obicei o lași `auto`: cutia crește după text.',v:[['120px','fixă'],['auto','după conținut (implicit)']],ex:'<div style="height: 120px; background-color: lightgreen;">Înaltă de 120px</div>'},
+  {n:'max-width, min-width',k:'css',d:'Lățimea cea mai mare, respectiv cea mai mică. `max-width` ține cutia sub o limită, dar o lasă să se micșoreze pe ecrane mici.',ex:'<div style="max-width: 400px; background-color: lightyellow; padding: 8px;">Nu depășesc 400px, dar mă micșorez pe un telefon.</div>'},
+  {n:'padding',k:'css',d:'Spațiul din interiorul cutiei, între conținut și chenar. Fundalul îl acoperă.',v:[['16px','pe toate părțile'],['10px 20px','sus-jos, stânga-dreapta'],['10px 20px 30px 40px','sus, dreapta, jos, stânga']],ex:'<p style="background-color: lightblue; padding: 24px;">Text cu padding mare</p>'},
+  {n:'padding-top, -right, -bottom, -left',k:'css',d:'Padding doar pe o singură latură.',ex:'<p style="background-color: lightyellow; padding-left: 40px;">Padding doar în stânga</p>'},
+  {n:'margin',k:'css',d:'Spațiul din exteriorul cutiei, față de vecini. Este transparent.',v:[['20px','pe toate părțile'],['0','fără'],['0 auto','centrează o cutie care are width'],['-10px','poate fi și negativ']],ex:'<p style="background-color: pink; margin: 40px;">Text cu margin de 40px</p>',tip:'Marginile verticale ale două cutii vecine nu se adună: se păstrează cea mai mare.'},
+  {n:'margin-top, -right, -bottom, -left',k:'css',d:'Margin doar pe o singură latură.',ex:'<p style="background-color: lightgreen; margin-bottom: 50px;">Spațiu mare dedesubt</p>\n<p style="background-color: lightgreen;">Următorul paragraf</p>'},
+  {n:'margin: 0 auto',k:'css',d:'Centrează pe orizontală o cutie care are `width`. `auto` împarte spațiul rămas în mod egal între stânga și dreapta.',ex:'<div style="width: 200px; margin: 0 auto; background-color: gold; padding: 12px; text-align: center;">Cutie centrată</div>'},
+  {n:'border',k:'css',d:'Chenarul, scris pe scurt în ordinea: grosime, stil, culoare.',v:[['2px solid black','linie continuă'],['3px dashed red','linie întreruptă'],['4px dotted blue','puncte'],['5px double green','linie dublă'],['0','fără chenar']],ex:'<p style="border: 3px dashed crimson; padding: 10px;">Chenar întrerupt</p>'},
+  {n:'border-style',k:'css',d:'Felul liniei chenarului. Fără stil, chenarul nu apare.',v:[['solid','continuă'],['dashed','întreruptă'],['dotted','din puncte'],['double','dublă'],['groove','adâncită'],['ridge','în relief'],['none','fără']],ex:'<p style="border-width: 4px; border-style: double; border-color: navy; padding: 10px;">Chenar dublu</p>'},
+  {n:'border-width, border-color',k:'css',d:'Grosimea, respectiv culoarea chenarului, scrise separat.',ex:'<p style="border-style: solid; border-width: 6px; border-color: orange; padding: 10px;">Chenar portocaliu gros</p>'},
+  {n:'border-bottom (și -top, -left, -right)',k:'css',d:'Chenar doar pe o latură. Frecvent folosit pentru linii sub titluri.',ex:'<h2 style="border-bottom: 3px solid royalblue; padding-bottom: 6px;">Titlu cu linie dedesubt</h2>'},
+  {n:'border-radius',k:'css',d:'Rotunjește colțurile.',v:[['8px','colțuri ușor rotunjite'],['25px','foarte rotunjite'],['50%','cerc sau elipsă'],['10px 0','colțuri diferite']],ex:'<div style="width: 140px; height: 140px; background-color: tomato; border-radius: 50%;"></div>'},
+  {n:'box-shadow',k:'css',d:'Umbra cutiei. Valori în ordine: deplasare orizontală, deplasare verticală, estompare, culoare.',v:[['4px 4px 8px gray','umbră estompată'],['0 0 0 4px blue','contur fără estompare'],['inset 0 0 10px black','umbră în interior']],ex:'<div style="width: 180px; padding: 16px; background-color: white; box-shadow: 6px 6px 12px rgba(0,0,0,0.35);">Cutie cu umbră</div>'},
+  {n:'box-sizing',k:'css',d:'Ce măsoară `width` și `height`.',v:[['content-box','doar conținutul (implicit)'],['border-box','conținut + padding + chenar']],ex:'<div style="width: 200px; padding: 20px; border: 5px solid navy; box-sizing: border-box; background-color: lavender;">Lat de exact 200px, cu tot cu padding și chenar</div>',tip:'Un truc des folosit: `* { box-sizing: border-box; }` în `<style>`.'},
+  {n:'display',k:'css',d:'Felul în care se comportă un element în pagină.',v:[['block','pe tot rândul'],['inline','în rând, ca textul'],['inline-block','în rând, dar cu width și height'],['none','dispare complet']],ex:'<span style="display: inline-block; width: 100px; padding: 10px; background-color: lightblue;">Una</span>\n<span style="display: inline-block; width: 100px; padding: 10px; background-color: lightgreen;">Două</span>'},
+  {n:'opacity',k:'css',d:'Cât de transparent este elementul întreg, cu tot cu text, între 0 (invizibil) și 1 (opac).',v:[['1','opac (implicit)'],['0.5','pe jumătate transparent'],['0','invizibil, dar ocupă loc']],ex:'<div style="padding: 20px; background-color: crimson; color: white; opacity: 0.5;">Pe jumătate transparent</div>'},
+  {n:'overflow',k:'css',d:'Ce se întâmplă cu conținutul care nu încape în cutie.',v:[['visible','iese din cutie (implicit)'],['hidden','se taie'],['scroll','bare de derulare mereu'],['auto','bare de derulare doar la nevoie']],ex:'<div style="width: 200px; height: 60px; overflow: auto; border: 2px solid gray;">Un text mult mai lung decât încape în cutie, așa că apare o bară de derulare și poți citi restul textului derulând în interiorul cutiei.</div>'}
+ ],
+ mist:[
+  ['padding: 10 20;','padding: 10px 20px;','Valorile diferite de 0 au nevoie de unitate.'],
+  ['border: solid red;  (nu se vede)','border: 2px solid red;','Lipsește grosimea. Fără ea, chenarul are grosime 0 sau implicită, dar de obicei nu este cea dorită.'],
+  ['margin: 0 auto;  pe o cutie fără width','width: 300px; margin: 0 auto;','Fără `width`, cutia de bloc ocupă deja tot rândul, deci nu mai are ce centra.'],
+  ['<span style="width: 200px;">','<span style="display: inline-block; width: 200px;">','Un element în rând nu acceptă `width` și `height`.'],
+  ['width: 100%; padding: 20px;  (iese din ecran)','width: 100%; padding: 20px; box-sizing: border-box;','Padding-ul se adaugă peste `width`. Cu `border-box` se include în ea.']
+ ]};
+
+var DICT={id:'dictionar',num:'A–Z',nav:'Dicționar',free:true,dict:true,title:'Dicționar de proprietăți',
+ lead:'Toate etichetele, atributele și proprietățile din curs, într-un singur loc. Caută după nume sau după ce face.',
+ intro:'',cmds:[],controls:[],tasks:[],props:[]};
+
+/* ---------- ASAMBLARE ---------- */
+function insAfter(id,L){var i=LESSONS.map(function(x){return x.id}).indexOf(id);LESSONS.splice(i+1,0,L)}
+insAfter('lectia-8',TABELE);
+insAfter('lectia-10',CUTIA);
+LESSONS.push(DICT);
+LESSONS.forEach(function(L){
+  var x=EXTRA[L.id];if(!x)return;
+  Object.keys(x).forEach(function(k){
+    if(k==='tasksAdd')L.tasks=(L.tasks||[]).concat(x[k]);else L[k]=x[k];
+  });
+});
+(function(){var n=0;LESSONS.forEach(function(L){if(!L.free){L.num=n;n++}})})();
+
+
+/* ---------- WIDGET-URI ---------- */
+var W={};
+
+W.anat=function(el){
+  var segs=[{k:'open',t:'<p'},{k:'attr',t:' class="intro"'},{k:'open',t:'>'},{k:'content',t:'Salut!'},{k:'close',t:'</p>'}];
+  var info={
+   open:['Eticheta de deschidere','Spune ce fel de element începe: „p” înseamnă paragraf. Eticheta se scrie între < și >.'],
+   attr:['Atributul','Informație în plus despre element, în forma nume="valoare". Se scrie doar în eticheta de deschidere.'],
+   content:['Conținutul','Ce vede omul în pagină. Poate fi text sau alte elemente.'],
+   close:['Eticheta de închidere','Același nume, cu / în față. Spune unde se termină elementul.']};
+  el.innerHTML='<div class="cline" role="group" aria-label="Anatomia unui element">'+segs.map(function(s){return '<button type="button" class="sg" data-k="'+s.k+'">'+esc(s.t)+'</button>'}).join('')+'</div><p class="cap" id="anatCap"></p>';
+  function pick(k){
+    $$('.sg',el).forEach(function(b){b.classList.toggle('on',b.dataset.k===k)});
+    $('#anatCap',el).innerHTML='<b>'+info[k][0]+'.</b> '+esc(info[k][1])+(k==='content'?'':' ');
+  }
+  el.addEventListener('click',function(e){var b=e.target.closest('.sg');if(b)pick(b.dataset.k)});
+  pick('open');
+  var cap=$('#anatCap',el);cap.insertAdjacentHTML('afterend','<p class="cap" style="color:var(--muted)">Un <b>element</b> = eticheta de deschidere + conținut + eticheta de închidere.</p>');
+};
+
+W.layers=function(el){
+  var caps={html:'<b>Doar HTML:</b> scheletul. Titlu, paragraf, buton. Arată simplu, dar are deja sens și structură.',css:'<b>HTML + CSS:</b> aspectul. Culori, rotunjiri, spații. Aceleași elemente, alt look.',js:'<b>HTML + CSS + JavaScript:</b> comportamentul. Apasă butonul: pagina reacționează.'};
+  el.innerHTML='<div class="seg" role="group" aria-label="Straturi"><button type="button" data-l="html" aria-pressed="true">HTML</button><button type="button" data-l="css" aria-pressed="false">+ CSS</button><button type="button" data-l="js" aria-pressed="false">+ JavaScript</button></div>'+
+   '<div class="stage" data-layer="html"><div class="mini"><h3>Pisica Mira</h3><p>Are trei ani și iubește somnul.</p><button type="button">Mângâie</button><p class="cnt">Mângâieri: 0</p></div></div><p class="cap"></p>';
+  var st=$('.stage',el),cap=$('.cap',el),n=0;
+  function set(l){st.dataset.layer=l;$$('.seg button',el).forEach(function(b){b.setAttribute('aria-pressed',b.dataset.l===l)});cap.innerHTML=caps[l]}
+  el.addEventListener('click',function(e){
+    var b=e.target.closest('.seg button');if(b){set(b.dataset.l);return}
+    if(e.target.closest('.mini button')){n++;$('.cnt',el).textContent='Mângâieri: '+n}
+  });
+  set('html');
+};
+
+W.create=function(el){
+  var items=[
+   ['Site de prezentare','Pagina unei școli, a unui cabinet sau a unui artist: text, poze, date de contact.'],
+   ['Blog','Articole cu titluri, imagini și linkuri către alte pagini.'],
+   ['Magazin online','Liste de produse, poze, prețuri și butonul „Adaugă în coș”.'],
+   ['Formulare','Înscrieri, sondaje, chestionare: câmpuri, căsuțe bifabile, butoane.'],
+   ['Newsletter','Mesajele de e-mail cu design sunt, de fapt, mici pagini HTML.'],
+   ['Jocuri în browser','Cu HTML, CSS și JavaScript faci jocuri care merg fără instalare.'],
+   ['Aplicații web','Calendare, editoare, panouri de control: tot ce folosești în browser.'],
+   ['Cursuri și cărți online','Manuale și documentație. Pagina pe care o citești acum este scrisă în HTML.']];
+  el.innerHTML='<div class="create">'+items.map(function(it,i){return '<button type="button" data-i="'+i+'" aria-pressed="false">'+esc(it[0])+'</button>'}).join('')+'</div><p class="cap" id="crCap"></p>';
+  function pick(i){$$('.create button',el).forEach(function(b){b.setAttribute('aria-pressed',b.dataset.i==i)});$('#crCap',el).textContent=items[i][1]}
+  el.addEventListener('click',function(e){var b=e.target.closest('.create button');if(b)pick(b.dataset.i)});
+  pick(0);
+};
+
+W.mixer=function(el){
+  var presets={tomato:[255,99,71],gold:[255,215,0],seagreen:[46,139,87],royalblue:[65,105,225],orchid:[218,112,214]};
+  el.innerHTML='<div class="seg" role="group" aria-label="Culori gata făcute">'+Object.keys(presets).map(function(k){return '<button type="button" data-p="'+k+'" aria-pressed="false">'+k+'</button>'}).join('')+'</div>'+
+   '<div class="mix"><div style="display:flex;flex-direction:column;gap:.5rem">'+
+   ['R|roșu','G|verde','B|albastru'].map(function(s,i){var p=s.split('|');return '<div class="sl"><label for="mx'+i+'" title="'+p[1]+'">'+p[0]+'</label><input type="range" id="mx'+i+'" min="0" max="255" value="0" style="accent-color:var(--accent)"><output id="mo'+i+'">0</output></div>'}).join('')+
+   '</div><div class="out"><div class="swatch" id="mxSw"></div><code id="mxN"></code><code id="mxH"></code><code id="mxR"></code></div></div>';
+  var rs=[0,1,2].map(function(i){return $('#mx'+i,el)});
+  function upd(){
+    var v=rs.map(function(r){return +r.value});
+    [0,1,2].forEach(function(i){$('#mo'+i,el).textContent=v[i]});
+    var hex='#'+v.map(function(n){return ('0'+n.toString(16)).slice(-2)}).join('').toUpperCase();
+    $('#mxSw',el).style.background=hex;
+    $('#mxH',el).textContent='background-color: '+hex+';';
+    $('#mxR',el).textContent='background-color: rgb('+v.join(', ')+');';
+    var name='';Object.keys(presets).forEach(function(k){if(presets[k].join()===v.join())name=k});
+    $('#mxN',el).textContent=name?'background-color: '+name+';':'(fără nume în engleză)';
+    $$('.seg button',el).forEach(function(b){b.setAttribute('aria-pressed',b.dataset.p===name)});
+  }
+  el.addEventListener('input',function(e){if(e.target.type==='range')upd()});
+  el.addEventListener('click',function(e){var b=e.target.closest('.seg button');if(!b)return;presets[b.dataset.p].forEach(function(n,i){rs[i].value=n});upd()});
+  presets.tomato.forEach(function(n,i){rs[i].value=n});upd();
+};
+
+W.explorer=function(el){
+  var code=['<!DOCTYPE html>','<html lang="ro">','<head>','  <meta charset="UTF-8">','  <title>Pagina mea</title>','</head>','<body>','  <h1>Salut!</h1>','</body>','</html>'];
+  var parts=[
+   {k:'doctype',n:'DOCTYPE',l:[1],d:'Prima linie, mereu. Îi spune browserului că aceasta este o pagină HTML modernă.'},
+   {k:'html',n:'html',l:[2,10],d:'Rădăcina paginii: conține tot. Atributul lang="ro" spune că textul este în română.'},
+   {k:'head',n:'head',l:[3,4,5,6],d:'Capul paginii: informații despre pagină, care nu apar în pagină propriu-zisă.'},
+   {k:'meta',n:'meta',l:[4],d:'Codarea literelor. Fără ea, ă, î, ș, ț pot apărea stricate.'},
+   {k:'title',n:'title',l:[5],d:'Numele paginii. Se vede în tab-ul browserului și în rezultatele Google.'},
+   {k:'body',n:'body',l:[7,8,9],d:'Corpul paginii: tot ce vede omul. Texte, imagini, butoane, liste.'}];
+  el.innerHTML='<div class="seg" role="group" aria-label="Părțile paginii">'+parts.map(function(p){return '<button type="button" data-k="'+p.k+'" aria-pressed="false">'+esc(p.n)+'</button>'}).join('')+'</div>'+
+   '<pre class="xp">'+code.map(function(l,i){return '<span class="ln" data-l="'+(i+1)+'">'+highlight(l)+' </span>'}).join('')+'</pre><p class="cap"></p>';
+  function pick(k){
+    var p=parts.filter(function(x){return x.k===k})[0];
+    $$('.seg button',el).forEach(function(b){b.setAttribute('aria-pressed',b.dataset.k===k)});
+    $$('.ln',el).forEach(function(s){s.classList.toggle('on',p.l.indexOf(+s.dataset.l)>-1)});
+    $('.cap',el).innerHTML='<b>'+esc(p.n)+'.</b> '+esc(p.d);
+  }
+  el.addEventListener('click',function(e){var b=e.target.closest('.seg button');if(b)pick(b.dataset.k)});
+  pick('doctype');
+};
+
+W.boxm=function(el){
+  var rows=[['bmm','margin',0,60,24],['bmb','border',0,24,8],['bmp','padding',0,60,20]];
+  el.innerHTML='<div class="bm"><div class="bm-m" id="bxM"><span class="bm-l">margin</span><div class="bm-b" id="bxB"><span class="bm-l">border</span><div class="bm-p" id="bxP"><span class="bm-l">padding</span><div class="bm-c">conținut</div></div></div></div></div>'+
+  '<div class="mix"><div style="display:flex;flex-direction:column;gap:.5rem">'+
+  rows.map(function(r){return '<div class="bm-sl"><label for="'+r[0]+'">'+r[1]+'</label><input type="range" id="'+r[0]+'" min="'+r[2]+'" max="'+r[3]+'" value="'+r[4]+'" style="accent-color:var(--accent)"><output id="'+r[0]+'o"></output></div>'}).join('')+
+  '</div><div class="out"><code id="bmc1"></code><code id="bmc2"></code><code id="bmc3"></code></div></div>';
+  var M=$('#bxM',el),B=$('#bxB',el),P=$('#bxP',el);
+  function upd(){
+    var m=+$('#bmm',el).value,b=+$('#bmb',el).value,p=+$('#bmp',el).value;
+    $('#bmmo',el).textContent=m+'px';$('#bmbo',el).textContent=b+'px';$('#bmpo',el).textContent=p+'px';
+    M.style.padding=m+'px';B.style.borderWidth=b+'px';P.style.padding=p+'px';
+    $('#bmc1',el).textContent='margin: '+m+'px;';
+    $('#bmc2',el).textContent='border: '+b+'px solid #D9A441;';
+    $('#bmc3',el).textContent='padding: '+p+'px;';
+  }
+  el.addEventListener('input',function(e){if(e.target.type==='range')upd()});
+  upd();
+};
+
+
+/* ---------- COLORARE COD ---------- */
+function hlCss(t){
+  return t.replace(/\/\*[\s\S]*?\*\/|[^{}]+(?=\{)|([a-z-]+)(\s*:)([^;{}]*)(;?)|[{}]/gi,function(m,p,c,v,s){
+    if(m.slice(0,2)==='/*')return '<i class="c">'+esc(m)+'</i>';
+    if(p!==undefined)return '<i class="p">'+esc(p)+'</i>'+esc(c)+'<i class="s">'+esc(v)+'</i>'+esc(s);
+    if(m==='{'||m==='}')return esc(m);
+    return '<i class="sel">'+esc(m)+'</i>';
+  });
+}
+function hlAttrs(a){
+  return a.replace(/(\s+)|([^\s=]+)(\s*=\s*)("[^"]*"?|'[^']*'?|[^\s>]*)|([^\s=]+)|([\s\S])/g,function(m,ws,n,eq,v,lone){
+    if(ws)return ws;
+    if(n!==undefined)return '<i class="a">'+esc(n)+'</i>'+esc(eq)+'<i class="s">'+esc(v)+'</i>';
+    if(lone)return '<i class="a">'+esc(lone)+'</i>';
+    return esc(m);
+  });
+}
+var TAGRE=new RegExp('<\\!--[\\s\\S]*?(?:-->|$)|<\\!DOCTYPE[^>]*>?|<\\/?[a-zA-Z][^>]*>?','gi');
+var PARTRE=/^<(\/?)([a-zA-Z][\w-]*)([\s\S]*?)(\/?>?)$/;
+function highlight(src){
+  var out='',last=0,inStyle=false,m;
+  TAGRE.lastIndex=0;
+  while((m=TAGRE.exec(src))){
+    var pre=src.slice(last,m.index);
+    out+=inStyle?hlCss(pre):esc(pre);
+    last=m.index+m[0].length;
+    var t=m[0];
+    if(t.slice(0,4)===OC){out+='<i class="c">'+esc(t)+'</i>';}
+    else if(/^<!doctype/i.test(t)){out+='<i class="d">'+esc(t)+'</i>';}
+    else{
+      var mm=PARTRE.exec(t);
+      if(!mm){out+=esc(t);continue}
+      out+='<i class="t">&lt;'+mm[1]+esc(mm[2])+'</i>'+hlAttrs(mm[3])+'<i class="t">'+esc(mm[4])+'</i>';
+      if(mm[2].toLowerCase()==='style')inStyle=!mm[1];
+    }
+    if(m[0].length===0)TAGRE.lastIndex++;
+  }
+  var rest=src.slice(last);
+  out+=inStyle?hlCss(rest):esc(rest);
+  return out;
+}
+
+/* ---------- utilitare ---------- */
+function toHex(c){
+  try{var x=document.createElement('canvas').getContext('2d');x.fillStyle='#000000';x.fillStyle=c;var v=x.fillStyle;
+    if(v.charAt(0)==='#')return v;
+    var m=v.match(/\d+/g);if(m)return '#'+m.slice(0,3).map(function(n){return ('0'+(+n).toString(16)).slice(-2)}).join('');
+  }catch(e){}
+  return '#000000';
+}
+function csOf(el,p){if(!el)return '';var w=(el.ownerDocument&&el.ownerDocument.defaultView)||window;try{return w.getComputedStyle(el)[p]}catch(e){return ''}}
+
+/* ---------- ATELIER ---------- */
+var cur=null,mountTimer=null,mountPrev=null,labApi=null;
+
+function mountLab(L){
+  var ta=$('#code'),pre=$('#hl'),gut=$('#gut'),frame=$('#frame'),tab=$('#tab');
+  var ctls=[],taskEls=$$('.tk'),noTab=false,prevOk=L.tasks.map(function(){return false});
+  ta.value=(S.code[L.id]!==undefined)?S.code[L.id]:L.starter;
+
+  var api={
+    get:function(){return ta.value},
+    set:function(v){var st=ta.scrollTop,sl=ta.scrollLeft;ta.value=v;sync(true);ta.scrollTop=st;ta.scrollLeft=sl}
+  };
+
+  api.addBody=function(snip){
+    var ind=snip.split('\n').map(function(l){return '  '+l}).join('\n')+'\n';
+    var code=ta.value,i=code.search(/<\/body>/i);
+    api.set(i>-1?code.slice(0,i)+ind+code.slice(i):code+'\n'+snip+'\n');
+  };
+  labApi=api;
+  function getDoc(){
+    try{var d=frame.contentDocument;if(d&&d.body)return d}catch(e){}
+    return new DOMParser().parseFromString(withImages(ta.value),'text/html');
+  }
+  function runTasks(){
+    if(!L.tasks.length)return;
+    var doc=getDoc(),code=ta.value;
+    var ctx={doc:doc,code:code,cs:csOf,q:function(s){return doc.querySelector(s)},qa:function(s){return Array.prototype.slice.call(doc.querySelectorAll(s))}};
+    var n=0;
+    L.tasks.forEach(function(t,i){
+      var ok=false;try{ok=!!t.test(ctx)}catch(e){ok=false}
+      var li=taskEls[i];if(!li)return;
+      li.classList.toggle('ok',ok);
+      var sr=$('.sr',li);if(sr)sr.textContent=ok?'terminat: ':'de făcut: ';
+      if(ok)n++;
+    });
+    $('#tcnt').textContent=n+' / '+L.tasks.length;
+    var all=n===L.tasks.length;
+    $('#win').hidden=!all;
+    if(all&&!S.done[L.id]){S.done[L.id]=true;save();markNav()}
+  }
+  function updTab(){
+    var t='';try{t=(frame.contentDocument.title||'').trim()}catch(e){var m=ta.value.match(/<title>([^<]*)<\/title>/i);t=m?m[1].trim():''}
+    tab.textContent=t||'pagina.html';
+  }
+  frame.addEventListener('load',function(){updTab();runTasks()});
+  function renderPreview(){frame.srcdoc=withImages(ta.value)}
+
+  function syncCtls(){ctls.forEach(function(c){c.sync(ta.value)})}
+  function sync(immediate){
+    var v=ta.value;
+    pre.innerHTML=highlight(v)+'\n';
+    var n=v.split('\n').length,g='';for(var i=1;i<=n;i++)g+=i+'\n';gut.textContent=g;
+    S.code[L.id]=v;save();
+    syncCtls();
+    clearTimeout(mountTimer);
+    if(immediate===true)renderPreview();else mountTimer=setTimeout(renderPreview,180);
+  }
+  ta.addEventListener('input',function(){sync()});
+  ta.addEventListener('scroll',function(){pre.scrollTop=ta.scrollTop;pre.scrollLeft=ta.scrollLeft;gut.scrollTop=ta.scrollTop});
+  ta.addEventListener('blur',function(){noTab=false});
+  function ins(text){
+    ta.focus();
+    var ok=false;try{ok=document.execCommand('insertText',false,text)}catch(e){}
+    if(!ok){ta.setRangeText(text,ta.selectionStart,ta.selectionEnd,'end');sync()}
+  }
+  ta.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){noTab=true;return}
+    if(e.key==='Tab'&&!noTab&&!e.ctrlKey&&!e.metaKey&&!e.altKey){
+      e.preventDefault();
+      if(e.shiftKey){
+        var s=ta.selectionStart,ls=ta.value.lastIndexOf('\n',s-1)+1;
+        if(ta.value.slice(ls,ls+2)==='  '){ta.setSelectionRange(ls,ls+2);ins('');}
+      }else ins('  ');
+      return;
+    }
+    if(e.key==='Enter'&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey){
+      var p=ta.selectionStart,ls2=ta.value.lastIndexOf('\n',p-1)+1;
+      var ind=(ta.value.slice(ls2,p).match(/^[ \t]*/)||[''])[0];
+      e.preventDefault();ins('\n'+ind);
+    }
+  });
+
+  /* controale */
+  function buildCtl(c,i){
+    var w=document.createElement('div');w.className='ctl';
+    var id='ct'+i,h='<label for="'+id+'">'+esc(c.label)+'</label>';
+    if(c.type==='color')h+='<div class="row"><input type="color" id="'+id+'"><code class="val"></code></div>';
+    else if(c.type==='range')h+='<div class="row"><input type="range" id="'+id+'" min="'+c.min+'" max="'+c.max+'" step="'+(c.step||1)+'"><code class="val"></code></div>';
+    else if(c.type==='select')h+='<select id="'+id+'">'+c.options.map(function(o){return '<option value="'+qa(o[0])+'">'+esc(o[1])+'</option>'}).join('')+'</select>';
+    else if(c.type==='text')h+='<input type="text" id="'+id+'" autocomplete="off" spellcheck="false">';
+    else if(c.type==='swatches')h+='<div class="sw" id="'+id+'">'+c.values.map(function(v){return '<button type="button" class="swb" data-v="'+qa(v)+'" style="background:'+qa(v)+'" title="'+qa(v)+'" aria-label="'+qa(v)+'"></button>'}).join('')+'</div>';
+    w.innerHTML=h;
+    var inp=$('#'+id,w),val=$('.val',w);
+    function apply(v){
+      var code=ta.value;if(!c.re.test(code))return;
+      api.set(code.replace(c.re,function(m,a,b,d){return a+v+d}));
+    }
+    if(c.type==='swatches'){w.addEventListener('click',function(e){var b=e.target.closest('.swb');if(b)apply(b.dataset.v)})}
+    else inp.addEventListener('input',function(){
+      var v=inp.value;
+      if(c.type==='text')v=v.replace(/[<>]/g,'');
+      apply(v);
+      if(val&&c.type==='range')val.textContent=v+(c.unit===undefined?' px':c.unit);
+    });
+    c.sync=function(code){
+      var m=c.re.exec(code);
+      w.classList.toggle('off',!m);
+      if(inp&&inp.tagName)inp.disabled=!m;
+      $$('.swb',w).forEach(function(b){b.disabled=!m});
+      w.title=m?'':'Elementul nu există (încă) în cod';
+      if(!m)return;
+      var v=m[2].trim();
+      if(c.type==='swatches'){$$('.swb',w).forEach(function(b){b.style.outline=toHex(b.dataset.v)===toHex(v)?'2px solid var(--accent)':'none'});return}
+      if(document.activeElement===inp&&c.type==='text')return;
+      if(c.type==='color'){inp.value=toHex(v);val.textContent=inp.value.toUpperCase()}
+      else if(c.type==='range'){inp.value=parseFloat(v);val.textContent=parseFloat(v)+(c.unit===undefined?' px':c.unit)}
+      else if(c.type==='select'){
+        var has=Array.prototype.some.call(inp.options,function(o){return o.value===v});
+        if(!has){var o=document.createElement('option');o.value=v;o.textContent=v;inp.appendChild(o)}
+        inp.value=v;
+      }else inp.value=v;
+    };
+    ctls.push(c);
+    return w;
+  }
+  var grid=$('#cgrid');
+  if(grid)L.controls.forEach(function(c,i){grid.appendChild(buildCtl(c,i))});
+
+  /* fișiere (imagini) */
+  var files=$('#files');
+  if(files){
+    $('.row',files).innerHTML=Object.keys(IMGS).map(function(k){return '<button type="button" data-f="'+k+'" title="Adaugă în pagină"><img src="'+IMGS[k]+'" alt="">'+k+'</button>'}).join('');
+    files.addEventListener('click',function(e){
+      var b=e.target.closest('button[data-f]');if(!b)return;
+      var tag='  <img src="'+b.dataset.f+'" alt="'+IMG_ALT[b.dataset.f]+'" width="150">\n';
+      var code=ta.value;
+      var i=code.search(/<\/body>/i);
+      api.set(i>-1?code.slice(0,i)+tag+code.slice(i):code+'\n'+tag);
+    });
+  }
+
+  /* butoane unelte */
+  $('#bCopy').addEventListener('click',function(){
+    var b=this;
+    function done(){var t=b.textContent;b.textContent='Cod copiat';setTimeout(function(){b.textContent=t},1500)}
+    function fallback(){ta.focus();ta.select();try{document.execCommand('copy');done()}catch(e){}}
+    try{navigator.clipboard.writeText(ta.value).then(done,fallback)}catch(e){fallback()}
+  });
+  var rb=$('#bReset'),rt=null;
+  rb.addEventListener('click',function(){
+    if(!rb.dataset.arm){rb.dataset.arm='1';rb.textContent='Sigur? Apasă din nou';rt=setTimeout(function(){delete rb.dataset.arm;rb.textContent='Resetează lecția'},3000);return}
+    clearTimeout(rt);delete rb.dataset.arm;rb.textContent='Resetează lecția';api.set(L.starter);
+  });
+
+  sync(true);
+}
+
+/* ---------- RANDARE LECȚIE ---------- */
+function propCard(p,idx,L,dict){
+  var kind={html:'HTML',css:'CSS',val:'Valoare'}[p.k]||'';
+  var h='<article class="pc"><header class="pc-h"><code class="pn">'+esc(p.n)+'</code><span class="pk pk-'+(p.k||'html')+'">'+kind+'</span></header><p class="pd">'+fmt(p.d)+'</p>';
+  if(p.v&&p.v.length)h+='<dl class="pv">'+p.v.map(function(v){return '<div><dt><code>'+esc(v[0])+'</code></dt><dd>'+fmt(v[1])+'</dd></div>'}).join('')+'</dl>';
+  if(p.ex)h+='<pre class="pe">'+highlight(p.ex)+'</pre>';
+  if(p.tip)h+='<p class="pt"><b>Reține:</b> '+fmt(p.tip)+'</p>';
+  if(dict)h+='<div class="pa"><button class="btn" type="button" data-go="'+L.id+'">Lecția '+esc(L.num)+': '+esc(L.nav)+' →</button></div>';
+  else if(p.ex&&p.ins!==false)h+='<div class="pa"><button class="btn" type="button" data-try="'+L.id+'|'+idx+'">Încearcă în atelier</button></div>';
+  return h+'</article>';
+}
+function mistBox(m){
+  return '<section class="box-p" aria-label="Greșeli frecvente"><h3>Greșeli frecvente</h3><p class="note">Ce se întâmplă cel mai des la elevi și cum se repară.</p><div class="mist">'+
+   m.map(function(x){return '<div class="mi"><div class="mi-c"><span class="bad">Greșit</span><pre class="pe">'+highlight(x[0])+'</pre><span class="good">Corect</span><pre class="pe">'+highlight(x[1])+'</pre></div><p class="mi-w">'+fmt(x[2])+'</p></div>'}).join('')+'</div></section>';
+}
+function renderDict(L){
+  var all=[];
+  LESSONS.forEach(function(l){(l.props||[]).forEach(function(p,i){all.push({p:p,l:l,i:i})})});
+  var key=function(r){return r.p.n.replace(/[<>\/!.#:&;]/g,'').toLowerCase()};
+  all.sort(function(a,b){return key(a).localeCompare(key(b),'ro')});
+  var kinds=[['all','Toate'],['html','HTML'],['css','CSS'],['val','Valori']];
+  var h='<header class="lh"><p class="kick">Dicționar · '+all.length+' intrări</p><h1>'+esc(L.title)+'</h1><p class="lead">'+esc(L.lead)+'</p></header>';
+  h+='<div class="dq"><div class="ctl" style="flex:1;min-width:14rem"><label for="dsearch">Caută o proprietate sau o etichetă</label><input type="text" id="dsearch" autocomplete="off" placeholder="ex: padding, img, culoare"></div><div class="seg" id="dfilt" role="group" aria-label="Filtru">'+kinds.map(function(k,i){return '<button type="button" data-k="'+k[0]+'" aria-pressed="'+(i===0)+'">'+k[1]+'</button>'}).join('')+'</div></div><p class="cap" id="dcount"></p><div class="props solo" id="dlist"></div>';
+  $('#lesson').innerHTML=h;
+  var kind='all';
+  function draw(){
+    var q=$('#dsearch').value.trim().toLowerCase();
+    var rows=all.filter(function(r){
+      if(kind!=='all'&&r.p.k!==kind)return false;
+      if(!q)return true;
+      var t=r.p.n+' '+r.p.d+' '+(r.p.v||[]).map(function(v){return v.join(' ')}).join(' ');
+      return t.toLowerCase().indexOf(q)>-1;
+    });
+    $('#dcount').textContent=rows.length+' rezultate';
+    $('#dlist').innerHTML=rows.length?rows.map(function(r){return propCard(r.p,r.i,r.l,true)}).join(''):'<p class="cap">Nimic găsit. Încearcă alt cuvânt.</p>';
+  }
+  $('#dsearch').addEventListener('input',draw);
+  $('#dfilt').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-k]');if(!b)return;
+    kind=b.dataset.k;$$('#dfilt button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});draw();
+  });
+  draw();
+}
+function show(id){
+  var L=LESSONS.filter(function(l){return l.id===id})[0]||LESSONS[0];
+  cur=L.id;clearTimeout(mountTimer);labApi=null;
+  document.title='Atelier HTML';
+  if(L.dict){renderDict(L);markNav();return}
+  var idx=LESSONS.indexOf(L),prev=LESSONS[idx-1],next=LESSONS[idx+1];
+  var hasCtl=L.controls&&L.controls.length,hasTasks=L.tasks&&L.tasks.length,props=L.props||[];
+  var h='';
+  h+='<header class="lh"><p class="kick">'+(L.free?'Teren liber':'Lecția '+L.num)+(hasTasks?' · '+L.tasks.length+' provocări':'')+(props.length?' · '+props.length+' proprietăți explicate':'')+'</p><h1>'+esc(L.title)+'</h1><p class="lead">'+esc(L.lead)+'</p><div><button class="btn" type="button" data-jump="lab">Sari la atelier ↓</button></div></header>';
+  h+='<section class="sheet" aria-label="Explicații">'+L.intro+(L.deep||'')+'</section>';
+  if(L.cmds&&L.cmds.length){
+    h+='<section aria-label="Comenzi noi"><h2 class="sec-t">Comenzi noi <small>de ținut minte</small></h2><div class="cmds">'+L.cmds.map(function(c){return '<div class="cmd"><b>'+esc(c.t)+'</b><span>'+esc(c.d)+'</span></div>'}).join('')+'</div></section>';
+  }
+  if(props.length){
+    h+='<details class="props-d" open><summary>Proprietățile și atributele, pe larg <small>'+props.length+' carduri · „Încearcă în atelier” pune exemplul în editor</small></summary><div class="props">'+props.map(function(p,i){return propCard(p,i,L,false)}).join('')+'</div></details>';
+  }
+  if(L.mist&&L.mist.length)h+=mistBox(L.mist);
+  h+='<section class="lab" id="lab" aria-label="Atelier"><div class="lab-bar"><h2 class="sec-t" style="margin:0">Atelierul tău <small>scrie în stânga, vezi în dreapta</small></h2><div class="tools"><button class="btn" id="bCopy" type="button">Copiază codul</button><button class="btn" id="bReset" type="button">Resetează lecția</button></div></div>';
+  h+='<div class="split"><div class="pane"><div class="ph"><span class="ft">pagina.html</span><span class="hint-e">Esc, apoi Tab: ieși din editor</span></div><div class="edbox"><div class="gut" id="gut" aria-hidden="true"></div><div class="edin"><pre id="hl" aria-hidden="true"></pre><textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Editor de cod HTML"></textarea></div></div></div>';
+  h+='<div class="pane pv"><div class="chrome"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><div class="tab" id="tab">pagina.html</div></div><div class="addr">pagina.html</div><iframe id="frame" title="Previzualizarea paginii" sandbox="allow-same-origin"></iframe></div></div>';
+  if(L.files)h+='<div class="files" id="files"><h3 class="sec-t" style="margin:0;font-size:1rem">Folderul tău <small>apasă pe o poză ca s-o adaugi în pagină</small></h3><div class="row"></div></div>';
+  if(hasCtl||hasTasks){
+    h+='<div class="under'+(hasCtl&&hasTasks?'':' one')+'">';
+    if(hasCtl)h+='<div class="box-p"><h3>Schimbă din butoane</h3><p class="note">Mută un cursor sau alege o valoare și vezi cum se rescrie codul din editor.</p><div class="cgrid" id="cgrid"></div></div>';
+    if(hasTasks){
+      h+='<div class="box-p"><div class="th"><h3>Provocări</h3><span class="cnt" id="tcnt">0 / '+L.tasks.length+'</span></div><ul class="tasks-l">'+L.tasks.map(function(t){return '<li class="tk"><span class="box" aria-hidden="true"></span><div><p class="tx"><span class="sr">de făcut: </span>'+fmt(t.text)+'</p><details class="hint"><summary>Indiciu</summary><p>'+fmt(t.hint)+'</p></details></div></li>'}).join('')+'</ul>';
+      h+='<div class="win" id="win" hidden><p>Lecție terminată. Toate provocările sunt bifate.</p>'+(next?'<button class="btn pri" type="button" data-go="'+next.id+'">Lecția următoare →</button>':'')+'</div></div>';
+    }
+    h+='</div>';
+  }
+  h+='</section>';
+  h+='<div class="pager">'+(prev?'<button class="btn" type="button" data-go="'+prev.id+'">← '+esc(prev.nav)+'</button>':'<span></span>')+(next?'<button class="btn pri" type="button" data-go="'+next.id+'">'+esc(next.nav)+' →</button>':'')+'</div>';
+  $('#lesson').innerHTML=h;
+  $$('[data-wg]',$('#lesson')).forEach(function(w){var f=W[w.dataset.wg];if(f)f(w)});
+  mountLab(L);
+  markNav();
+}
+document.addEventListener('click',function(e){
+  var j=e.target.closest('[data-jump]');
+  if(j){var t=document.getElementById(j.dataset.jump);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});return}
+  var b=e.target.closest('[data-try]');if(!b)return;
+  var a=b.dataset.try.split('|'),L=LESSONS.filter(function(l){return l.id===a[0]})[0];
+  if(!L||!labApi||cur!==L.id)return;
+  var p=(L.props||[])[+a[1]];if(!p||!p.ex)return;
+  labApi.addBody(p.ex);
+  var lab=document.getElementById('lab');if(lab)lab.scrollIntoView({behavior:'smooth',block:'start'});
+  var o=b.textContent;b.textContent='Adăugat în editor';setTimeout(function(){b.textContent=o},1600);
+});
+
+/* ---------- NAVIGARE ---------- */
+function buildNav(){
+  $('#nav').innerHTML=LESSONS.map(function(l){return '<li><button type="button" class="nl'+(l.free?' free':'')+'" data-id="'+l.id+'"><span class="n">'+l.num+'</span><span class="tt">'+esc(l.nav)+'</span><span class="ck" aria-hidden="true"></span></button></li>'}).join('');
+}
+function markNav(){
+  $$('.nl').forEach(function(b){
+    var on=b.dataset.id===cur;
+    b.classList.toggle('on',on);b.classList.toggle('dn',!!S.done[b.dataset.id]);
+    if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');
+  });
+  var total=LESSONS.filter(function(l){return !l.free}).length;
+  var d=LESSONS.filter(function(l){return !l.free&&S.done[l.id]}).length;
+  $('#progtxt').textContent=d+' din '+total+' lecții terminate';
+  $('#progbar').style.width=(d/total*100)+'%';
+}
+function go(id){
+  if(location.hash.slice(1)===id){show(id);window.scrollTo(0,0);return}
+  location.hash=id;
+}
+function route(){
+  var id=location.hash.slice(1);
+  if(!LESSONS.some(function(l){return l.id===id}))id=LESSONS[0].id;
+  show(id);window.scrollTo(0,0);
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-id],[data-go]');
+  if(b&&(b.classList.contains('nl')||b.dataset.go)){go(b.dataset.go||b.dataset.id)}
+});
+window.addEventListener('hashchange',route);
+window.addEventListener('keydown',function(e){
+  if(!e.altKey||(e.key!=='ArrowRight'&&e.key!=='ArrowLeft'))return;
+  var i=LESSONS.map(function(l){return l.id}).indexOf(cur),n=LESSONS[i+(e.key==='ArrowRight'?1:-1)];
+  if(n){e.preventDefault();go(n.id)}
+});
+
+/* ---------- UNELTE GLOBALE ---------- */
+function applyFont(){document.documentElement.style.setProperty('--code-size',(S.font+(S.present?3:0))+'px')}
+$('#tFont').addEventListener('click',function(){S.font=Math.max(11,S.font-1);applyFont();save()});
+$('#tFontUp').addEventListener('click',function(){S.font=Math.min(24,S.font+1);applyFont();save()});
+$('#tPresent').addEventListener('click',function(){
+  S.present=!S.present;document.documentElement.classList.toggle('present',S.present);
+  this.setAttribute('aria-pressed',S.present);applyFont();save();
+});
+$('#tTheme').addEventListener('click',function(){
+  var r=document.documentElement,cs=r.dataset.theme;
+  var dark=cs?cs==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;
+  S.theme=dark?'light':'dark';r.dataset.theme=S.theme;save();
+});
+if(S.theme)document.documentElement.dataset.theme=S.theme;
+if(S.present){document.documentElement.classList.add('present');$('#tPresent').setAttribute('aria-pressed','true')}
+applyFont();
+
+buildNav();
+route();
+})();
+</script>
+
+</body></html>
