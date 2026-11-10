@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atelier HTML – lecția 1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#F3F6FF;--card:#fff;--fg:#1B2A4A;--mut:#5B6B8C;--line:#D6E0F5;--pri:#4F46E5;--pf:#fff;--ok:#16A34A;--okb:#DCFCE7;--bad:#DC2626;--badb:#FEE2E2;--sun:#FFC83D;--code:#17213A;--cf:#E7ECF7;--t:#FF8FA6;--a:#FFD479;--s:#8EE6B4;--c1:#4F46E5;--c2:#EC4899;--c3:#F59E0B;--c4:#10B981;--c5:#0EA5E9;
+--disp:'Baloo 2','Trebuchet MS',system-ui,sans-serif;--sans:'Nunito',system-ui,-apple-system,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--badb:#5B1A1A;--code:#0A0F1D}}
+:root[data-theme="dark"]{--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--badb:#5B1A1A;--code:#0A0F1D}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--fg);font:500 1.08rem/1.65 var(--sans)}
+.top{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:8px 14px;padding-top:calc(8px + env(safe-area-inset-top,0px));display:flex;gap:12px;align-items:center}
+.top b{font:800 1.05rem var(--disp);white-space:nowrap}.top span{font:800 .95rem var(--disp);white-space:nowrap}
+.pbar{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--c1),var(--c2));transition:width .2s}
+.hero{text-align:center;padding:46px 18px 34px;background:linear-gradient(135deg,#4F46E5,#EC4899);color:#fff}
+.hero h1{font:800 clamp(2.4rem,8vw,3.8rem)/1.05 var(--disp);margin:6px 0}.hero p{max-width:36ch;margin:8px auto 18px;font-size:1.2rem}.hero .e{font-size:3.6rem}
+button{font:800 1.02rem var(--disp);cursor:pointer;border:0;border-radius:14px;padding:9px 18px;background:var(--pri);color:var(--pf);box-shadow:0 4px 0 rgba(0,0,0,.22);min-height:44px}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.22)}.hero button{background:#fff;color:#4F46E5}
+button.alt{background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none}
+main{max-width:860px;margin:0 auto;padding:18px 14px 60px;display:flex;flex-direction:column;gap:22px}
+section{background:var(--card);border-radius:24px;padding:22px;border-top:8px solid var(--ac);box-shadow:0 6px 0 var(--line);--ac:var(--c1);min-width:0}
+.n{display:inline-flex;width:42px;height:42px;border-radius:50%;background:var(--ac);color:#fff;font:800 1.3rem var(--disp);align-items:center;justify-content:center;margin-right:8px;vertical-align:middle}
+h2{font:800 1.7rem/1.15 var(--disp);margin:0 0 8px}h3{font:800 1.25rem var(--disp);margin:20px 0 4px}p{margin:.55em 0}
+code{font:700 .92em var(--mono);background:var(--bg);padding:.1em .4em;border-radius:6px;word-break:break-word}
+.tip{background:var(--bg);border-left:6px solid var(--sun);border-radius:12px;padding:10px 14px;margin:14px 0}.tip.ok{border-color:var(--ok)}
+.code{background:var(--code);color:var(--cf);font:600 1rem/1.6 var(--mono);padding:12px 14px;border-radius:14px;overflow-x:auto;margin:8px 0;white-space:pre-wrap;word-break:break-word}
+.code .t{color:var(--t)}.code .a{color:var(--a)}.code .s{color:var(--s)}
+.res{border:3px dashed var(--line);border-radius:14px;padding:10px 14px;background:#fff;color:#111;margin:8px 0;font-family:Georgia,serif}.res h1{font-size:1.8rem;margin:0}.res h2{font:700 1.4rem Georgia;margin:0}.res p{margin:.3em 0}.res ul{margin:.3em 0}
+.lbl{font:800 .78rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:12px 0 4px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:14px 0}.cards>div{background:var(--bg);border-radius:16px;padding:14px;text-align:center}.cards .e{font-size:2.3rem;display:block}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}.g3>div{background:var(--bg);border-radius:16px;padding:12px;min-width:0}.g3 b{font:800 1.05rem var(--disp)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.tabs button{background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none;font-family:var(--mono);padding:8px 14px}.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.say{background:var(--bg);border-radius:14px;padding:12px 14px;margin:10px 0;min-height:4.4em}
+.steps{display:grid;gap:10px;margin:12px 0}.steps>div{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border-radius:14px;padding:10px 14px}.steps>div>b{font:800 1.6rem/1.2 var(--disp);color:var(--ac);min-width:1.6em}
+.mock{border:3px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;color:#111}.mock .tab{background:#E3E8F5;padding:6px 12px;font:700 .85rem var(--sans);color:#333}.mock .tab span{background:#fff;padding:2px 12px;border-radius:8px 8px 0 0;display:inline-block;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.mock .bd{padding:14px;min-height:80px}
+.hl{outline:4px solid var(--sun);outline-offset:-4px;background:#FFF8D6}
+.ab{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:560px){.ab{grid-template-columns:1fr}}.ab>div{border-radius:14px;padding:12px;font-weight:700}.good{background:var(--okb)}.bad{background:var(--badb)}.ab code{display:block;margin-top:4px;background:transparent}
+.lab{border:3px solid var(--ac);border-radius:18px;padding:14px;margin:18px 0;background:var(--bg)}.lab>h3{margin:0 0 4px}
+.lg{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:700px){.lg{grid-template-columns:1fr}}.lg>div{min-width:0}
+textarea{width:100%;height:230px;font:600 .98rem/1.5 var(--mono);background:var(--code);color:var(--cf);border:0;border-radius:12px;padding:12px;resize:vertical;tab-size:2;white-space:pre}
+iframe{width:100%;height:190px;border:0;background:#fff;display:block}
+.tasks{list-style:none;padding:0;margin:12px 0}.tasks li{padding:8px 12px;border-radius:12px;background:var(--card);margin:6px 0;font-weight:700}.tasks li.d{background:var(--okb)}.tasks li::before{content:"⬜ "}.tasks li.d::before{content:"✅ "}
+.hint{font-weight:700;color:var(--mut);min-height:1.4em}
+.q{border:3px solid var(--line);border-radius:18px;padding:14px;margin:14px 0}.q>p{font-weight:800;margin:0 0 8px}
+.q .o{display:block;width:100%;text-align:left;margin:8px 0;background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none;font:700 1rem var(--mono);word-break:break-word}.q .o.ok{background:var(--okb);border-color:var(--ok)}.q .o.no{background:var(--badb);border-color:var(--bad)}.q .w{font-weight:700;margin-top:6px}
+.score{text-align:center;font:800 1.5rem var(--disp);padding:18px;border-radius:18px;background:var(--bg)}
+@keyframes pop{0%{transform:scale(.9);opacity:0}100%{transform:none;opacity:1}}.pop{animation:pop .3s}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}.sol{margin-top:8px}
+</style>
+</head>
+<body>
+<div class="top"><b>🌐 Atelier HTML</b><div class="pbar"><i id="pg"></i></div><span id="tc">🎯 0/0</span></div>
+<header class="hero"><div class="e">🌐</div><h1>Lecția 1: Descoperă HTML</h1><p>De la „ce este?” până la prima ta pagină, cu cod pe care îl scrii chiar aici.</p><button onclick="document.getElementById('s1').scrollIntoView()">Începem! 👇</button></header>
+<main>
+
+<section id="s1"><h2><span class="n">1</span>Ce este HTML?</h2>
+<p>Orice pagină web pe care o deschizi (un joc, un magazin, un desen animat) este scrisă în <b>HTML</b>. Numele vine de la <i>HyperText Markup Language</i>, adică „limbaj de marcare a textului”.</p>
+<p>A „marca” înseamnă a pune <b>etichete</b>. Ca la școală, când pui un autocolant pe caiet („Matematică”), în HTML îi spui browserului ce este fiecare bucată: <b>„asta e un titlu”</b>, <b>„asta e un text”</b>, <b>„asta e o poză”</b>.</p>
+<div class="tip">💡 HTML nu „dă comenzi” calculatorului și nu face calcule. El doar <b>descrie</b> ce conține pagina. De aceea se numește limbaj de <b>marcare</b>, nu de programare.</div>
+<h3>O pagină are 3 straturi, ca o casă</h3>
+<p>Apasă pe butoane și vezi aceeași pagină în trei etape:</p>
+<div class="tabs" id="lay"></div><div class="mock"><div class="bd" id="laybox"></div></div><div class="say" id="laysay"></div>
+<h3>La ce ne ajută HTML?</h3>
+<div class="cards"><div><span class="e">📰</span>Pagini cu texte și titluri</div><div><span class="e">🖼️</span>Galerii cu poze</div><div><span class="e">🛒</span>Magazine online</div><div><span class="e">🎮</span>Jocuri în browser</div><div><span class="e">📝</span>Formulare</div><div><span class="e">🔗</span>Legături între pagini</div></div>
+<p>HTML este <b>baza</b> oricărui site. Fără el, browserul n-ar ști ce să afișeze. Browserul citește codul <b>de sus în jos</b>, rând cu rând, și desenează pe ecran fiecare element, în ordinea în care apare.</p>
+</section>
+
+<section id="s2" style="--ac:var(--c2)"><h2><span class="n">2</span>Cum începe o pagină HTML?</h2>
+<p>Orice pagină HTML începe la fel: cu un <b>schelet</b> scris într-o <b>ordine fixă</b>. Mai jos e scheletul unei pagini simple. Îl descoperim <b>rând cu rând</b>, în ordinea în care îl scrii.</p>
+<p>Reține deocamdată doar atât: <code>&lt;ceva&gt;</code> <b>deschide</b>, iar <code>&lt;/ceva&gt;</code> <b>închide</b>. Despre etichete vorbim pe larg în secțiunea 4.</p>
+<div class="tabs" id="skt"></div><div class="code" id="skcode"></div>
+<div class="mock"><div class="tab"><span id="mt"></span></div><div class="bd" id="mb"></div></div><div class="say" id="sksay"></div>
+<h3>Ce conține fiecare parte?</h3>
+<p>Etichetele stau una în alta, ca păpușile matrioșka. Cea mai mare le conține pe toate:</p>
+<div class="code">html  (toată pagina)
+ ├─ head  (informații, NU se văd)
+ │   ├─ meta   (alfabetul: ă, î, ș, ț)
+ │   └─ title  (numele din tab)
+ └─ body  (conținutul, SE VEDE)
+     ├─ h2  (un titlu)
+     └─ p   (un paragraf)</div>
+<div class="tip ok">✅ <b>Ordinea de scriere:</b> 1) DOCTYPE, 2) deschizi <code>html</code>, 3) <code>head</code> cu <code>meta</code> și <code>title</code>, 4) <code>body</code> cu conținutul, 5) închizi în ordine inversă: întâi <code>&lt;/body&gt;</code>, apoi <code>&lt;/html&gt;</code>.</div>
+</section>
+
+<section id="s3" style="--ac:var(--c3)"><h2><span class="n">3</span>Scrie-ți primul fișier</h2>
+<p>Ai nevoie de un <b>editor de text</b> (Notepad sau, mai bine, <i>Visual Studio Code</i>) și de un <b>browser</b> (Chrome, Edge, Firefox). Pașii sunt aceiași pentru orice pagină:</p>
+<div class="steps"><div><b>1</b><span>Deschide editorul și scrie scheletul, în ordinea de mai sus: prima linie este <code>&lt;!DOCTYPE html&gt;</code>.</span></div><div><b>2</b><span>Salvează fișierul ca <code>pagina.html</code>. <b>Extensia .html este obligatorie</b> (nu <code>pagina.txt</code>).</span></div><div><b>3</b><span>Dă dublu-click pe fișier: se deschide în browser.</span></div><div><b>4</b><span>Ai schimbat ceva? Salvezi cu Ctrl+S și reîncarci pagina cu F5.</span></div></div>
+<p>Aici nu salvezi nimic: rezultatul se schimbă cât scrii. Dacă te blochezi, apasă <b>Indiciu</b> (îți arată exact ce să scrii la pasul curent) sau <b>Arată rezolvarea</b>.</p>
+<div id="labA"></div><div id="labB"></div>
+</section>
+
+<section id="s4" style="--ac:var(--c2)"><h2><span class="n">4</span>Ce este o etichetă?</h2>
+<p>O <b>etichetă</b> (în engleză <i>tag</i>) este un cuvânt scris între semnele <code>&lt;</code> și <code>&gt;</code>. Ea îi spune browserului ce fel de lucru urmează. De exemplu, <code>&lt;p&gt;</code> înseamnă „urmează un paragraf”.</p>
+<p>Gândește-te la o <b>cutie de jucării</b>: pe capac scrie „JUCĂRII” (eticheta de început), înăuntru sunt jucăriile (conținutul), iar la sfârșit pui capacul la loc (eticheta de sfârșit). Toată cutia împreună se numește <b>element</b>.</p>
+<p>👆 Apasă pe fiecare piesă ca să afli ce face:</p>
+<div class="tabs" id="anat"></div><div class="say" id="anatsay">Alege o piesă.</div>
+<h3>Ce poate conține o etichetă?</h3>
+<div class="g3"><div><b>1. Text</b><div class="code" data-h="<p>Salut, lume!</p>"></div>Cel mai simplu caz: doar text.</div><div><b>2. Alte etichete</b><div class="code" data-h="<p>Eu sunt <strong>Ana</strong>.</p>"></div>O etichetă poate sta în alta, ca păpușile matrioșka.</div><div><b>3. Nimic</b><div class="code" data-h="<br>"></div>Eticheta „singuratoare” nu are conținut și nici pereche de închidere (de exemplu <code>br</code> = rând nou).</div></div>
+<div class="tip ok">✅ <b>Regula de aur:</b> tot ce se deschide trebuie și închis. Eticheta de închidere are aceleași litere, cu o liniuță oblică <b>/</b> în față.</div>
+<div class="ab"><div class="good">✅ Corect<code>&lt;p&gt;Salut!&lt;/p&gt;</code></div><div class="bad">❌ Greșit (lipsește închiderea)<code>&lt;p&gt;Salut!</code></div></div>
+<div id="lab1"></div>
+</section>
+
+<section id="s5" style="--ac:var(--c4)"><h2><span class="n">5</span>Etichetele de bază</h2>
+<p>Iată cele mai folosite etichete, fiecare cu rolul ei. În stânga e codul, în dreapta ce vede cel care deschide pagina. Toate se scriu în interiorul lui <code>&lt;body&gt;</code>.</p>
+<div id="ref"></div>
+<div class="tip">💡 Titlurile merg de la <code>h1</code> (cel mai mare) la <code>h6</code> (cel mai mic). Pune <b>un singur h1</b> pe pagină, ca titlu principal.</div>
+<div id="lab3"></div>
+</section>
+
+<section id="s6" style="--ac:var(--c5)"><h2><span class="n">6</span>Atributele: informații în plus</h2>
+<p>Uneori o etichetă are nevoie de o informație suplimentară. De exemplu, un link trebuie să știe <b>unde duce</b>. Această informație se numește <b>atribut</b> și se scrie în eticheta de <b>deschidere</b>, sub forma <code>nume="valoare"</code>.</p>
+<p>👆 Apasă pe piese:</p>
+<div class="tabs" id="atr"></div><div class="say" id="atrsay">Apasă pe o piesă.</div>
+<div class="tip">💡 Valoarea se pune mereu între ghilimele. Eticheta de închidere <b>nu</b> poartă atribute. Alt exemplu: <code>&lt;img src="pisica.jpg" alt="O pisică"&gt;</code> pune o poză (<code>src</code> = unde se află poza, <code>alt</code> = descrierea ei).</div>
+<h3>Ce poți modifica cu atributele?</h3>
+<div class="g3"><div><b>href</b> · unde duce linkul<div class="code" data-h='<a href="https://ro.wikipedia.org">Wikipedia</a>'></div>Schimbă adresa și linkul duce în alt loc.</div><div><b>title</b> · text la mouse<div class="code" data-h='<p title="Salut!">Treci cu mouse-ul</p>'></div>Merge pe aproape orice etichetă.</div><div><b>style</b> · aspect<div class="code" data-h='<p style="color:red">Text roșu</p>'></div>Schimbă culoarea: primul pas spre CSS.</div></div>
+<div id="lab4"></div>
+</section>
+
+<section id="s7" style="--ac:var(--c2)"><h2><span class="n">7</span>Repară codul! 🔧</h2>
+<p>Programatorii mai greșesc și ei, de multe ori uită să închidă etichetele. Codul de mai jos are 3 greșeli. Găsește-le și repară-le.</p>
+<div id="lab6"></div>
+</section>
+
+<section id="s8" style="--ac:var(--c3)"><h2><span class="n">8</span>Recapitulare</h2>
+<div class="steps"><div><b>🏷️</b><span>HTML pune etichete pe conținut ca să spună ce este fiecare bucată.</span></div><div><b>&lt; &gt;</b><span>Etichetele se scriu între paranteze unghiulare, în pereche: <code>&lt;p&gt;…&lt;/p&gt;</code>.</span></div><div><b>/</b><span>Eticheta de sfârșit are liniuță oblică.</span></div><div><b>=""</b><span>Atributele dau informații în plus: <code>href="…"</code>.</span></div><div><b>🏠</b><span><code>html</code> conține <code>head</code> (nu se vede) și <code>body</code> (se vede).</span></div></div>
+</section>
+
+<section id="s9" style="--ac:var(--c4)"><h2><span class="n">9</span>Exerciții grilă 🎯</h2>
+<p>Alege răspunsul corect. Primești imediat explicația.</p>
+<div id="quiz"></div><div class="score" id="score" hidden></div>
+</section>
+</main>
+<script>
+var $=function(i){return document.getElementById(i)},esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')};
+function hl(s){return esc(s).replace(/(&lt;\/?[a-z0-9!]+)|(&gt;)|( [a-z]+)=("[^"]*")/gi,function(m,x,y,c,d){return (x||y)?'<span class="t">'+m+'</span>':' <span class="a">'+c.trim()+'</span>=<span class="s">'+d+'</span>'})}
+[].forEach.call(document.querySelectorAll('[data-h]'),function(e){e.innerHTML=hl(e.dataset.h)});
+function tabs(id,items,fn,first){var b=$(id);items.forEach(function(t,k){var e=document.createElement('button');e.innerHTML=t;e.onclick=function(){[].forEach.call(b.children,function(x){x.classList.remove('on')});e.classList.add('on');fn(k)};b.appendChild(e)});if(first!==false)b.children[0].click()}
+/* straturi */
+var HD='<h2 style="margin:0';var LS=[[HD+'">Pisica mea</h2><p style="margin:.3em 0">Pisica mea se joacă toată ziua.</p>','Doar <b>HTML</b>: structura. Avem un titlu și un text, fără culori. Este temelia casei.'],[HD+';color:#fff;background:#EC4899;padding:8px;border-radius:10px">Pisica mea 🐱</h2><p style="margin:.6em 0;color:#7C3AED;font-size:1.2rem">Pisica mea se joacă toată ziua.</p>','<b>CSS</b> adaugă <b>aspectul</b>: culori, mărimi, fundaluri. Este vopseaua și mobila casei.'],[HD+';color:#fff;background:#EC4899;padding:8px;border-radius:10px">Pisica mea 🐱</h2><p style="margin:.6em 0;color:#7C3AED;font-size:1.2rem">Pisica mea se joacă toată ziua.</p><button id="jb" style="min-height:0">Mângâie pisica: 0</button>','<b>JavaScript</b> adaugă <b>comportamentul</b>: pagina reacționează. Apasă butonul! Este instalația electrică. În acest curs începem cu HTML.']];
+tabs('lay',['🧱 HTML','🎨 + CSS','⚡ + JavaScript'],function(k){$('laybox').innerHTML=LS[k][0];$('laysay').innerHTML=LS[k][1];var j=$('jb');if(j){var n=0;j.onclick=function(){n++;j.textContent='Mângâie pisica: '+n+(n>2?' 😻':'')}}});
+/* anatomie */
+var AN=[['&lt;p&gt;','Eticheta de <b>deschidere</b>. Spune browserului: „Începe un paragraf!”'],['Salut!','<b>Conținutul</b>: textul care apare pe ecran.'],['&lt;/p&gt;','Eticheta de <b>închidere</b>. Are <b>/</b> în față și spune: „Gata, paragraful s-a terminat!”'],['&lt;p&gt;Salut!&lt;/p&gt;','Toate trei la un loc formează un <b>element</b>: cutia întreagă, cu capac cu tot.']];
+tabs('anat',AN.map(function(x){return x[0]}),function(k){$('anatsay').innerHTML=AN[k][1]},false);
+var AT=[['&lt;a','Numele etichetei: <b>a</b> = link.'],['href','<b>Numele atributului</b>: „href” înseamnă „unde duce linkul”.'],['=','Semnul <b>egal</b> leagă numele de valoare.'],['"https://ro.wikipedia.org"','<b>Valoarea</b>, între ghilimele: adresa paginii.'],['&gt;Wikipedia&lt;/a&gt;','Textul pe care se apasă, apoi eticheta de închidere <b>&lt;/a&gt;</b>, fără atribute.']];
+tabs('atr',AT.map(function(x){return x[0]}),function(k){$('atrsay').innerHTML=AT[k][1]},false);
+/* referință */
+var R=[['h1','Titlul principal: cel mai mare și mai important. Pune unul singur pe pagină.','<h1>Casa mea</h1>'],['h2','Subtitlu pentru o secțiune. Există și h3 … h6, tot mai mici.','<h2>Camera mea</h2>'],['p','Un paragraf de text. Fiecare p începe pe rând nou.','<p>Îmi place să mă joc.</p>'],['strong','Îngroașă textul important. Se scrie în interiorul altei etichete (aici, în p).','<p>Sunt <strong>foarte</strong> curios.</p>'],['em','Înclină textul, ca un accent pus pe un cuvânt.','<p>Este <em>chiar</em> grozav!</p>'],['ul · li','ul = lista cu buline. Fiecare element al listei este un li, scris în interiorul lui ul.','<ul>\n  <li>mere</li>\n  <li>pere</li>\n</ul>'],['a','Link pe care se poate apăsa. Atributul href spune încotro duce.','<a href="https://ro.wikipedia.org">Wikipedia</a>']];
+$('ref').innerHTML=R.map(function(r){return '<div class="g3" style="grid-template-columns:1fr 1fr"><div><b>&lt;'+r[0]+'&gt;</b> '+r[1]+'<div class="code">'+hl(r[2])+'</div></div><div><div class="lbl">Rezultat</div><div class="res">'+r[2].replace('href="https://ro.wikipedia.org"','href="#" onclick="return false"')+'</div></div></div>'}).join('');
+/* schelet pas cu pas */
+var SKL=['<!DOCTYPE html>','<html lang="ro">','  <head>','    <meta charset="utf-8">','    <title>Pagina mea</title>','  </head>','  <body>','    <h2>Salut!</h2>','    <p>Textul meu din body.</p>','  </body>','</html>'],SKC=SKL.join('\n');
+var SP=[['DOCTYPE',[0],'<b>Prima linie din orice pagină.</b> „<code>&lt;!DOCTYPE html&gt;</code>” îi spune browserului: „Fișierul acesta este o pagină HTML modernă.” Nu are pereche de închidere.'],
+['html',[1,10],'A doua linie <b>deschide pagina</b>, iar ultima linie o <b>închide</b>. Tot ce urmează stă între <code>&lt;html&gt;</code> și <code>&lt;/html&gt;</code>. Atributul <code>lang="ro"</code> spune că pagina e în limba română (ajută la traducere și la citirea cu voce tare).'],
+['head',[2,5],'<b>Camera cu instrumente</b>: informații <i>despre</i> pagină, pentru browser. Ce scrii aici <b>nu apare</b> în pagină. Se deschide cu <code>&lt;head&gt;</code> și se închide cu <code>&lt;/head&gt;</code>, înainte de body.'],
+['meta',[3],'Primul instrument din head. <code>charset="utf-8"</code> spune ce „alfabet” folosește fișierul, ca să se vadă corect <b>ă, î, â, ș, ț</b>. Este o etichetă singuratică: nu are pereche.'],
+['title',[4],'<b>Numele paginii.</b> Apare în <b>tab-ul browserului</b> (privește fereastra desenată mai sus), în favorite și în Google. Îl scrii între <code>&lt;title&gt;</code> și <code>&lt;/title&gt;</code>. Trebuie să fie în head.'],
+['body',[6,9],'<b>Camera mare.</b> După head vine <code>&lt;body&gt;</code>, iar <b>tot ce scrii aici se vede în pagină</b>. Se închide cu <code>&lt;/body&gt;</code>, chiar înainte de <code>&lt;/html&gt;</code>.'],
+['conținut',[7,8],'Aici stau etichetele pe care le vezi pe ecran: titluri, paragrafe, liste, linkuri. Fiecare se scrie <b>în interiorul</b> lui body și se închide singură. Le încerci în laboratorul de mai jos.']];
+tabs('skt',SP.map(function(p,k){return (k+1)+'. '+p[0]}),function(k){
+ $('skcode').innerHTML=SKL.map(function(l,j){var on=SP[k][1].indexOf(j)>-1;return '<span style="display:block;'+(on?'background:#FFD47933;border-radius:6px':'opacity:.45')+'">'+hl(l)+'</span>'}).join('');
+ $('sksay').innerHTML='<b>Pasul '+(k+1)+' din '+SP.length+':</b> '+SP[k][2];
+ $('mt').textContent=k>=4?'Pagina mea':'(fără titlu)';$('mt').parentNode.className='tab'+(k==4?' hl':'');
+ $('mb').className='bd'+(k>=5?' hl':'');$('mb').innerHTML=k>=6?'<h2 style="margin:0">Salut!</h2><p style="margin:.3em 0">Textul meu din body.</p>':'<i style="color:#888">'+(k==5?'Aici se vede conținutul…':'Încă nu se vede nimic.')+'</i>'});
+/* laborator */
+var total=0,doneN=0;
+function lab(id,o){total+=o.tasks.length;var host=$(id),ok=[];
+ host.className='lab';
+ host.innerHTML='<h3>🧪 '+o.title+'</h3><p>'+o.intro+'</p><div class="lg"><div><div class="lbl">✏️ Editor: scrie aici</div><textarea spellcheck="false" aria-label="Editor de cod"></textarea></div><div><div class="lbl">👀 Rezultat în browser</div><div class="mock"><div class="tab"><span class="mt"></span></div><iframe sandbox="allow-scripts" title="Rezultat"></iframe></div></div></div><ul class="tasks"></ul><div class="row"><button class="alt rs">↺ Începe din nou</button><button class="alt hb">💡 Indiciu</button><button class="alt sb">✅ Arată rezolvarea</button></div><div class="hint"></div><div class="sol" hidden></div>';
+ var ta=host.querySelector('textarea'),fr=host.querySelector('iframe'),ul=host.querySelector('.tasks'),hn=host.querySelector('.hint'),sl=host.querySelector('.sol'),mt=host.querySelector('.mt');
+ ta.placeholder=o.ph||'';
+ var lis=o.tasks.map(function(t){var l=document.createElement('li');l.innerHTML=t.t;ul.appendChild(l);return l});
+ function up(){var c=ta.value,d=new DOMParser().parseFromString(c,'text/html'),full=/<html|<!doctype/i.test(c);
+  mt.textContent=(full&&d.title.trim())||'(fără titlu)';
+  fr.srcdoc='<script>document.addEventListener("click",function(e){if(e.target.closest("a"))e.preventDefault()})<\/script>'+(full?c:'<meta charset="utf-8"><body style="font-family:Georgia,serif;margin:12px;color:#111">'+c);
+  o.tasks.forEach(function(t,k){var y=false;try{y=!!t.f(d,c)}catch(e){}lis[k].className=y?'d':'';if(y&&!ok[k]){ok[k]=1;doneN++}if(!y&&ok[k]){ok[k]=0;doneN--}});sc()}
+ ta.value=o.start;ta.oninput=up;ta.onkeydown=function(e){if(e.key==='Tab'){e.preventDefault();ta.setRangeText('  ',ta.selectionStart,ta.selectionEnd,'end');up()}};
+ host.querySelector('.rs').onclick=function(){ta.value=o.start;hn.innerHTML='';sl.hidden=true;up()};
+ host.querySelector('.hb').onclick=function(){var k=o.tasks.findIndex(function(t,j){return !ok[j]});hn.innerHTML=k<0?'🎉 Ai terminat toate provocările!':'💡 <b>Pasul '+(k+1)+':</b> scrie exact acest cod'+'<div class="code">'+hl(o.tasks[k].h)+'</div>'};
+ host.querySelector('.sb').onclick=function(){sl.hidden=!sl.hidden;if(!sl.hidden){sl.innerHTML='<div class="lbl">Rezolvarea completă</div><div class="code">'+hl(o.sol)+'</div><button class="alt put">⬇ Pune rezolvarea în editor</button>';sl.querySelector('.put').onclick=function(){ta.value=o.sol;up()}}};
+ up()}
+function sc(){$('tc').textContent='🎯 '+doneN+'/'+total}
+var q1=function(d,t){return d.querySelector(t)},qa=function(d,t){return d.querySelectorAll(t).length},cnt=function(c,r){return (c.match(r)||[]).length};
+lab('labA',{title:'Laborator 1: scrie scheletul, pas cu pas',intro:'Editorul este gol, ca un fișier nou. Scrie rând cu rând, în ordinea din explicație. Rezultatul apare când adaugi conținut în body.',start:'',ph:'Scrie aici prima linie…',
+sol:SKC,tasks:[
+{t:'Prima linie: <code>&lt;!DOCTYPE html&gt;</code>',h:'<!DOCTYPE html>',f:function(d,c){return /^\s*<!DOCTYPE html>/i.test(c)}},
+{t:'Deschide pagina cu <code>&lt;html lang="ro"&gt;</code> și închide-o cu <code>&lt;/html&gt;</code>.',h:'<!DOCTYPE html>\n<html lang="ro">\n\n</html>',f:function(d,c){return /<html[^>]*lang="ro"[^>]*>[\s\S]*<\/html>/i.test(c)}},
+{t:'În html scrie un <code>&lt;head&gt;</code> cu <code>meta charset</code> și un <code>&lt;title&gt;</code>.',h:'  <head>\n    <meta charset="utf-8">\n    <title>Pagina mea</title>\n  </head>',f:function(d,c){return /<head>[\s\S]*<meta charset="utf-8">[\s\S]*<title>[^<]+<\/title>[\s\S]*<\/head>/i.test(c)}},
+{t:'După head scrie un <code>&lt;body&gt;</code> cu un <code>&lt;h2&gt;</code> și un <code>&lt;p&gt;</code>.',h:'  <body>\n    <h2>Salut!</h2>\n    <p>Textul meu din body.</p>\n  </body>',f:function(d,c){return /<\/head>[\s\S]*<body>[\s\S]*<\/body>/i.test(c)&&q1(d,'body h2')&&q1(d,'body p')}}]});
+var SK2=SKC.replace('Pagina mea','Pagina Mariei').replace('Salut!','Bine ai venit!').replace('</body>','  <p>Mă numesc <strong>Maria</strong>.</p>\n  </body>');
+lab('labB',{title:'Laborator 2: modifică pagina',intro:'Acum ai scheletul gata făcut. Schimbă-l: titlul din tab, textul din pagină și adaugă conținut nou.',start:SKC,
+sol:SK2,tasks:[
+{t:'Schimbă textul din <code>&lt;title&gt;</code> (privește tab-ul din rezultat).',h:'<title>Pagina Mariei</title>',f:function(d){return d.title.trim()&&d.title.trim()!=='Pagina mea'}},
+{t:'Schimbă textul din <code>&lt;h2&gt;</code>.',h:'<h2>Bine ai venit!</h2>',f:function(d){var e=q1(d,'body h2');return e&&e.textContent.trim()&&e.textContent.trim()!=='Salut!'}},
+{t:'Adaugă în body încă un paragraf.',h:'<p>Mă numesc Maria.</p>',f:function(d){return qa(d,'body p')>=2}},
+{t:'Pune un cuvânt între <code>&lt;strong&gt;</code> și <code>&lt;/strong&gt;</code>.',h:'<p>Mă numesc <strong>Maria</strong>.</p>',f:function(d){return !!q1(d,'body strong')}}]});
+lab('lab1',{title:'Laborator 3: prima ta etichetă',intro:'Modifică paragraful și urmărește cum se schimbă rezultatul.',start:'<p>Salut! Aceasta este prima mea etichetă.</p>',
+sol:'<p>Ziua mea este frumoasă.</p>\n<p>Îmi place <strong>muzica</strong>.</p>',tasks:[
+{t:'Schimbă textul dintre <code>&lt;p&gt;</code> și <code>&lt;/p&gt;</code>.',h:'<p>Ziua mea este frumoasă.</p>',f:function(d){var p=q1(d,'p');return p&&p.textContent.trim()&&p.textContent.trim()!=='Salut! Aceasta este prima mea etichetă.'}},
+{t:'Adaugă un al doilea paragraf, pe un rând nou.',h:'<p>Ziua mea este frumoasă.</p>\n<p>Al doilea paragraf.</p>',f:function(d){return qa(d,'p')>=2}},
+{t:'Pune un cuvânt între <code>&lt;strong&gt;</code> și <code>&lt;/strong&gt;</code>.',h:'<p>Îmi place <strong>muzica</strong>.</p>',f:function(d){return !!q1(d,'strong')}}]});
+lab('lab3',{title:'Laborator 4: etichetele de bază',intro:'Completează pagina cu etichetele învățate.',start:'<h1>Animalele mele</h1>\n<p>Îmi plac animalele.</p>',
+sol:'<h1>Animalele mele</h1>\n<h2>Cățelul meu</h2>\n<p>Cățelul meu este <strong>jucăuș</strong>.</p>\n<p>Îl iubesc <em>mult</em>.</p>\n<ul>\n  <li>câine</li>\n  <li>pisică</li>\n  <li>pește</li>\n</ul>',tasks:[
+{t:'Adaugă un subtitlu <code>&lt;h2&gt;</code>.',h:'<h2>Cățelul meu</h2>',f:function(d){return !!q1(d,'h2')}},
+{t:'Pune un cuvânt îngroșat cu <code>&lt;strong&gt;</code> în interiorul unui <code>&lt;p&gt;</code>.',h:'<p>Cățelul meu este <strong>jucăuș</strong>.</p>',f:function(d){return !!q1(d,'p strong')}},
+{t:'Pune un cuvânt înclinat cu <code>&lt;em&gt;</code>.',h:'<p>Îl iubesc <em>mult</em>.</p>',f:function(d){return !!q1(d,'em')}},
+{t:'Fă o listă cu cel puțin 3 elemente, cu <code>&lt;ul&gt;</code> și <code>&lt;li&gt;</code>.',h:'<ul>\n  <li>câine</li>\n  <li>pisică</li>\n  <li>pește</li>\n</ul>',f:function(d){return qa(d,'ul li')>=3}}]});
+lab('lab4',{title:'Laborator 5: atribute',intro:'Eticheta <code>&lt;a&gt;</code> nu are încă atribute, deci linkul nu duce nicăieri.',start:'<p>Caută informații pe <a>Wikipedia</a>.</p>\n<p>Acesta este un text.</p>',
+sol:'<p>Caută informații pe <a href="https://ro.wikipedia.org" title="Enciclopedie">Wikipedia</a>.</p>\n<p style="color:red">Acesta este un text.</p>\n<p><a href="https://www.google.com">Google</a></p>',tasks:[
+{t:'Adaugă atributul <code>href="https://ro.wikipedia.org"</code> în eticheta <code>&lt;a&gt;</code>.',h:'<p>Caută informații pe <a href="https://ro.wikipedia.org">Wikipedia</a>.</p>',f:function(d){var a=q1(d,'a');return a&&/^https?:\/\//.test(a.getAttribute('href')||'')}},
+{t:'Adaugă și <code>title="Enciclopedie"</code> (apare când ții mouse-ul deasupra).',h:'<a href="https://ro.wikipedia.org" title="Enciclopedie">Wikipedia</a>',f:function(d){var a=q1(d,'a');return a&&a.getAttribute('title')}},
+{t:'Pune textul roșu cu <code>style="color:red"</code> pe al doilea paragraf.',h:'<p style="color:red">Acesta este un text.</p>',f:function(d){return !!q1(d,'p[style*="red"]')}},
+{t:'Adaugă un al doilea link, către un site la alegere.',h:'<p><a href="https://www.google.com">Google</a></p>',f:function(d){return qa(d,'a[href]')>=2}}]});
+lab('lab6',{title:'Laborator 6: doctorul de coduri',intro:'Etichetele de mai jos nu sunt închise corect. Repară-le.',start:'<h1>Ziua mea</h1></p>\n<p>Azi am mers la <strong>parc.</p>\n<p>Apoi am mâncat înghețată.',
+sol:'<h1>Ziua mea</h1>\n<p>Azi am mers la <strong>parc.</strong></p>\n<p>Apoi am mâncat înghețată.</p>',tasks:[
+{t:'Închide <code>&lt;h1&gt;</code> cu <code>&lt;/h1&gt;</code>.',h:'<h1>Ziua mea</h1>',f:function(d,c){return /<h1>[^<]*<\/h1>/.test(c)}},
+{t:'Închide <code>&lt;strong&gt;</code> cu <code>&lt;/strong&gt;</code>.',h:'<p>Azi am mers la <strong>parc.</strong></p>',f:function(d,c){return /<strong>[^<]*<\/strong>/.test(c)}},
+{t:'Fiecare <code>&lt;p&gt;</code> are exact un <code>&lt;/p&gt;</code>.',h:'<p>Apoi am mâncat înghețată.</p>',f:function(d,c){var a=cnt(c,/<p>/g);return a==2&&a==cnt(c,/<\/p>/g)}}]});
+/* quiz */
+var Q=[['Ce înseamnă HTML?',['Un limbaj de marcare a textului','Un joc video','Un program de desenat'],0,'HTML = HyperText Markup Language: pune etichete pe conținut.'],['Care dintre acestea este o etichetă de ÎNCHIDERE?',['<p>','</p>','<p/'],1,'Eticheta de închidere are liniuța oblică / înaintea numelui.'],['Cum se numește „cutia” întreagă: eticheta de început, conținutul și eticheta de sfârșit?',['Element','Atribut','Schelet'],0,'Începutul + conținutul + sfârșitul formează un element.'],['Ce etichetă pui pentru titlul cel mai mare din pagină?',['<p>','<strong>','<h1>'],2,'h1 = heading 1, titlul principal.'],['Care cod este scris corect?',['<p>Salut!</p>','<p>Salut!<p>','<p>Salut!</h1>'],0,'Ce se deschide trebuie închis cu aceeași pereche.'],['Cu ce extensie salvezi un fișier de pagină web?',['.txt','.html','.doc'],1,'Fișierul trebuie să se termine în .html, ca browserul să-l recunoască.'],['În <a href="https://ro.wikipedia.org">Wikipedia</a>, ce este href?',['Textul linkului','Un atribut: spune unde duce linkul','O etichetă de închidere'],1,'href este un atribut, de forma nume="valoare", scris în eticheta de deschidere.'],['Unde pui ce trebuie să se vadă în pagină?',['În <head>','În <title>','În <body>'],2,'În body stă tot ce se vede. Head conține informații despre pagină.'],['Ce apare în tab-ul browserului?',['Textul din <h1>','Textul din <title>','Textul din <p>'],1,'title dă numele paginii, afișat în tab.'],['Care este ordinea corectă?',['<body> în interiorul lui <head>','<html> care conține <head> și <body>','<head> după </html>'],1,'html cuprinde head și body, unul după altul.']];
+var done=0,good=0,qb=$('quiz');
+Q.forEach(function(q,qi){var d=document.createElement('div');d.className='q';d.innerHTML='<p>'+(qi+1)+'. '+esc(q[0])+'</p>';var w=document.createElement('div');w.className='w';var ans=false,tr=0;
+ q[1].forEach(function(o,k){var b=document.createElement('button');b.className='o';b.textContent=o;b.onclick=function(){if(ans)return;if(k==q[2]){ans=true;b.classList.add('ok');if(!tr)good++;w.style.color='var(--ok)';w.textContent='✅ Corect! '+q[3];done++;fin()}else{tr++;b.classList.add('no');b.disabled=true;w.style.color='var(--bad)';w.textContent='❌ Mai încearcă!'}};d.appendChild(b)});d.appendChild(w);qb.appendChild(d)});
+function fin(){if(done<Q.length)return;var s=$('score');s.hidden=false;s.className='score pop';s.innerHTML=(good>=9?'🏆':good>=6?'🎉':'💪')+' Corect din prima: '+good+' din '+Q.length+(good>=9?'. Ești un adevărat programator HTML!':good>=6?'. Foarte bine! Mai recitește o dată și vei fi perfect.':'. Nu-i nimic! Recitește lecția și mai încearcă.');s.scrollIntoView({block:'center'})}
+addEventListener('scroll',function(){var h=document.documentElement;$('pg').style.width=Math.min(100,h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+</script>
+</body>
+</html>
