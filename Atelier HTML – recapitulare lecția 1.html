@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atelier HTML – recapitulare lecția 1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#F3F6FF;--card:#fff;--fg:#1B2A4A;--mut:#5B6B8C;--line:#D6E0F5;--pri:#4F46E5;--pf:#fff;--ok:#16A34A;--okb:#DCFCE7;--bad:#DC2626;--badb:#FEE2E2;--code:#17213A;--cf:#E7ECF7;--t:#FF8FA6;--a:#FFD479;--s:#8EE6B4;--c1:#4F46E5;--c2:#EC4899;--c3:#F59E0B;--c4:#10B981;
+--disp:'Baloo 2','Trebuchet MS',system-ui,sans-serif;--sans:'Nunito',system-ui,-apple-system,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--badb:#5B1A1A;--code:#0A0F1D}}
+:root[data-theme="dark"]{--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--badb:#5B1A1A;--code:#0A0F1D}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--fg);font:500 1.08rem/1.65 var(--sans)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:12px;align-items:center}
+.top b{font:800 1.05rem var(--disp);white-space:nowrap}.top span{font:800 .95rem var(--disp);white-space:nowrap}
+.pbar{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--c1),var(--c2));transition:width .2s}
+.hero{text-align:center;padding:46px 18px 34px;background:linear-gradient(135deg,#F59E0B,#EC4899);color:#fff}
+.hero h1{font:800 clamp(2.4rem,8vw,3.8rem)/1.05 var(--disp);margin:6px 0}.hero p{max-width:36ch;margin:8px auto 18px;font-size:1.2rem}.hero .e{font-size:3.6rem}
+button{font:800 1.02rem var(--disp);cursor:pointer;border:0;border-radius:14px;padding:9px 18px;background:var(--pri);color:var(--pf);box-shadow:0 4px 0 rgba(0,0,0,.22);min-height:44px}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.22)}.hero button{background:#fff;color:#B4390F}
+main{max-width:860px;margin:0 auto;padding:18px 14px 60px;display:flex;flex-direction:column;gap:22px}
+#quiz{display:flex;flex-direction:column;gap:22px}
+section{background:var(--card);border-radius:24px;padding:22px;border-top:8px solid var(--ac);box-shadow:0 6px 0 var(--line);--ac:var(--c1);min-width:0}
+.n{display:inline-flex;width:42px;height:42px;border-radius:50%;background:var(--ac);color:#fff;font:800 1.3rem var(--disp);align-items:center;justify-content:center;margin-right:8px;vertical-align:middle}
+h2{font:800 1.7rem/1.15 var(--disp);margin:0 0 8px}p{margin:.55em 0}
+code{font:700 .92em var(--mono);background:var(--bg);padding:.1em .4em;border-radius:6px;word-break:break-word}
+.code{background:var(--code);color:var(--cf);font:600 1rem/1.6 var(--mono);padding:12px 14px;border-radius:14px;overflow-x:auto;margin:8px 0;white-space:pre-wrap;word-break:break-word}
+.code .t{color:var(--t)}.code .a{color:var(--a)}.code .s{color:var(--s)}
+.q{border:3px solid var(--line);border-radius:18px;padding:14px;margin:14px 0}.q>p{font-weight:800;margin:0 0 8px}
+.q .o{display:block;width:100%;text-align:left;margin:8px 0;background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none;font:700 1rem var(--mono);word-break:break-word}.q .o.ok{background:var(--okb);border-color:var(--ok)}.q .o.no{background:var(--badb);border-color:var(--bad)}.q .w{font-weight:700;margin-top:6px}
+.score{text-align:center;font:800 1.5rem var(--disp);padding:18px;border-radius:18px;background:var(--card);box-shadow:0 6px 0 var(--line)}.score button{margin-top:12px}
+@keyframes pop{0%{transform:scale(.9);opacity:0}100%{transform:none;opacity:1}}.pop{animation:pop .3s}
+</style>
+</head>
+<body>
+<div class="top"><b>🌐 Atelier HTML</b><div class="pbar"><i id="pg"></i></div><span id="tc">🎯 0/0</span></div>
+<header class="hero"><div class="e">🧠</div><h1>Recapitulare: lecția 1</h1><p>Ce este HTML, cum arată scheletul paginii, etichetele și atributele. Alege răspunsul corect!</p><button onclick="document.getElementById('quiz').scrollIntoView()">Hai să vedem! 👇</button></header>
+<main><div id="quiz"></div><div class="score" id="score" hidden></div></main>
+<script>
+var $=function(i){return document.getElementById(i)},esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')};
+function hl(s){return esc(s).replace(/(&lt;\/?[a-z0-9!]+)|(&gt;)|( [a-z]+)=("[^"]*")/gi,function(m,x,y,c,d){return (x||y)?'<span class="t">'+m+'</span>':' <span class="a">'+c.trim()+'</span>=<span class="s">'+d+'</span>'})}
+var G=[['🌐','Ce este HTML?'],['🏠','Scheletul paginii'],['🏷️','Etichete și atribute']];
+var Q=[
+[0,'Ce înseamnă HTML?',['Un limbaj de marcare a textului','Un joc video','Un program de desenat'],0,'HTML = HyperText Markup Language. Pune etichete pe conținut, ca să spună ce este fiecare bucată.'],
+[0,'HTML este un limbaj de programare care face calcule?',['Da, face calcule','Nu, doar descrie ce conține pagina','Da, dă comenzi calculatorului'],1,'HTML este limbaj de marcare: doar descrie ce este fiecare parte din pagină.'],
+[0,'În ce ordine citește browserul codul?',['De jos în sus','De sus în jos','Aleatoriu'],1,'Browserul citește rând cu rând, de sus în jos, și desenează fiecare element.'],
+[0,'Cu ce extensie salvezi un fișier de pagină web?',['.txt','.html','.doc'],1,'Fișierul trebuie să se termine în .html, ca browserul să-l recunoască.'],
+[1,'Care este prima linie dintr-o pagină HTML?',['<head>','<!DOCTYPE html>','<body>'],1,'DOCTYPE îi spune browserului: „Fișierul acesta este o pagină HTML modernă.”'],
+[1,'Unde pui ce trebuie să se vadă în pagină?',['În <head>','În <title>','În <body>'],2,'În body stă tot ce se vede. Head conține informații despre pagină.'],
+[1,'Ce apare în tab-ul browserului?',['Textul din <h1>','Textul din <title>','Textul din <p>'],1,'title dă numele paginii, afișat în tab.'],
+[1,'La ce folosește <meta charset="utf-8">?',['Colorează pagina','Face literele ă, î, ș, ț să se vadă corect','Adaugă o poză'],1,'charset spune ce „alfabet” folosește fișierul.'],
+[1,'Care este ordinea corectă?',['<body> în interiorul lui <head>','<html> care conține <head> și <body>','<head> după </html>'],1,'html cuprinde head și body, unul după altul.'],
+[2,'Care dintre acestea este o etichetă de ÎNCHIDERE?',['<p>','</p>','<p/'],1,'Eticheta de închidere are liniuța oblică / înaintea numelui.'],
+[2,'Cum se numește „cutia” întreagă: eticheta de început, conținutul și eticheta de sfârșit?',['Element','Atribut','Schelet'],0,'Începutul + conținutul + sfârșitul formează un element.'],
+[2,'Ce etichetă pui pentru titlul cel mai mare din pagină?',['<p>','<strong>','<h1>'],2,'h1 = titlul principal. Pune unul singur pe pagină.'],
+[2,'Ce face eticheta <strong>?',['Înclină textul','Îngroașă textul','Face o listă'],1,'strong îngroașă textul important. Pentru înclinat folosim em.'],
+[2,'Cum faci o listă cu buline?',['<ul> cu <li> înăuntru','<li> cu <ul> înăuntru','<p> cu <br> înăuntru'],0,'ul este lista, iar fiecare element al ei este un li.'],
+[2,'În <a href="https://ro.wikipedia.org">Wikipedia</a>, ce este href?',['Textul linkului','Un atribut: spune unde duce linkul','O etichetă de închidere'],1,'href este un atribut, de forma nume="valoare", scris în eticheta de deschidere.'],
+[2,'Ce lipsește din codul de mai sus?',['Eticheta de închidere </p>','Atributul href','Eticheta <body>'],0,'Tot ce se deschide trebuie și închis: <p>Salut!</p>.','<p>Salut!']];
+var good,done;
+function upd(){$('tc').textContent='🎯 '+done+'/'+Q.length;$('pg').style.width=done/Q.length*100+'%'}
+function build(){var qb=$('quiz');qb.innerHTML='';good=0;done=0;$('score').hidden=true;upd();var sec=null,lg=-1;
+ Q.forEach(function(q,qi){
+  if(q[0]!=lg){lg=q[0];sec=document.createElement('section');sec.style.setProperty('--ac','var(--c'+(q[0]+1)+')');sec.innerHTML='<h2><span class="n">'+(q[0]+1)+'</span>'+G[q[0]][0]+' '+G[q[0]][1]+'</h2>';qb.appendChild(sec)}
+  var d=document.createElement('div');d.className='q';d.innerHTML='<p>'+esc(q[1])+'</p>'+(q[5]?'<div class="code">'+hl(q[5])+'</div>':'');
+  var w=document.createElement('div');w.className='w';var ans=false,tr=0;
+  q[2].map(function(o,k){return k}).sort(function(){return Math.random()-.5}).forEach(function(k){
+   var b=document.createElement('button');b.className='o';b.textContent=q[2][k];
+   b.onclick=function(){if(ans)return;if(k==q[3]){ans=true;b.classList.add('ok');if(!tr)good++;w.style.color='var(--ok)';w.textContent='✅ Corect! '+q[4];done++;upd();fin()}else{tr++;b.classList.add('no');b.disabled=true;w.style.color='var(--bad)';w.textContent='❌ Mai încearcă!'}};d.appendChild(b)});
+  d.appendChild(w);sec.appendChild(d)})}
+function fin(){if(done<Q.length)return;var s=$('score'),n=Q.length;s.hidden=false;s.className='score pop';
+ s.innerHTML=(good>=n-2?'🏆':good>=n*.6?'🎉':'💪')+' Corect din prima: '+good+' din '+n+(good>=n-2?'. Ești un adevărat programator HTML!':good>=n*.6?'. Foarte bine! Mai recitește o dată.':'. Nu-i nimic! Recitește lecția și mai încearcă.')+'<br><button id="again">↺ Încearcă din nou</button>';
+ $('again').onclick=function(){build();$('quiz').scrollIntoView()};s.scrollIntoView({block:'center'})}
+build();
+</script>
+</body>
+</html>
