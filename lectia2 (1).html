@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atelier HTML – lecția 2</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#F3F6FF;--card:#fff;--fg:#1B2A4A;--mut:#5B6B8C;--line:#D6E0F5;--pri:#4F46E5;--pf:#fff;--ok:#16A34A;--okb:#DCFCE7;--bad:#DC2626;--badb:#FEE2E2;--sun:#FFC83D;--code:#17213A;--cf:#E7ECF7;--t:#FF8FA6;--a:#FFD479;--s:#8EE6B4;--c1:#4F46E5;--c2:#EC4899;--c3:#F59E0B;--c4:#10B981;--c5:#0EA5E9;
+--disp:'Baloo 2','Trebuchet MS',system-ui,sans-serif;--sans:'Nunito',system-ui,-apple-system,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--badb:#5B1A1A;--code:#0A0F1D}}
+:root[data-theme="dark"]{--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--badb:#5B1A1A;--code:#0A0F1D}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--fg);font:500 1.08rem/1.65 var(--sans)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:12px;align-items:center}
+.top b{font:800 1.05rem var(--disp);white-space:nowrap}.top span{font:800 .95rem var(--disp);white-space:nowrap}
+.pbar{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--c1),var(--c2));transition:width .2s}
+.hero{text-align:center;padding:46px 18px 34px;background:linear-gradient(135deg,#0EA5E9,#4F46E5);color:#fff}
+.hero h1{font:800 clamp(2.4rem,8vw,3.8rem)/1.05 var(--disp);margin:6px 0}.hero p{max-width:36ch;margin:8px auto 18px;font-size:1.2rem}.hero .e{font-size:3.6rem}
+button{font:800 1.02rem var(--disp);cursor:pointer;border:0;border-radius:14px;padding:9px 18px;background:var(--pri);color:var(--pf);box-shadow:0 4px 0 rgba(0,0,0,.22);min-height:44px}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.22)}.hero button{background:#fff;color:#4F46E5}
+button.alt{background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none}
+main{max-width:860px;margin:0 auto;padding:18px 14px 60px;display:flex;flex-direction:column;gap:22px}
+section{background:var(--card);border-radius:24px;padding:22px;border-top:8px solid var(--ac);box-shadow:0 6px 0 var(--line);--ac:var(--c1);min-width:0}
+.n{display:inline-flex;width:42px;height:42px;border-radius:50%;background:var(--ac);color:#fff;font:800 1.3rem var(--disp);align-items:center;justify-content:center;margin-right:8px;vertical-align:middle}
+h2{font:800 1.7rem/1.15 var(--disp);margin:0 0 8px}h3{font:800 1.25rem var(--disp);margin:20px 0 4px}p{margin:.55em 0}
+code{font:700 .92em var(--mono);background:var(--bg);padding:.1em .4em;border-radius:6px;word-break:break-word}
+.tip{background:var(--bg);border-left:6px solid var(--sun);border-radius:12px;padding:10px 14px;margin:14px 0}.tip.ok{border-color:var(--ok)}
+.code{background:var(--code);color:var(--cf);font:600 1rem/1.6 var(--mono);padding:12px 14px;border-radius:14px;overflow-x:auto;margin:8px 0;white-space:pre-wrap;word-break:break-word}
+.code .t{color:var(--t)}.code .a{color:var(--a)}.code .s{color:var(--s)}
+.res{border:3px dashed var(--line);border-radius:14px;padding:10px 14px;background:#fff;color:#111;margin:8px 0;font-family:Georgia,serif}.res h1{font-size:1.8rem;margin:0}.res h2{font:700 1.4rem Georgia;margin:0}.res p{margin:.3em 0}.res ul,.res ol{margin:.3em 0}.res img{max-width:100%}.res table{border-collapse:collapse}.res td,.res th{border:1px solid #888;padding:4px 10px}
+.lbl{font:800 .78rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:12px 0 4px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}.g3>div{background:var(--bg);border-radius:16px;padding:12px;min-width:0}.g3 b{font:800 1.05rem var(--disp)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.tabs button{background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none;font-family:var(--mono);padding:8px 14px}.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.say{background:var(--bg);border-radius:14px;padding:12px 14px;margin:10px 0;min-height:4.4em}
+.steps{display:grid;gap:10px;margin:12px 0}.steps>div{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border-radius:14px;padding:10px 14px}.steps>div>b{font:800 1.6rem/1.2 var(--disp);color:var(--ac);min-width:1.6em}
+.mock{border:3px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;color:#111}.mock .tab{background:#E3E8F5;padding:6px 12px;font:700 .85rem var(--sans);color:#333}.mock .tab span{background:#fff;padding:2px 12px;border-radius:8px 8px 0 0;display:inline-block;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ab{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:560px){.ab{grid-template-columns:1fr}}.ab>div{border-radius:14px;padding:12px;font-weight:700}.good{background:var(--okb)}.bad{background:var(--badb)}.ab code{display:block;margin-top:4px;background:transparent}
+.lab{border:3px solid var(--ac);border-radius:18px;padding:14px;margin:18px 0;background:var(--bg)}.lab>h3{margin:0 0 4px}
+.lg{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:700px){.lg{grid-template-columns:1fr}}.lg>div{min-width:0}
+textarea{width:100%;height:230px;font:600 .98rem/1.5 var(--mono);background:var(--code);color:var(--cf);border:0;border-radius:12px;padding:12px;resize:vertical;tab-size:2;white-space:pre}
+iframe{width:100%;height:230px;border:0;background:#fff;display:block}
+.tasks{list-style:none;padding:0;margin:12px 0}.tasks li{padding:8px 12px;border-radius:12px;background:var(--card);margin:6px 0;font-weight:700}.tasks li.d{background:var(--okb)}.tasks li::before{content:"⬜ "}.tasks li.d::before{content:"✅ "}
+.hint{font-weight:700;color:var(--mut);min-height:1.4em}
+.q{border:3px solid var(--line);border-radius:18px;padding:14px;margin:14px 0}.q>p{font-weight:800;margin:0 0 8px}
+.q .o{display:block;width:100%;text-align:left;margin:8px 0;background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none;font:700 1rem var(--mono);word-break:break-word}.q .o.ok{background:var(--okb);border-color:var(--ok)}.q .o.no{background:var(--badb);border-color:var(--bad)}.q .w{font-weight:700;margin-top:6px}
+.score{text-align:center;font:800 1.5rem var(--disp);padding:18px;border-radius:18px;background:var(--bg)}
+@keyframes pop{0%{transform:scale(.9);opacity:0}100%{transform:none;opacity:1}}.pop{animation:pop .3s}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}.sol{margin-top:8px}
+</style>
+</head>
+<body>
+<div class="top"><b>🌐 Atelier HTML</b><div class="pbar"><i id="pg"></i></div><span id="tc">🎯 0/0</span></div>
+<header class="hero"><div class="e">🖼️</div><h1>Lecția 2: Liste, poze, tabele și ordine în pagină</h1><p>Numerotăm pașii, punem poze și tabele, apoi aranjăm și colorăm pagina.</p><button onclick="document.getElementById('s1').scrollIntoView()">Începem! 👇</button></header>
+<main>
+
+<section id="s1" style="--ac:var(--c1)"><h2><span class="n">1</span>Liste numerotate</h2>
+<div class="tip">🗺️ <b>Harta lecției:</b> 1 liste · 2 poze · 3 tabele · 4 blocuri (div, hr, br) · 5–8 aspectul paginii cu <code>style</code> (centrare, culori, spațiu, legende, coloane) · 9 repară codul.</div>
+<p>La lecția trecută ai făcut liste cu buline: <code>ul</code> și <code>li</code>. Când ordinea contează (pașii unei rețete, un clasament), folosim lista <b>numerotată</b>: <code>ol</code>, de la <i>ordered list</i>, „listă ordonată”.</p>
+<div class="g3"><div><b>ul</b> · cu buline<div class="code" data-h="<ul>
+  <li>mere</li>
+  <li>pere</li>
+</ul>"></div><div class="res"><ul><li>mere</li><li>pere</li></ul></div></div><div><b>ol</b> · cu numere<div class="code" data-h="<ol>
+  <li>Spală mâinile</li>
+  <li>Taie legumele</li>
+</ol>"></div><div class="res"><ol><li>Spală mâinile</li><li>Taie legumele</li></ol></div></div></div>
+<div class="tip ok">✅ Singura diferență este <code>ol</code> în loc de <code>ul</code>. Elementele rămân <code>li</code>, iar numerele le pune browserul singur. Dacă muți un pas, se renumerotează automat!</div>
+<h3>Atribute pentru ol</h3>
+<p>Îți amintești atributele (<code>nume="valoare"</code>)? Și <code>ol</code> are:</p>
+<div class="g3"><div><b>type</b> · felul numerelor<div class="code" data-h='<ol type="A">
+  <li>unu</li>
+  <li>doi</li>
+</ol>'></div><div class="res"><ol type="A"><li>unu</li><li>doi</li></ol></div>Valori: <code>1</code>, <code>A</code>, <code>a</code>, <code>I</code>, <code>i</code>.</div><div><b>start</b> · de la ce număr<div class="code" data-h='<ol start="5">
+  <li>cinci</li>
+  <li>șase</li>
+</ol>'></div><div class="res"><ol start="5"><li>cinci</li><li>șase</li></ol></div>Numărătoarea începe de la 5.</div></div>
+<div id="lab1"></div>
+</section>
+
+<section id="s2" style="--ac:var(--c2)"><h2><span class="n">2</span>Imagini în pagină</h2>
+<p>Pentru o poză folosim eticheta <code>img</code> (de la <i>image</i>). Ea e o etichetă <b>singuratică</b>, ca <code>br</code>: nu are conținut și <b>nu se închide</b>. Toată informația stă în atribute.</p>
+<p>👆 Apasă pe piese:</p>
+<div class="tabs" id="im"></div><div class="say" id="imsay">Apasă pe o piesă.</div>
+<h3>Unde se află poza? Calea din src</h3>
+<p>Browserul trebuie să știe unde găsește fișierul. Scrii <b>calea</b> în <code>src</code>:</p>
+<div class="g3"><div><b>În același folder</b><div class="code" data-h='<img src="pisica.png" alt="Pisică">'></div>Poza e lângă fișierul HTML.</div><div><b>Într-un subfolder</b><div class="code" data-h='<img src="poze/pisica.png" alt="Pisică">'></div>Folderul <code>poze</code>, apoi numele pozei.</div><div><b>De pe internet</b><div class="code" data-h='<img src="https://site.ro/pisica.png" alt="Pisică">'></div>Adresa completă a pozei.</div></div>
+<div class="tip">💡 <b>alt</b> este important: descrie poza în cuvinte. Apare dacă poza nu se încarcă și o citesc cititoarele de ecran pentru persoanele care nu văd. Pune-l <b>mereu</b>. Atenție la nume: <code>Pisica.png</code> și <code>pisica.png</code> sunt fișiere diferite!</div>
+<div class="ab"><div class="good">✅ Corect<code>&lt;img src="pisica.png" alt="Pisică"&gt;</code></div><div class="bad">❌ Greșit (nu se închide cu &lt;/img&gt;)<code>&lt;img src="pisica.png"&gt;&lt;/img&gt;</code></div></div>
+<div class="tip">📷 <b>Folosește pozele tale!</b> Alege una sau mai multe poze din telefon sau calculator (poți selecta mai multe deodată). Apoi, în editor, le chemi după <b>numele fișierului</b>: dacă poza ta se numește <code>vacanta.jpg</code>, scrii <code>src="vacanta.jpg"</code>. Merge și cu folder (<code>poze/vacanta.jpg</code>) sau cu o cale completă (<code>C:\Poze\vacanta.jpg</code>): contează doar numele fișierului. Mai merge și <code>pozamea.jpg</code> pentru ultima poză încărcată.<br><input type="file" id="fi" accept="image/*" multiple> <b id="fn"></b><br><small>Adresele de internet (<code>https://…</code>) pot fi blocate aici, din motive de securitate. Dacă vrei o poză de pe net, salveaz-o pe dispozitiv și încarc-o. Într-un fișier .html pe calculatorul tău, adresele https merg normal.</small></div>
+<div id="lab2"></div>
+</section>
+
+<section id="s3" style="--ac:var(--c3)"><h2><span class="n">3</span>Tabele: informații pe rânduri și coloane</h2>
+<p>Listele așază lucrurile unul sub altul. Pentru un orar sau o listă de note ai nevoie de rânduri și coloane, deci de un tabel.</p>
+<p>Un orar sau o listă de note se așază într-un <b>tabel</b>. Are trei etichete de lucru, puse una în alta:</p>
+<div class="steps"><div><b>table</b><span>tot tabelul.</span></div><div><b>tr</b><span><i>table row</i>: un <b>rând</b>.</span></div><div><b>th / td</b><span>o <b>celulă</b>: <code>th</code> pentru capul de tabel (îngroșat), <code>td</code> pentru date.</span></div></div>
+<div class="g3" style="grid-template-columns:1fr 1fr"><div><div class="code" data-h="<table>
+  <tr>
+    <th>Materie</th>
+    <th>Nota</th>
+  </tr>
+  <tr>
+    <td>Mate</td>
+    <td>10</td>
+  </tr>
+</table>"></div></div><div><div class="lbl">Rezultat</div><div class="res"><table><tr><th>Materie</th><th>Nota</th></tr><tr><td>Mate</td><td>10</td></tr></table></div></div></div>
+<p>Câte <code>td</code>/<code>th</code> pui într-un <code>tr</code>, atâtea coloane are tabelul. (Bordurile de mai sus le adăugăm noi, cu CSS; implicit tabelul nu are.)</p>
+<div id="lab4"></div>
+</section>
+
+<section id="s4" style="--ac:var(--c4)"><h2><span class="n">4</span>Blocuri, linii și rânduri noi</h2>
+<p>Ai acum liste, poze și tabele. Dar o pagină cu totul pus la grămadă e greu de citit. Avem trei ajutoare simple, ca să grupăm și să separăm informația:</p>
+<div class="g3"><div><b>div</b> · o cutie<br>Grupează mai multe etichete într-un bloc, ca într-un sertar. Vom pune culori pe el la CSS.<div class="code" data-h="<div>
+  <h2>Ana</h2>
+  <p>Clasa a 8-a</p>
+</div>"></div></div><div><b>hr</b> · o linie<br>Trasează o linie orizontală între două părți. Este singuratică, nu se închide.<div class="code" data-h="<p>Sus</p>
+<hr>
+<p>Jos</p>"></div></div><div><b>br</b> · rând nou<br>Rupe rândul în același paragraf. Util la adrese sau versuri. Nici ea nu se închide.<div class="code" data-h="<p>Str. Mării 5<br>Constanța</p>"></div></div></div>
+<div class="tip">💡 Un <code>p</code> nou lasă spațiu între paragrafe, pe când <code>br</code> doar trece pe rândul următor, în același paragraf.</div>
+<div id="lab3"></div>
+</section>
+
+<section id="s5" style="--ac:var(--c5)"><h2><span class="n">5</span>Atributul style: centrare și culori</h2>
+<p>Până acum totul stătea în stânga, unul sub altul. Cum schimbăm asta? Cu atributul <code>style</code>, pe care l-ai văzut în lecția 1 (<code>style="color:red"</code>). Se scrie așa:</p>
+<div class="code" id="rule"></div>
+<p>Fiecare <b>proprietate</b> are o <b>valoare</b> după <code>:</code>, iar mai multe proprietăți se despart cu <code>;</code>.</p>
+<h3>Text la mijloc</h3>
+<div id="e1"></div>
+<h3>Culori</h3>
+<p><code>color</code> schimbă culoarea <b>textului</b>, iar <code>background-color</code> culoarea <b>fundalului</b>. Culoarea poate fi un nume în engleză (<code>red</code>, <code>purple</code>, <code>orange</code>) sau un cod <code>#</code> cu 6 caractere (<code>#FF8FA6</code>).</p>
+<div id="e2"></div>
+<h3>Poza la mijloc</h3>
+<p>O poză se comportă ca o <b>literă mare</b>. De aceea nu o centrezi pe ea, ci o pui într-un <code>p</code> sau <code>div</code> care are <code>text-align:center</code>.</p>
+<div id="e3"></div>
+<div id="labA"></div>
+</section>
+
+<section id="s6" style="--ac:var(--c1)"><h2><span class="n">6</span>Spațiu, alineat și bare</h2>
+<p>Ca să muți informația ai trei unelte:</p>
+<div class="steps"><div><b>→</b><span><code>margin-left</code>: împinge elementul spre dreapta (spațiu <b>în afara</b> lui).</span></div><div><b>📦</b><span><code>padding</code>: spațiu <b>în interior</b>, între margine și text. Fără el, un fundal colorat se lipește de litere.</span></div><div><b>¶</b><span><code>text-indent</code>: <b>alineatul</b> (indentarea), adică primul rând începe mai în dreapta, ca într-o carte.</span></div></div>
+<div id="e4"></div>
+<h3>Bara</h3>
+<p>O bară se poate face în mai multe feluri. Cea mai simplă: un <code>div</code> cu fundal colorat. Pentru o linie, stilizezi <code>hr</code>:</p>
+<div id="e5"></div>
+<div class="tip">💡 Vrei un <code>div</code> la mijloc? Dă-i o lățime și lasă margini automate: <code>style="width:200px; margin:0 auto"</code>.</div>
+<div id="labB"></div>
+</section>
+
+<section id="s7" style="--ac:var(--c2)"><h2><span class="n">7</span>Text sub poză și sub tabel</h2>
+<p>O poză sau un tabel pot avea o <b>legendă</b>:</p>
+<div class="steps"><div><b>🖼️</b><span>Poza se pune într-un <code>figure</code>, iar legenda într-un <code>figcaption</code>, scris sub poză.</span></div><div><b>▦</b><span>Tabelul are <code>caption</code>, scris chiar după <code>&lt;table&gt;</code>. Implicit apare deasupra. Ca să fie dedesubt: <code>caption-side:bottom</code>.</span></div></div>
+<div id="e6"></div>
+<div id="labC"></div>
+</section>
+
+<section id="s8" style="--ac:var(--c3)"><h2><span class="n">8</span>Două coloane: poză în stânga, text sau tabel în dreapta</h2>
+<p>Pagina e împărțită pe verticală, ca un caiet. Ca să pui două lucruri <b>unul lângă altul</b>, faci un <code>div</code> mare (părintele) care conține alte două <code>div</code>-uri (coloanele). Pe cel mare îl faci „flexibil”: <code>display:flex</code>.</p>
+<div class="steps"><div><b>1</b><span>Textul de sus stă în afara div-ului, pe toată lățimea.</span></div><div><b>2</b><span>Div-ul mare: <code>display:flex; gap:16px</code>. <code>gap</code> este spațiul dintre coloane.</span></div><div><b>3</b><span>În el, două div-uri: primul cu poza (stânga), al doilea cu text sau tabel (dreapta).</span></div></div>
+<div id="e7"></div>
+<div class="tip">💡 Pe telefon coloanele pot fi prea înguste. Adaugă <code>flex-wrap:wrap</code> și, dacă nu încap, a doua coloană coboară sub prima.</div>
+<div id="labD"></div>
+</section>
+
+<section id="s9" style="--ac:var(--c4)"><h2><span class="n">9</span>Repară codul! 🔧</h2>
+<p>Trei greșeli de care se împiedică mulți începători. Găsește-le!</p>
+<div id="lab5"></div>
+</section>
+
+<section id="s10" style="--ac:var(--c5)"><h2><span class="n">10</span>Recapitulare</h2>
+<div class="steps"><div><b>1.</b><span><code>ol</code> face liste numerotate; <code>li</code> sunt elementele. Atribute: <code>type</code>, <code>start</code>.</span></div><div><b>🖼️</b><span><code>&lt;img src="…" alt="…"&gt;</code> pune o poză. Nu se închide. <code>alt</code> o descrie.</span></div><div><b>▦</b><span><code>table</code> › <code>tr</code> (rând) › <code>th</code>/<code>td</code> (celule).</span></div><div><b>📦</b><span><code>div</code> grupează, <code>hr</code> trage o linie, <code>br</code> rupe rândul.</span></div><div><b>🎨</b><span><code>style="proprietate:valoare; alta:valoare"</code>: <code>text-align:center</code>, <code>color</code>, <code>background-color</code>.</span></div><div><b>📐</b><span><code>margin-left</code> mută, <code>padding</code> dă aer în interior, <code>text-indent</code> face alineat.</span></div><div><b>🏷️</b><span><code>figure</code> + <code>figcaption</code> pentru poze, <code>caption</code> pentru tabele.</span></div><div><b>▥</b><span><code>display:flex</code> pe div-ul părinte = coloane una lângă alta.</span></div></div>
+</section>
+
+<section id="s11" style="--ac:var(--c1)"><h2><span class="n">11</span>Exerciții grilă 🎯</h2>
+<div id="quiz"></div><div class="score" id="score" hidden></div>
+</section>
+</main>
+<script>
+var $=function(i){return document.getElementById(i)},esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')};
+function hl(s){return esc(s).replace(/(&lt;\/?[a-z0-9!]+)|(&gt;)|( [a-z]+)=("[^"]*")/gi,function(m,x,y,c,d){return (x||y)?'<span class="t">'+m+'</span>':' <span class="a">'+c.trim()+'</span>=<span class="s">'+d+'</span>'})}
+[].forEach.call(document.querySelectorAll('[data-h]'),function(e){e.innerHTML=hl(e.dataset.h)});
+function tabs(id,items,fn){var b=$(id);items.forEach(function(t,k){var e=document.createElement('button');e.innerHTML=t;e.onclick=function(){[].forEach.call(b.children,function(x){x.classList.remove('on')});e.classList.add('on');fn(k)};b.appendChild(e)})}
+/* poze virtuale */
+var IM={pisica:['🐱','#FFD479'],caine:['🐶','#8EE6B4'],floare:['🌸','#FF8FA6'],pizza:['🍕','#9ED8FF']};
+function uri(n){var v=IM[n];return 'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" rx="24" fill="'+v[1]+'"/><text x="100" y="135" font-size="110" text-anchor="middle">'+v[0]+'</text></svg>')}
+var UPS=[],MY='',FILES={};
+/* înlocuiește orice src (nume simplu, folder/nume, C:\cale\nume, file:///...) cu poza încărcată cu același nume de fișier */
+function fake(c){return c.replace(/src\s*=\s*(["'])([^"']*)\1/gi,function(m,q,p){
+  var ext=/^(https?:)?\/\//i.test(p)||/^data:/i.test(p);
+  if(/^data:/i.test(p))return m;
+  var clean=p.split(/[?#]/)[0],b=decodeURIComponent(clean.split(/[\\\/]/).pop()||'').toLowerCase(),n=b.replace(/\.[a-z0-9]+$/,'');
+  if(FILES[b])return 'src="'+FILES[b]+'"';
+  if(n=='pozamea'&&MY)return 'src="'+MY+'"';
+  if(!ext&&IM[n])return 'src="'+uri(n)+'"';
+  return m})}
+function showUp(){var k=Object.keys(FILES);$('fn').innerHTML=k.length?'✅ Poze încărcate: '+k.map(function(x){return '<code>'+esc(x)+'</code>'}).join(' ')+' (și <code>pozamea.jpg</code> = ultima)':''}
+$('fi').onchange=function(){var fs=[].slice.call(this.files);if(!fs.length)return;var pend=fs.length;
+ function end(){if(--pend==0){showUp();UPS.forEach(function(u){u()})}}
+ fs.forEach(function(f){var r=new FileReader();r.onerror=end;r.onload=function(){var im=new Image();im.onerror=end;im.onload=function(){var k=Math.min(1,600/im.width),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);var u=c.toDataURL('image/jpeg',.85);FILES[f.name.toLowerCase()]=u;MY=u;end()};im.src=r.result};r.readAsDataURL(f)})};
+var AT=[['&lt;img','Numele etichetei: <b>img</b> = imagine.'],['src="pisica.png"','<b>src</b> (<i>source</i>, sursă): numele fișierului cu poza. Fără el nu apare nimic.'],['alt="Pisică"','<b>alt</b>: descrierea pozei în cuvinte, pentru cazul în care poza nu se vede.'],['width="150"','<b>width</b>: lățimea în pixeli. Înălțimea se potrivește singură, deci poza nu se deformează.'],['&gt;','Gata. Fără <code>&lt;/img&gt;</code>: img este o etichetă singuratică.']];
+tabs('im',AT.map(function(x){return x[0]}),function(k){$('imsay').innerHTML=AT[k][1]});
+/* laborator */
+var total=0,doneN=0;
+function lab(id,o){total+=o.tasks.length;var host=$(id),ok=[];
+ host.className='lab';
+ host.innerHTML='<h3>🧪 '+o.title+'</h3><p>'+o.intro+'</p><div class="lg"><div><div class="lbl">✏️ Editor: scrie aici</div><textarea spellcheck="false" aria-label="Editor de cod"></textarea></div><div><div class="lbl">👀 Rezultat în browser</div><div class="mock"><iframe sandbox="allow-scripts" title="Rezultat"></iframe></div></div></div><ul class="tasks"></ul><div class="row"><button class="alt rs">↺ Începe din nou</button><button class="alt hb">💡 Indiciu</button><button class="alt sb">✅ Arată rezolvarea</button></div><div class="hint"></div><div class="sol" hidden></div>';
+ var ta=host.querySelector('textarea'),fr=host.querySelector('iframe'),ul=host.querySelector('.tasks'),hn=host.querySelector('.hint'),sl=host.querySelector('.sol');
+ var lis=o.tasks.map(function(t){var l=document.createElement('li');l.innerHTML=t.t;ul.appendChild(l);return l});
+ function up(){var c=ta.value,d=new DOMParser().parseFromString(c,'text/html');
+  fr.srcdoc='<meta charset="utf-8"><style>body{font-family:Georgia,serif;margin:12px;color:#111}table{border-collapse:collapse}td,th{border:1px solid #888;padding:4px 10px}img{max-width:100%}</style><script>document.addEventListener("click",function(e){if(e.target.closest("a"))e.preventDefault()})<\/script><body>'+fake(c);
+  o.tasks.forEach(function(t,k){var y=false;try{y=!!t.f(d,c)}catch(e){}lis[k].className=y?'d':'';if(y&&!ok[k]){ok[k]=1;doneN++}if(!y&&ok[k]){ok[k]=0;doneN--}});sc()}
+ ta.value=o.start;ta.oninput=up;ta.onkeydown=function(e){if(e.key==='Tab'){e.preventDefault();ta.setRangeText('  ',ta.selectionStart,ta.selectionEnd,'end');up()}};
+ host.querySelector('.rs').onclick=function(){ta.value=o.start;hn.innerHTML='';sl.hidden=true;up()};
+ host.querySelector('.hb').onclick=function(){var k=o.tasks.findIndex(function(t,j){return !ok[j]});hn.innerHTML=k<0?'🎉 Ai terminat toate provocările!':'💡 <b>Pasul '+(k+1)+':</b> scrie exact acest cod<div class="code">'+hl(o.tasks[k].h)+'</div>'};
+ host.querySelector('.sb').onclick=function(){sl.hidden=!sl.hidden;if(!sl.hidden){sl.innerHTML='<div class="lbl">Rezolvarea completă</div><div class="code">'+hl(o.sol)+'</div><button class="alt put">⬇ Pune rezolvarea în editor</button>';sl.querySelector('.put').onclick=function(){ta.value=o.sol;up()}}};
+ UPS.push(up);up()}
+function sc(){$('tc').textContent='🎯 '+doneN+'/'+total}
+var q1=function(d,t){return d.querySelector(t)},qa=function(d,t){return d.querySelectorAll(t).length},cnt=function(c,r){return (c.match(r)||[]).length};
+lab('lab1',{title:'Laborator 1: rețeta mea',intro:'Lista de mai jos are buline, dar pașii trebuie făcuți în ordine. Transform-o.',start:'<h2>Clătite</h2>\n<ul>\n  <li>Amestecă făina cu laptele</li>\n  <li>Încinge tigaia</li>\n  <li>Toarnă puțin aluat</li>\n</ul>',
+sol:'<h2>Clătite</h2>\n<ol type="A">\n  <li>Amestecă făina cu laptele</li>\n  <li>Încinge tigaia</li>\n  <li>Toarnă puțin aluat</li>\n  <li>Întoarce clătita</li>\n</ol>',tasks:[
+{t:'Schimbă <code>ul</code> în <code>ol</code> (și la început, și la sfârșit!).',h:'<ol>\n  <li>…</li>\n</ol>',f:function(d,c){return q1(d,'ol')&&!q1(d,'ul')&&/<\/ol>/.test(c)}},
+{t:'Adaugă un al patrulea pas cu <code>li</code>.',h:'  <li>Întoarce clătita</li>',f:function(d){return qa(d,'ol li')>=4}},
+{t:'Pune atributul <code>type="A"</code> pe <code>ol</code>: numerele devin litere.',h:'<ol type="A">',f:function(d){var o=q1(d,'ol');return o&&o.getAttribute('type')=='A'}}]});
+lab('lab2',{title:'Laborator 2: prima ta poză',intro:'Poze disponibile aici: <code>pisica.png</code>, <code>caine.png</code>, <code>floare.png</code>, <code>pizza.png</code>. Scrie numele <b>exact</b>, cu litere mici. Pozele tale, încărcate mai sus, se cheamă cu numele lor de fișier (sau <code>pozamea.jpg</code> pentru ultima).',start:'<h2>Animalul meu preferat</h2>\n<p>Iată-l:</p>\n',
+sol:'<h2>Animalul meu preferat</h2>\n<p>Iată-l:</p>\n<img src="pisica.png" alt="O pisică galbenă" width="150">\n<img src="floare.png" alt="O floare roz" width="80">',tasks:[
+{t:'Adaugă o poză: <code>&lt;img src="pisica.png"&gt;</code>.',h:'<img src="pisica.png">',f:function(d){var i=q1(d,'img');return i&&/^pisica\.png$/.test(i.getAttribute('src')||'')}},
+{t:'Adaugă și atributul <code>alt</code> cu o descriere.',h:'<img src="pisica.png" alt="O pisică galbenă">',f:function(d){var i=q1(d,'img');return i&&(i.getAttribute('alt')||'').trim()}},
+{t:'Pune <code>width="150"</code> ca să-i schimbi mărimea.',h:'<img src="pisica.png" alt="O pisică galbenă" width="150">',f:function(d){var i=q1(d,'img');return i&&i.getAttribute('width')=='150'}},
+{t:'Adaugă o a doua poză, mai mică (<code>width</code> sub 100).',h:'<img src="floare.png" alt="O floare roz" width="80">',f:function(d){return qa(d,'img')>=2&&+d.querySelectorAll('img')[1].getAttribute('width')<100}}]});
+lab('lab3',{title:'Laborator 4: fișa mea',intro:'Așază informațiile unei fișe de prezentare, cu div, hr și br.',start:'<h1>Fișa mea</h1>\n<p>Mă cheamă Ana.</p>\n',
+sol:'<h1>Fișa mea</h1>\n<div>\n  <img src="floare.png" alt="Floare" width="80">\n  <p>Mă cheamă Ana.</p>\n</div>\n<hr>\n<p>Str. Mării 5<br>Constanța</p>',tasks:[
+{t:'Pune paragraful într-un <code>&lt;div&gt;</code>.',h:'<div>\n  <p>Mă cheamă Ana.</p>\n</div>',f:function(d,c){return q1(d,'div p')&&/<\/div>/.test(c)}},
+{t:'Adaugă o poză (<code>floare.png</code>) în div.',h:'<img src="floare.png" alt="Floare" width="80">',f:function(d){return !!q1(d,'div img[alt]')}},
+{t:'Trage o linie sub div cu <code>&lt;hr&gt;</code>.',h:'<hr>',f:function(d){return !!q1(d,'hr')}},
+{t:'Scrie o adresă pe două rânduri, cu <code>&lt;br&gt;</code> într-un paragraf.',h:'<p>Str. Mării 5<br>Constanța</p>',f:function(d){return !!q1(d,'p br')}}]});
+lab('lab4',{title:'Laborator 3: orarul meu',intro:'Construiește un tabel cu 2 coloane. Fiecare rând are două celule.',start:'<table>\n  <tr>\n    <th>Ora</th>\n    <th>Materia</th>\n  </tr>\n</table>',
+sol:'<table>\n  <tr>\n    <th>Ora</th>\n    <th>Materia</th>\n  </tr>\n  <tr>\n    <td>8:00</td>\n    <td>Informatică</td>\n  </tr>\n  <tr>\n    <td>9:00</td>\n    <td>Mate</td>\n  </tr>\n</table>',tasks:[
+{t:'Adaugă un rând nou: <code>&lt;tr&gt;</code> cu două <code>&lt;td&gt;</code>.',h:'  <tr>\n    <td>8:00</td>\n    <td>Informatică</td>\n  </tr>',f:function(d){return qa(d,'tr td')>=2&&qa(d,'tr')>=2}},
+{t:'Adaugă încă un rând: tabelul are acum 3 rânduri.',h:'  <tr>\n    <td>9:00</td>\n    <td>Mate</td>\n  </tr>',f:function(d){return qa(d,'tr')>=3}},
+{t:'Toate rândurile au același număr de celule (2).',h:'<tr><td>…</td><td>…</td></tr>',f:function(d){var r=d.querySelectorAll('tr');return r.length>=3&&[].every.call(r,function(x){return x.children.length==2})}}]});
+lab('lab5',{title:'Laborator 9: doctorul de coduri',intro:'Găsește cele 3 greșeli: o închidere în plus, o listă închisă greșit și un <code>alt</code> uitat.',start:'<img src="caine.png" alt="" width="120"></img>\n<ol>\n  <li>Plimbare</li>\n  <li>Mâncare</li>\n</ul>',
+sol:'<img src="caine.png" alt="Un cățel" width="120">\n<ol>\n  <li>Plimbare</li>\n  <li>Mâncare</li>\n</ol>',tasks:[
+{t:'Șterge <code>&lt;/img&gt;</code>: img nu se închide.',h:'<img src="caine.png" alt="Un cățel" width="120">',f:function(d,c){return !/<\/img>/i.test(c)&&q1(d,'img')}},
+{t:'Completează <code>alt</code> cu o descriere.',h:'alt="Un cățel"',f:function(d){var i=q1(d,'img');return i&&(i.getAttribute('alt')||'').trim()}},
+{t:'Închide lista cu <code>&lt;/ol&gt;</code>, nu cu <code>&lt;/ul&gt;</code>.',h:'</ol>',f:function(d,c){return /<\/ol>/.test(c)&&!/<\/ul>/.test(c)}}]});
+$('rule').innerHTML=hl('<p style="proprietate:valoare; alta:valoare">Text</p>');
+function ex(id,code){var e=$(id);e.className='g3';e.innerHTML='<div><div class="lbl">Cod</div><div class="code">'+hl(code)+'</div></div><div><div class="lbl">Rezultat</div><div class="res">'+fake(code)+'</div></div>';UPS.push(function(){e.lastChild.lastChild.innerHTML=fake(code)})}
+ex('e1','<h2 style="text-align:center">Titlu la mijloc</h2>\n<p style="text-align:right">Text la dreapta</p>\n<p>Text la stânga (implicit)</p>');
+ex('e2','<p style="color:white; background-color:purple">Alb pe mov</p>\n<p style="color:#FF8FA6">Roz, cu cod #</p>');
+ex('e3','<p style="text-align:center">\n  <img src="pisica.png" alt="Pisică" width="90">\n</p>');
+ex('e4','<p style="text-indent:2em">Alineat: primul rând intră spre dreapta.</p>\n<p style="margin-left:40px">Tot paragraful, mutat.</p>\n<div style="background-color:#FFD479; padding:14px">Cu padding</div>');
+ex('e5','<div style="background-color:#4F46E5; color:white; padding:10px">Bara de meniu</div>\n<hr style="border:0; height:6px; background:#EC4899">');
+ex('e6','<figure style="text-align:center">\n  <img src="floare.png" alt="Floare" width="90">\n  <figcaption>Floarea mea</figcaption>\n</figure>\n<table>\n  <caption style="caption-side:bottom">Tabelul 1: note</caption>\n  <tr><th>Mate</th><td>10</td></tr>\n</table>');
+ex('e7','<div style="display:flex; gap:16px">\n  <div>\n    <img src="caine.png" alt="Cățel" width="90">\n  </div>\n  <div>\n    <p>Rex este cățelul meu.</p>\n  </div>\n</div>');
+var S=function(e,r){return !!e&&r.test(e.getAttribute('style')||'')};
+lab('labA',{title:'Laborator 5: centrează și colorează',intro:'Pagina începe totul în stânga. Schimb-o cu <code>style</code>.',start:'<h2>Clasa a 8-a</h2>\n<p>Bine ați venit!</p>\n<img src="floare.png" alt="Floare" width="100">',
+sol:'<h2 style="text-align:center; color:#4F46E5">Clasa a 8-a</h2>\n<p style="color:white; background-color:purple">Bine ați venit!</p>\n<p style="text-align:center">\n  <img src="floare.png" alt="Floare" width="100">\n</p>',tasks:[
+{t:'Centrează titlul: <code>text-align:center</code>.',h:'<h2 style="text-align:center">Clasa a 8-a</h2>',f:function(d){return S(q1(d,'h2'),/text-align\s*:\s*center/)}},
+{t:'Dă paragrafului o culoare a textului (<code>color</code>).',h:'<p style="color:white">Bine ați venit!</p>',f:function(d){return S(q1(d,'p'),/(^|;|\s)color\s*:/)}},
+{t:'Dă paragrafului și un fundal (<code>background-color</code>).',h:'<p style="color:white; background-color:purple">Bine ați venit!</p>',f:function(d){return S(q1(d,'p'),/background(-color)?\s*:/)}},
+{t:'Centrează poza: pune-o într-un <code>p</code> cu <code>text-align:center</code>.',h:'<p style="text-align:center">\n  <img src="floare.png" alt="Floare" width="100">\n</p>',f:function(d){var i=q1(d,'img');return i&&S(i.parentNode,/text-align\s*:\s*center/)&&i.parentNode.tagName!='BODY'}}]});
+lab('labB',{title:'Laborator 6: meniu, alineat și bară',intro:'Transformă textul într-o pagină aranjată.',start:'<div>Meniu</div>\n<p>Acesta este un paragraf mai lung. Primul rând trebuie să înceapă puțin mai în dreapta, ca într-o carte.</p>\n<hr>\n<p>Un citat, mutat spre dreapta.</p>',
+sol:'<div style="background-color:#4F46E5; color:white; padding:12px">Meniu</div>\n<p style="text-indent:2em">Acesta este un paragraf mai lung. Primul rând trebuie să înceapă puțin mai în dreapta, ca într-o carte.</p>\n<hr style="border:0; height:6px; background:#EC4899">\n<p style="margin-left:40px">Un citat, mutat spre dreapta.</p>',tasks:[
+{t:'Fă din div o bară: <code>background-color</code>, <code>color</code> și <code>padding</code>.',h:'<div style="background-color:#4F46E5; color:white; padding:12px">Meniu</div>',f:function(d){var e=q1(d,'div');return S(e,/background/)&&S(e,/padding/)&&S(e,/(^|;|\s)color\s*:/)}},
+{t:'Fă alineat primului paragraf: <code>text-indent:2em</code>.',h:'<p style="text-indent:2em">…</p>',f:function(d){return S(q1(d,'p'),/text-indent/)}},
+{t:'Dă-i lui <code>hr</code> un stil: <code>border:0; height:6px; background:#EC4899</code>.',h:'<hr style="border:0; height:6px; background:#EC4899">',f:function(d){return S(q1(d,'hr'),/(height|background|border)/)}},
+{t:'Mută ultimul paragraf cu <code>margin-left:40px</code>.',h:'<p style="margin-left:40px">…</p>',f:function(d){var p=d.querySelectorAll('p');return p.length>1&&S(p[p.length-1],/margin-left\s*:\s*[1-9]/)}}]});
+lab('labC',{title:'Laborator 7: legende',intro:'Pune text sub poză și sub tabel.',start:'<img src="pisica.png" alt="O pisică" width="150">\n\n<table>\n  <tr><th>Animal</th><th>Vârsta</th></tr>\n  <tr><td>Pisica</td><td>3 ani</td></tr>\n</table>',
+sol:'<figure style="text-align:center">\n  <img src="pisica.png" alt="O pisică" width="150">\n  <figcaption>Pisica mea, Tigrișor</figcaption>\n</figure>\n\n<table>\n  <caption style="caption-side:bottom">Tabelul 1: animalele mele</caption>\n  <tr><th>Animal</th><th>Vârsta</th></tr>\n  <tr><td>Pisica</td><td>3 ani</td></tr>\n</table>',tasks:[
+{t:'Pune poza într-un <code>&lt;figure&gt;</code>.',h:'<figure>\n  <img src="pisica.png" alt="O pisică" width="150">\n</figure>',f:function(d){return !!q1(d,'figure img')}},
+{t:'Adaugă sub poză un <code>&lt;figcaption&gt;</code> cu text.',h:'<figcaption>Pisica mea</figcaption>',f:function(d){var e=q1(d,'figure figcaption');return e&&e.textContent.trim()}},
+{t:'Adaugă tabelului un <code>&lt;caption&gt;</code> cu text, chiar după <code>&lt;table&gt;</code>.',h:'<table>\n  <caption>Tabelul 1</caption>',f:function(d){var e=q1(d,'table caption');return e&&e.textContent.trim()}},
+{t:'Pune legenda tabelului dedesubt: <code>caption-side:bottom</code>.',h:'<caption style="caption-side:bottom">Tabelul 1</caption>',f:function(d){return S(q1(d,'caption'),/caption-side\s*:\s*bottom/)}}]});
+lab('labD',{title:'Laborator 8: pagina cu două coloane',intro:'Sub textul de sus construiește: poză în stânga, tabel în dreapta.',start:'<h2 style="text-align:center">Pagina mea</h2>\n<p>Text de prezentare, pe toată lățimea.</p>\n',
+sol:'<h2 style="text-align:center">Pagina mea</h2>\n<p>Text de prezentare, pe toată lățimea.</p>\n<div style="display:flex; gap:16px">\n  <div>\n    <img src="caine.png" alt="Un cățel" width="140">\n  </div>\n  <div>\n    <table>\n      <tr><th>Nume</th><td>Rex</td></tr>\n      <tr><th>Vârsta</th><td>2 ani</td></tr>\n    </table>\n  </div>\n</div>',tasks:[
+{t:'Adaugă un div mare cu <code>display:flex</code>.',h:'<div style="display:flex">\n  \n</div>',f:function(d){return S(q1(d,'div'),/display\s*:\s*flex/)}},
+{t:'Pune în el două div-uri: cele două coloane.',h:'<div style="display:flex">\n  <div>stânga</div>\n  <div>dreapta</div>\n</div>',f:function(d){var f=q1(d,'div[style*="flex"]');return f&&f.children.length==2&&f.children[0].tagName=='DIV'&&f.children[1].tagName=='DIV'}},
+{t:'În coloana din stânga pune o poză.',h:'<div>\n  <img src="caine.png" alt="Un cățel" width="140">\n</div>',f:function(d){var f=q1(d,'div[style*="flex"]');return f&&f.children[0]&&!!f.children[0].querySelector('img')}},
+{t:'În coloana din dreapta pune un tabel sau un text.',h:'<div>\n  <table>\n    <tr><th>Nume</th><td>Rex</td></tr>\n  </table>\n</div>',f:function(d){var f=q1(d,'div[style*="flex"]');return f&&f.children[1]&&!!f.children[1].querySelector('table,p')}},
+{t:'Pune spațiu între coloane: <code>gap:16px</code>.',h:'<div style="display:flex; gap:16px">',f:function(d){return S(q1(d,'div[style*="flex"]'),/gap\s*:\s*[1-9]/)}}]});
+/* quiz */
+var Q=[["Ce etichetă face o listă numerotată?", ["<ul>", "<ol>", "<li>"], 1, "ol = ordered list. Elementele rămân li."], ["Cum începe numărătoarea de la 5?", ["<ol start=\"5\">", "<ol type=\"5\">", "<ol 5>"], 0, "start=\"5\" este atributul potrivit."], ["Care etichetă NU se închide?", ["<p>", "<img>", "<table>"], 1, "img este singuratică, ca br și hr."], ["Ce face atributul alt la o poză?", ["Schimbă mărimea", "Spune unde e fișierul", "Descrie poza în cuvinte"], 2, "alt apare dacă poza nu se încarcă și ajută cititoarele de ecran."], ["Cum pui o poză din folderul „poze”?", ["<img src=\"poze/pisica.png\" alt=\"Pisică\">", "<img alt=\"poze/pisica.png\">", "<img>poze/pisica.png</img>"], 0, "Calea din src: folderul, apoi numele fișierului."], ["Ce este <tr> într-un tabel?", ["O celulă", "Un rând", "O coloană"], 1, "tr = table row. Celulele sunt td și th."], ["Un tabel cu 3 coloane are, pe fiecare rând:", ["3 etichete td/th", "3 etichete tr", "1 etichetă td"], 0, "Numărul de celule dintr-un rând dă numărul de coloane."], ["Ce face <hr>?", ["Rupe rândul", "Trage o linie orizontală", "Face un titlu"], 1, "hr desparte vizual două părți din pagină."], ["Cum centrezi un titlu?", ["style=\"text-align:center\"", "style=\"center:yes\"", "style=\"middle\""], 0, "text-align:center centrează conținutul unui element."], ["Cum scrii mai multe proprietăți în style?", ["Separate prin virgulă", "Separate prin ;", "Fiecare în alt style"], 1, "proprietate:valoare; alta:valoare. Punct și virgulă între ele."], ["Ce schimbă background-color?", ["Culoarea textului", "Culoarea fundalului", "Mărimea literelor"], 1, "color = textul, background-color = fundalul."], ["Ce proprietate face alineatul (primul rând mai în dreapta)?", ["text-indent", "text-align", "caption-side"], 0, "text-indent mută doar primul rând."], ["Care este diferența dintre padding și margin?", ["Sunt identice", "padding = în interior, margin = în afara elementului", "padding = în afară, margin = în interior"], 1, "Padding dă aer între margine și text, margin ține elementul departe de vecini."], ["Ce etichetă pui sub o poză, ca legendă?", ["<caption>", "<figcaption>", "<hr>"], 1, "figcaption se scrie în figure, lângă img. caption e pentru tabele."], ["Cum pui două coloane una lângă alta?", ["display:flex pe div-ul părinte", "<br> între ele", "<hr> între ele"], 0, "Părintele devine flex, iar copiii lui stau pe același rând."]];
+var done=0,good=0,qb=$('quiz');
+Q.forEach(function(q,qi){var d=document.createElement('div');d.className='q';d.innerHTML='<p>'+(qi+1)+'. '+esc(q[0])+'</p>';var w=document.createElement('div');w.className='w';var ans=false,tr=0;
+ q[1].forEach(function(o,k){var b=document.createElement('button');b.className='o';b.textContent=o;b.onclick=function(){if(ans)return;if(k==q[2]){ans=true;b.classList.add('ok');if(!tr)good++;w.style.color='var(--ok)';w.textContent='✅ Corect! '+q[3];done++;fin()}else{tr++;b.classList.add('no');b.disabled=true;w.style.color='var(--bad)';w.textContent='❌ Mai încearcă!'}};d.appendChild(b)});d.appendChild(w);qb.appendChild(d)});
+function fin(){if(done<Q.length)return;var s=$('score');s.hidden=false;s.className='score pop';s.innerHTML=(good>=12?'🏆':good>=8?'🎉':'💪')+' Corect din prima: '+good+' din '+Q.length+(good>=12?'. Ești un adevărat programator HTML!':good>=8?'. Foarte bine! Mai recitește o dată.':'. Nu-i nimic! Recitește lecția și mai încearcă.');s.scrollIntoView({block:'center'})}
+addEventListener('scroll',function(){var h=document.documentElement;$('pg').style.width=Math.min(100,h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+</script>
+</body>
+</html>
