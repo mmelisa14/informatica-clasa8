@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atelier HTML – lecția 3: CSS și JavaScript</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#F3F6FF;--card:#fff;--fg:#1B2A4A;--mut:#5B6B8C;--line:#D6E0F5;--pri:#4F46E5;--pf:#fff;--ok:#16A34A;--okb:#DCFCE7;--bad:#DC2626;--badb:#FEE2E2;--sun:#FFC83D;--code:#17213A;--cf:#E7ECF7;--t:#FF8FA6;--a:#FFD479;--s:#8EE6B4;--c1:#4F46E5;--c2:#EC4899;--c3:#F59E0B;--c4:#10B981;--c5:#0EA5E9;
+--disp:'Baloo 2','Trebuchet MS',system-ui,sans-serif;--sans:'Nunito',system-ui,-apple-system,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--badb:#5B1A1A;--code:#0A0F1D}}
+:root[data-theme="dark"]{--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--badb:#5B1A1A;--code:#0A0F1D}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--fg);font:500 1.08rem/1.65 var(--sans)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:12px;align-items:center}
+.top b,.top span{font:800 1rem var(--disp);white-space:nowrap}
+.pbar{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--c1),var(--c2))}
+.hero{text-align:center;padding:46px 18px 34px;background:linear-gradient(135deg,#16A34A,#0EA5E9);color:#fff}
+.hero h1{font:800 clamp(2.1rem,8vw,3.5rem)/1.05 var(--disp);margin:6px 0}.hero p{max-width:42ch;margin:8px auto 18px;font-size:1.2rem}.hero .e{font-size:3.6rem}
+button{font:800 1.02rem var(--disp);cursor:pointer;border:0;border-radius:14px;padding:9px 18px;background:var(--pri);color:var(--pf);box-shadow:0 4px 0 rgba(0,0,0,.22);min-height:44px}
+button:active{transform:translateY(3px);box-shadow:none}.hero button{background:#fff;color:#0F766E}
+button.alt{background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none}
+button:disabled{opacity:.4;cursor:default}
+main{max-width:860px;margin:0 auto;padding:18px 14px 60px;display:flex;flex-direction:column;gap:22px}
+section{background:var(--card);border-radius:24px;padding:22px;border-top:8px solid var(--ac);box-shadow:0 6px 0 var(--line);--ac:var(--c1);min-width:0}
+.n{display:inline-flex;width:42px;height:42px;border-radius:50%;background:var(--ac);color:#fff;font:800 1.3rem var(--disp);align-items:center;justify-content:center;margin-right:8px;vertical-align:middle}
+h2{font:800 1.7rem/1.15 var(--disp);margin:0 0 8px}h3{font:800 1.25rem var(--disp);margin:20px 0 4px}p{margin:.55em 0}
+code{font:700 .92em var(--mono);background:var(--bg);padding:.1em .4em;border-radius:6px;word-break:break-word}
+.tip{background:var(--bg);border-left:6px solid var(--sun);border-radius:12px;padding:10px 14px;margin:14px 0}.tip.ok{border-color:var(--ok)}
+.code{background:var(--code);color:var(--cf);font:600 .92rem/1.55 var(--mono);padding:12px 14px;border-radius:14px;overflow-x:auto;margin:8px 0;white-space:pre-wrap;word-break:break-word}
+.code .t{color:var(--t)}.code .a{color:var(--a)}.code .s{color:var(--s)}.nw{background:rgba(255,212,121,.28);border-radius:4px}
+.lbl{font:800 .78rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:12px 0 4px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:12px 0}.g3>div{background:var(--bg);border-radius:16px;padding:12px;min-width:0}.g3 b{font:800 1.05rem var(--disp)}.g3 .e{font-size:2.2rem;display:block}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.tabs button{background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none;font-family:var(--mono);padding:8px 14px}.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.say{background:var(--bg);border-radius:14px;padding:12px 14px;margin:10px 0;min-height:4.4em}
+.mock{border:3px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.lab{border:3px solid var(--ac);border-radius:18px;padding:14px;margin:18px 0;background:var(--bg)}.lab>h3{margin:0 0 4px}
+.stp{border:3px solid var(--line);border-radius:18px;padding:14px;margin:14px 0}
+.lg{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:700px){.lg{grid-template-columns:1fr}}.lg>div{min-width:0}
+textarea{width:100%;height:340px;font:600 .9rem/1.5 var(--mono);background:var(--code);color:var(--cf);border:0;border-radius:12px;padding:12px;resize:vertical;tab-size:2;white-space:pre}
+iframe{width:100%;height:340px;border:0;background:#fff;display:block}iframe.ex{height:200px}iframe.st{height:300px}
+.tasks{list-style:none;padding:0;margin:12px 0}.tasks li{padding:8px 12px;border-radius:12px;background:var(--card);margin:6px 0;font-weight:700}.tasks li.d{background:var(--okb)}.tasks li::before{content:"⬜ "}.tasks li.d::before{content:"✅ "}
+.hint{font-weight:700;color:var(--mut);min-height:1.4em}
+.q{border:3px solid var(--line);border-radius:18px;padding:14px;margin:14px 0}.q>p{font-weight:800;margin:0 0 8px}
+.q .o{display:block;width:100%;text-align:left;margin:8px 0;background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none;font:700 1rem var(--mono);word-break:break-word}.q .o.ok{background:var(--okb);border-color:var(--ok)}.q .o.no{background:var(--badb);border-color:var(--bad)}.q .w{font-weight:700;margin-top:6px}
+.score{text-align:center;font:800 1.5rem var(--disp);padding:18px;border-radius:18px;background:var(--bg)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;align-items:center}.sol{margin-top:8px}.row .sl{font:800 1.05rem var(--disp);flex:1;text-align:center}
+</style>
+</head>
+<body>
+<div class="top"><b>🌐 Atelier HTML</b><div class="pbar"><i id="pg"></i></div><span id="tc">🎯 0/0</span></div>
+<header class="hero"><div class="e">🎮</div><h1>Lecția 3: CSS și JavaScript</h1><p>Facem pagini web ca niște jocuri: cu aspect frumos și cu butoane care chiar fac ceva.</p><button onclick="document.getElementById('s1').scrollIntoView()">Începem! 👇</button></header>
+<main>
+
+<section id="s1"><h2><span class="n">1</span>O pagină web e ca un joc</h2>
+<p>Până acum ai învățat <b>HTML</b>. Azi mai adăugăm două limbaje. Toate trei lucrează împreună, exact ca într-un joc. Alege jocul tău și vezi cine face ce:</p>
+<div class="tabs" id="gm"></div><div class="g3" id="gmb"></div>
+<p>Pe scurt, <b>HTML</b> spune <b>ce există</b>, <b>CSS</b> spune <b>cum arată</b>, iar <b>JavaScript</b> spune <b>ce se întâmplă</b> când faci ceva. Apasă pe cele trei butoane și vezi aceeași pagină, de fiecare dată cu un limbaj în plus:</p>
+<div class="tabs" id="lay"></div><div class="mock"><iframe class="ex" id="layfr" title="Exemplu"></iframe></div><div class="say" id="laysay"></div>
+<div class="tip">💡 <b>JavaScript nu e Java!</b> Sunt două limbaje diferite, cu nume asemănător din întâmplare.</div>
+</section>
+
+<section id="s2" style="--ac:var(--c2)"><h2><span class="n">2</span>Unde se scrie fiecare limbaj?</h2>
+<p>Ții minte scheletul oricărei pagini: <code>html</code>, în el <code>head</code> și <code>body</code>. Pe același schelet punem acum <b>trei locuri</b>, câte unul pentru fiecare limbaj. Apasă pe butoane ca să vezi unde se află:</p>
+<div class="tabs" id="sk"></div><div class="code" id="skc"></div><div class="say" id="sksay"></div>
+<div class="tip ok">✅ În toate laboratoarele de mai jos vei vedea <b>pagina completă</b>, cu tot scheletul. Tu modifici doar ce e în interiorul celor trei zone și nu ștergi etichetele scheletului (<code>html</code>, <code>head</code>, <code>body</code>).</div>
+</section>
+
+<section id="s3" style="--ac:var(--c3)"><h2><span class="n">3</span>Cum arată o comandă CSS?</h2>
+<p>O comandă CSS se numește <b>regulă</b>. Seamănă cu o comandă din Minecraft. Când scrii <code>/effect @a speed</code>, spui <b>pe cine</b> (<code>@a</code> = toți jucătorii) și <b>ce îi faci</b> (viteză). Regula CSS are tot trei părți:</p>
+<div class="code" id="rule"></div>
+<div class="tabs" id="an"></div><div class="say" id="ansay">Apasă pe o piesă.</div>
+<p>Regula de mai sus se citește: <b>„toate paragrafele (p) să aibă textul roșu și mărimea 20px”</b>. Poți scrie câte declarații vrei între acolade. Atenție mare: după fiecare declarație pui <code>;</code>. Dacă îl uiți, declarația următoare nu mai funcționează!</p>
+</section>
+
+<section id="s4" style="--ac:var(--c4)"><h2><span class="n">4</span>Div, class și id: cele trei unelte de bază</h2>
+<p>Ca să spui CSS-ului <b>pe cine</b> să vopsească, ai nevoie de ele. Le cunoști pe rând:</p>
+<div class="g3"><div><span class="e">📦</span><b>div = o cutie</b><br>O cutie <b>goală și invizibilă</b> în care pui alte lucruri (text, poze, alte cutii), ca o ladă din Minecraft sau un Frame din Roblox. Nu face nimic singură: abia cu CSS o faci card, buton sau meniu. Poți pune cutii în cutii.</div><div><span class="e">🏷️</span><b>class = o etichetă de echipă</b><br>Pui <code>class="bloc"</code> pe oricâte elemente vrei. Apoi o <b>singură regulă</b> <code>.bloc</code> le schimbă pe toate, ca echipa roșie din Roblox care primește aceleași haine. În CSS se scrie cu <b>punct</b> în față.</div><div><span class="e">🪪</span><b>id = numele unic</b><br>Ca numele tău de jucător: <b>doar un singur element</b> îl are. În CSS se scrie cu <b>#</b>. Te ajută în două feluri: 1) stilizezi un singur element special; 2) <b>JavaScript</b> îl găsește după id ca să-l poată schimba (scorul, butonul, poza).</div></div>
+<p>Exemplu: trei blocuri Minecraft. Toate au aceeași clasă <code>bloc</code> (deci aceeași formă), dar unul are și <code>id="diamant"</code> și iese în evidență:</p>
+<div id="e1"></div>
+<div class="tip">💡 Un element poate avea <b>și clasă, și id</b> (ca diamantul de mai sus) și chiar mai multe clase, separate prin spațiu: <code>class="bloc rar"</code>. Regula: <b>id-ul nu se repetă</b> în aceeași pagină, clasa se repetă oricât.</div>
+</section>
+
+<section id="s5" style="--ac:var(--c5)"><h2><span class="n">5</span>Cutia: width, padding, border, margin</h2>
+<p>Fiecare div e o cutie cu straturi. Imaginează-ți un <b>tablou (item frame) din Minecraft</b> agățat pe perete: <b>conținutul</b> e obiectul din ramă, <b>padding</b> e spațiul gol dintre obiect și ramă, <b>border</b> e rama, <b>margin</b> e distanța până la următorul tablou. <b>border-radius</b> rotunjește colțurile. Mută cursoarele și vezi fiecare strat (portocaliul de la margin e desenat doar ca să-l vezi):</p>
+<div class="g3"><div id="bmv" style="display:flex;align-items:center;justify-content:center;min-height:270px;overflow:auto"></div><div>
+<label style="display:block">🟦 <b>width</b> (lățimea conținutului) <input type="range" id="sw" min="60" max="160" value="100"> <b id="vw"></b>px</label>
+<label style="display:block">🟩 <b>padding</b> (aer în interior) <input type="range" id="sp" min="0" max="50" value="20"> <b id="vp"></b>px</label>
+<label style="display:block">🟪 <b>border</b> (grosimea chenarului) <input type="range" id="sb" min="0" max="20" value="4"> <b id="vb"></b>px</label>
+<label style="display:block">⭕ <b>border-radius</b> (rotunjire) <input type="range" id="sr" min="0" max="60" value="20"> <b id="vr"></b>px</label>
+<label style="display:block">🟧 <b>margin</b> (spațiu în exterior) <input type="range" id="sm" min="0" max="40" value="10"> <b id="vm"></b>px</label>
+<div class="code" id="bmc"></div></div></div>
+<div class="tip">📏 <code>width</code> măsoară doar conținutul. Lățimea totală pe ecran = width + padding (stânga și dreapta) + chenar (stânga și dreapta). Pentru cardul de mai jos: 220 + 20 + 20 + 4 + 4 = <b>268px</b>.</div>
+</section>
+
+<section id="s6" style="--ac:var(--c1)"><h2><span class="n">6</span>Construim un card de jucător, pas cu pas</h2>
+<p>Nu citim tot codul deodată. Îl <b>construim treptat</b>: la fiecare pas se adaugă câteva rânduri (le vezi <b>luminate</b>), iar în dreapta vezi cum se schimbă cardul. Apasă <b>Pasul următor</b> și citește explicația.</p>
+<div id="st1"></div>
+<h3>Acum e rândul tău!</h3>
+<p>Mai jos e cardul complet, cu tot scheletul. Modifică-l ca să fie al tău:</p>
+<div id="lab1"></div>
+</section>
+
+<section id="s7" style="--ac:var(--c2)"><h2><span class="n">7</span>Mai multe cutii pe același rând</h2>
+<p>Cum faci bara cu obiecte din Minecraft (hotbar)? Ai nevoie de o cutie <b>părinte</b> care ține mai multe cutii <b>copii</b>. Construim și asta pas cu pas:</p>
+<div id="st2"></div>
+<div id="lab2"></div>
+</section>
+
+<section id="s8" style="--ac:var(--c3)"><h2><span class="n">8</span>JavaScript: pagina prinde viață ⚡</h2>
+<p>Până acum pagina ta doar <b>stătea</b> frumoasă. JavaScript o face să <b>reacționeze</b>. Gândește-te la <b>redstone</b>: tragi o pârghie (eveniment), semnalul merge prin fire (codul), iar ușa se deschide (se schimbă ceva în pagină). Sau la Roblox: atingi o monedă și scorul crește.</p>
+<div class="g3"><div><span class="e">🗃️</span><b>Variabila</b><br>O cutie cu nume în care calculatorul ține o valoare, ca scorul sau monedele din joc.</div><div><span class="e">🔎</span><b>Găsirea elementului</b><br>JavaScript caută în pagină un element după <b>id</b> (aici vezi la ce ajută id-ul!) ca să-l poată schimba.</div><div><span class="e">🕹️</span><b>Evenimentul</b><br>„Când se întâmplă X, fă Y”: când se apasă butonul, crește scorul.</div></div>
+<p>Construim un contor de blocuri minate. Din nou, pas cu pas:</p>
+<div id="st3"></div>
+<div id="lab3"></div>
+</section>
+
+<section id="s9" style="--ac:var(--c2)"><h2><span class="n">9</span>Carusel: schimbăm skin-ul 🧙</h2>
+<p>Un carusel arată pe rând mai multe lucruri, când apeși ◀ sau ▶, ca atunci când alegi skin-ul personajului. Aici folosim emoji și culori. Într-o pagină reală ai pune poze cu <code>&lt;img&gt;</code>.</p>
+<div id="st4"></div>
+<div id="lab4"></div>
+</section>
+
+<section id="s10" style="--ac:var(--c1)"><h2><span class="n">10</span>Proiect final: magazinul tău de skin-uri 🛒</h2>
+<p>Aici se adună tot ce ai învățat: HTML pentru produse, CSS pentru aspect, JavaScript pentru coș. E ca magazinul de skin-uri dintr-un joc: apeși pe <b>Cumpără</b>, iar monedele se adună. Vezi cum e construit:</p>
+<div id="st5"></div>
+<p>Acum fă magazinul <b>al tău</b>: nume, culori, produse noi.</p>
+<div id="lab5"></div>
+<div class="tip ok">✅ <b>Ai terminat lecția!</b> Copiază codul din editor într-un fișier <code>.html</code> pe calculatorul tău și deschide-l în browser: e site-ul tău.</div>
+</section>
+
+<section id="s11" style="--ac:var(--c4)"><h2><span class="n">11</span>Exerciții grilă 🎯</h2>
+<div id="quiz"></div><div class="score" id="score" hidden></div>
+</section>
+</main>
+<script>
+var $=function(i){return document.getElementById(i)},esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')};
+function hl(s){return esc(s).replace(/(&lt;\/?[a-z0-9!]+)|(&gt;)|( [a-z-]+)=("[^"]*")/gi,function(m,x,y,c,d){return (x||y)?'<span class="t">'+m+'</span>':' <span class="a">'+c.trim()+'</span>=<span class="s">'+d+'</span>'})}
+function hlc(s){return hl(s).replace(/\u0001/g,'<span class="nw">').replace(/\u0002/g,'</span>')}
+function tabs(id,items,fn,first){var b=$(id);items.forEach(function(t,k){var e=document.createElement('button');e.innerHTML=t;e.onclick=function(){[].forEach.call(b.children,function(x){x.classList.remove('on')});e.classList.add('on');fn(k)};b.appendChild(e)});if(first!==false)b.children[0].click()}
+var BL='<script>document.addEventListener("click",function(e){if(e.target.closest("a"))e.preventDefault()})<\/script>';
+var BASE='<meta charset="utf-8"><body style="font-family:Georgia,serif;margin:12px;color:#111">';
+function frag(c){return BL+BASE+c}
+/* 1: jocuri */
+var GM=[['⛏️ Minecraft',[['🧱','HTML = blocurile lumii','Ce <b>există</b>: copacul, casa, lada, butonul. Fără ele, lumea e goală.'],['🎨','CSS = texture pack-ul','Cum <b>arată</b>: același bloc de piatră, dar cu altă culoare, formă sau mărime. Nu schimbi lumea, doar aspectul ei.'],['🔴','JavaScript = redstone și comenzi','Ce <b>se întâmplă</b>: tragi pârghia și se deschide ușa, apeși butonul și apare un mesaj.']]],['🧊 Roblox',[['🧊','HTML = obiectele din Studio','Part, Frame, TextButton: tot ce pui în joc.'],['🎛️','CSS = fereastra Properties','Color, Size, Transparency, CornerRadius: cum arată fiecare obiect.'],['📜','JavaScript = Script-ul','Când atingi moneda, scorul crește. (Roblox folosește limbajul Lua, noi folosim JavaScript, dar ideea e aceeași.)']]],['🚗 GTA',[['🏙️','HTML = harta și obiectele','Străzile, clădirile, mașinile, personajele: tot ce există în oraș.'],['🎨','CSS = tuning și haine','Mașina o vopsești roșie, îi pui jante, personajul primește alte haine. Aceeași mașină, alt aspect.'],['🎮','JavaScript = regulile și misiunile','Urci în mașină și pornește motorul; iei banii și crește scorul; fugi de poliție și se schimbă nivelul de căutare.']]]];
+tabs('gm',GM.map(function(g){return g[0]}),function(k){$('gmb').innerHTML=GM[k][1].map(function(x){return '<div><span class="e">'+x[0]+'</span><b>'+x[1]+'</b><br>'+x[2]+'</div>'}).join('')});
+var HB='<h2>Minecraft: minerul</h2><p id="p">Blocuri minate: 0</p><button id="b">⛏️ Sapă</button>';
+var CB='<style>body{background:#1F3B1F;color:#E7FFD9;font-family:Verdana,sans-serif}h2{color:#7CFC00}p{font-size:22px}button{background:#16A34A;color:#fff;border:0;padding:12px 22px;border-radius:10px;font-size:18px;cursor:pointer}</style>'+HB;
+var LS=[[HB,'<b>Doar HTML</b>: un titlu, un text, un buton. E „lumea” fără niciun aspect. Butonul nu face nimic.'],[CB,'<b>+ CSS</b>: aceleași elemente, dar cu „texture pack”: fundal verde-închis, litere mari, buton colorat. Butonul tot nu face nimic: CSS schimbă doar <b>cum arată</b>.'],[CB+'<script>var n=0;document.getElementById("b").onclick=function(){n=n+1;document.getElementById("p").textContent="Blocuri minate: "+n};<\/script>','<b>+ JavaScript</b>: apasă pe <b>Sapă</b>! Numărul crește. JavaScript a adăugat <b>comportamentul</b>.']];
+tabs('lay',['🧱 Doar HTML','🎨 + CSS','⚡ + JavaScript'],function(k){$('layfr').srcdoc=frag(LS[k][0]);$('laysay').innerHTML=LS[k][1]});
+/* 2: schelet */
+var SKL=['<!DOCTYPE html>','<html lang="ro">','<head>','  <meta charset="utf-8">','  <title>Pagina mea</title>','  <style>','    /* 🎨 aici scrii regulile CSS */','  </style>','</head>','<body>','  <\!-- 🧱 aici scrii HTML: titluri, cutii, butoane -->','  <script>','    // ⚡ aici scrii JavaScript','  <\/script>','</body>','</html>'];
+var SK=[['📜 Scheletul',[],'Scheletul îl știi deja: <code>html</code> conține <code>head</code> (informații despre pagină, nu se văd) și <code>body</code> (ce se vede). Acum adăugăm două locuri noi: unul pentru CSS și unul pentru JavaScript. Apasă pe celelalte butoane.'],['🎨 CSS',[5,6,7],'CSS-ul se scrie între <code>&lt;style&gt;</code> și <code>&lt;/style&gt;</code>, în <b>head</b>. De ce acolo? Head e ca „setările jocului”: browserul le citește primele, ca să știe de la început cum să deseneze pagina. Toate regulile CSS stau în această pereche.'],['🧱 HTML',[9,10,14],'HTML-ul (titluri, cutii, butoane, poze) se scrie în <b>body</b>, „lumea jocului”: tot ce e aici se vede pe pagină.'],['⚡ JavaScript',[11,12,13],'JavaScript se scrie între <code>&lt;script&gt;</code> și <code>&lt;/script&gt;</code>, la <b>sfârșitul lui body</b>, după elementele HTML. De ce? JavaScript caută elemente după id. Dacă ar rula înainte să existe elementele, nu le-ar găsi.']];
+tabs('sk',SK.map(function(x){return x[0]}),function(k){$('skc').innerHTML=SKL.map(function(l,j){var on=SK[k][1].indexOf(j)>-1;return '<span style="display:block;'+(on?'background:rgba(255,212,121,.28);border-radius:6px':(SK[k][1].length?'opacity:.4':''))+'">'+hl(l)+'</span>'}).join('');$('sksay').innerHTML=SK[k][2]});
+/* 3: regula */
+$('rule').innerHTML=hl('p {\n  color: red;\n  font-size: 20px;\n}');
+var AN=[['p','<b>Selectorul</b> = pe cine alegi (aici, toate paragrafele). Ca <code>@a</code> din Minecraft.'],['{ }','<b>Acoladele</b> cuprind tot ce vrei să schimbi. Ce se deschide trebuie închis.'],['color','<b>Proprietatea</b> = ce schimbi (culoarea textului). Ca „efectul” dintr-o comandă.'],[':','Cele două puncte despart proprietatea de valoare.'],['red','<b>Valoarea</b> = cum să fie (roșu). Poate fi un nume de culoare sau un cod ca <code>#4F46E5</code>.'],[';','Încheie declarația. Fără el, următoarea declarație nu mai merge.']];
+tabs('an',AN.map(function(x){return x[0]}),function(k){$('ansay').innerHTML=AN[k][1]},false);
+/* constructor pagina completa */
+function part(a,k,m){return a.filter(function(x){return x[0]<=k}).map(function(x){return (m&&x[0]==k&&k>0?'\u0001'+x[1]+'\u0002':x[1])}).join('\n')}
+function doc(o,k,m){var c=part(o.css||[],k,m),h=part(o.html||[],k,m),j=part(o.js||[],k,m);return '<!DOCTYPE html>\n<html lang="ro">\n<head>\n  <meta charset="utf-8">\n  <title>Pagina mea</title>\n  <style>\n'+c+'\n  </style>\n</head>\n<body>\n'+h+(j?'\n  <script>\n'+j+'\n  <\/script>':'')+'\n</body>\n</html>'}
+function ex(id,css,html){var o={css:css.split('\n').map(function(l){return [0,l]}),html:html.split('\n').map(function(l){return [0,l]})},e=$(id);e.className='g3';e.innerHTML='<div><div class="lbl">Cod</div><div class="code">'+hl(doc(o,1,false))+'</div></div><div><div class="lbl">Rezultat</div><div class="mock"><iframe class="ex" title="Rezultat"></iframe></div></div>';e.querySelector('iframe').srcdoc=BL+doc(o,1,false)}
+ex('e1','    .bloc { display: inline-block; width: 90px; padding: 14px; margin: 4px;\n      text-align: center; color: white; border-radius: 8px; background: #6B7280; }\n    #diamant { background: #06B6D4; font-weight: bold; }','  <div class="bloc">Piatră</div>\n  <div class="bloc">Pământ</div>\n  <div class="bloc" id="diamant">Diamant</div>');
+/* 5: cutie */
+function bm(){var g=function(k){var x=$('s'+k);$('v'+k).textContent=x.value;return x.value},w=g('w'),p=g('p'),b=g('b'),r=g('r'),m=g('m');
+ $('bmv').innerHTML='<div style="background:#FDE68A;padding:'+m+'px;border-radius:8px"><div style="box-sizing:content-box;width:'+w+'px;padding:'+p+'px;border:'+b+'px solid #4F46E5;border-radius:'+r+'px;background:#BBF7D0;color:#111"><div style="background:#BFDBFE;text-align:center;padding:8px 0;font-size:.9rem">conținut</div></div></div>';
+ $('bmc').textContent='width: '+w+'px;\npadding: '+p+'px;\nborder: '+b+'px solid #4F46E5;\nborder-radius: '+r+'px;\nmargin: '+m+'px;'}
+['w','p','b','r','m'].forEach(function(k){$('s'+k).oninput=bm});bm();
+/* pasi */
+function stepper(id,o){var h=$(id),k=1,N=o.say.length;
+ h.className='stp';h.innerHTML='<div class="row"><button class="alt pv">◀ Înapoi</button><span class="sl"></span><button class="nx">Pasul următor ▶</button></div><div class="say"></div><div class="lg"><div><div class="lbl">📝 Codul (rândurile noi sunt luminate)</div><div class="code" style="max-height:380px;overflow:auto"></div></div><div><div class="lbl">👀 Rezultat</div><div class="mock"><iframe class="st" sandbox="allow-scripts" title="Rezultat"></iframe></div></div></div>';
+ var pv=h.querySelector('.pv'),nx=h.querySelector('.nx');
+ function draw(){h.querySelector('.sl').textContent='Pasul '+k+' din '+N;h.querySelector('.say').innerHTML=o.say[k-1];h.querySelector('.code').innerHTML=hlc(doc(o,k,true));h.querySelector('iframe').srcdoc=BL+doc(o,k,false);pv.disabled=k==1;nx.disabled=k==N}
+ pv.onclick=function(){k--;draw()};nx.onclick=function(){k++;draw()};draw()}
+var L=function(n,a){return a.map(function(x){return [n,x]})};
+/* CARD */
+var CARD={css:[[2,'    .card {'],[2,'      width: 220px;'],[2,'      background: #EEF0FF;'],[3,'      padding: 20px;'],[4,'      border: 4px solid #4F46E5;'],[4,'      border-radius: 20px;'],[5,'      text-align: center;'],[5,'      font-family: Arial, sans-serif;'],[7,'      transition: 0.3s;'],[2,'    }'],[6,'    .card h3 {'],[6,'      color: #4F46E5;'],[6,'    }'],[6,'    .emoji {'],[6,'      font-size: 56px;'],[6,'    }'],[7,'    .card:hover {'],[7,'      transform: translateY(-8px);'],[7,'      box-shadow: 0 12px 20px rgba(0,0,0,.25);'],[7,'    }']],
+html:L(1,['  <div class="card">','    <div class="emoji">⛏️</div>','    <h3>Steve</h3>','    <p>Nivel 12 · 340 blocuri minate</p>','  </div>']),
+say:[`<b>Pasul 1: doar HTML.</b> Un <code>div</code> este o <b>cutie</b>, ca o ladă din Minecraft. În ea am pus un emoji, un titlu (<code>h3</code>) și un text (<code>p</code>). Cutiei i-am pus o <b>etichetă</b>: <code>class="card"</code>. Încă nu există nicio regulă CSS (zona <code>&lt;style&gt;</code> e goală), de aceea arată simplu.`,
+`<b>Pasul 2: prima regulă CSS.</b> Zona <code>&lt;style&gt;</code> se umple. <code>.card {</code> se citește: „toate elementele cu eticheta <b>card</b>” (punctul înseamnă clasă). Între acolade scriem ce li se schimbă: <code>width</code> = lățimea cutiei, <code>background</code> = culoarea din spatele ei. Acum se vede cutia!`,
+`<b>Pasul 3: padding.</b> <code>padding: 20px;</code> = spațiu liber <b>în interiorul</b> cutiei, între margine și ce e în ea. Ca spațiul dintre obiect și ramă la un item frame. Fără el, textul stă lipit de marginea cutiei. Compară cu pasul 2!`,
+`<b>Pasul 4: chenar și colțuri.</b> <code>border: 4px solid #4F46E5;</code> are trei bucăți: <b>4px</b> = grosimea, <b>solid</b> = linie continuă (mai poți pune <code>dashed</code> sau <code>dotted</code>), <b>#4F46E5</b> = culoarea, scrisă ca un cod. <code>border-radius: 20px</code> rotunjește colțurile: 0 = colțuri drepte, ca blocurile din Minecraft.`,
+`<b>Pasul 5: textul.</b> <code>text-align: center</code> pune <b>ce e în cutie</b> (emoji și text) la mijloc; cutia nu se mută. <code>font-family: Arial, sans-serif</code> alege felul literelor; după virgulă e o variantă de rezervă, în caz că browserul nu are Arial.`,
+`<b>Pasul 6: piese din interior.</b> <code>.card h3</code> (cu <b>spațiu</b> între) înseamnă „h3-ul care se află <b>în interiorul</b> unui .card”: colorăm doar titlul din card. <code>.emoji</code> e o a doua clasă, pusă doar pe emoji, ca să-l mărim pe el fără să mărim și textul.`,
+`<b>Pasul 7: animația.</b> <code>.card:hover</code> = „cardul, <b>când treci cu mouse-ul peste el</b>”. Atunci îl ridicăm cu <code>translateY(-8px)</code> (Y e axa sus-jos, minus = în sus) și îi dăm umbră: <code>box-shadow: 0 12px 20px rgba(0,0,0,.25)</code> = 0 stânga-dreapta, 12px în jos, 20px de împrăștiere, negru 25% opac. <code>transition: 0.3s</code> face mișcarea lină. Treci cu mouse-ul peste card!`]};
+stepper('st1',CARD);
+/* HOTBAR */
+var HOT={css:[[2,'    .slot {'],[2,'      width: 70px;'],[2,'      height: 70px;'],[2,'      background: #8B8B8B;'],[2,'      border: 4px solid #373737;'],[2,'      font-size: 36px;'],[2,'      text-align: center;'],[2,'      line-height: 70px;'],[2,'    }'],[3,'    .hotbar {'],[3,'      display: flex;'],[4,'      gap: 8px;'],[4,'      flex-wrap: wrap;'],[3,'    }']],
+html:L(1,['  <div class="hotbar">','    <div class="slot">⛏️</div>','    <div class="slot">🗡️</div>','    <div class="slot">🍖</div>','    <div class="slot">🧱</div>','  </div>']),
+say:[`<b>Pasul 1: HTML.</b> Avem un div mare, <code>hotbar</code>, care conține patru div-uri mici, <code>slot</code>. Cel mare se numește <b>părinte</b>, cele mici sunt <b>copiii</b> lui. Fără CSS, div-urile stau unul sub altul, ca niște rânduri.`,
+`<b>Pasul 2: formă pentru sloturi.</b> Regula <code>.slot</code> se aplică tuturor celor 4 deodată (asta e puterea clasei: o regulă pentru toate!). Au 70px, fundal gri și chenar închis. <code>line-height: 70px</code> pune emoji-ul pe mijloc, pe verticală. Dar tot stau unul sub altul.`,
+`<b>Pasul 3: pe același rând.</b> Secretul e la <b>părinte</b>: <code>.hotbar { display: flex; }</code>. Flex îi spune părintelui: „așază-ți copiii unul lângă altul”. Regula se scrie pe părinte, <b>nu</b> pe copii!`,
+`<b>Pasul 4: spațiu și rânduri noi.</b> <code>gap: 8px</code> = spațiu între sloturi. <code>flex-wrap: wrap</code> = dacă nu mai încap (de exemplu pe telefon), ultimele coboară pe rândul următor.`]};
+stepper('st2',HOT);
+/* CONTOR */
+var CNT={css:[[0,'    body { font-family: Arial, sans-serif; text-align: center; padding: 16px; }'],[0,'    #nr { font-size: 56px; margin: 8px; }'],[0,'    #btn { font-size: 20px; padding: 12px 24px; border: 0;'],[0,'      border-radius: 12px; background: #4F46E5; color: white; cursor: pointer; }']],
+html:L(1,['  <p>Blocuri minate:</p>','  <div id="nr">0</div>','  <button id="btn">⛏️ Sapă!</button>']),
+js:[[2,'    var blocuri = 0;'],[3,'    var nr = document.getElementById("nr");'],[3,'    var btn = document.getElementById("btn");'],[4,'    btn.onclick = function () {'],[5,'      blocuri = blocuri + 1;'],[5,'      nr.textContent = blocuri;'],[6,'      if (blocuri >= 5) {'],[6,'        nr.style.color = "green";'],[6,'      }'],[4,'    };']],
+say:[`<b>Pasul 1: HTML.</b> Un număr (<code>div</code>) și un buton. Fiecare are un <b>id</b> (<code>nr</code> și <code>btn</code>): un nume unic, ca numele tău de jucător. JavaScript îl va striga după nume ca să-l găsească. (CSS-ul din <code>head</code> doar le face frumoase: <code>#nr</code> înseamnă „elementul cu id-ul nr”.) Butonul încă nu face nimic.`,
+`<b>Pasul 2: variabila.</b> Apare zona <code>&lt;script&gt;</code>, la sfârșitul lui <code>body</code>. <code>var blocuri = 0;</code> creează o <b>variabilă</b>: o cutie numită „blocuri” în care calculatorul ține un număr, ca scorul din joc. Semnul <code>=</code> înseamnă „pune în”: pun 0 în blocuri.`,
+`<b>Pasul 3: găsim elementele.</b> <code>document</code> = toată pagina. <code>getElementById("nr")</code> = „caută în pagină elementul cu id-ul nr”. Rezultatul îl punem într-o variabilă, ca să-l putem schimba mai jos. Aici vezi <b>la ce ajută un id</b>: e adresa exactă a elementului. La fel pentru buton.`,
+`<b>Pasul 4: evenimentul.</b> <code>btn.onclick = function () { … };</code> se citește: „<b>când</b> se apasă butonul, rulează ce e între acolade”. E ca pârghia din Minecraft: nu se întâmplă nimic până nu o tragi. Acoladele sunt încă goale.`,
+`<b>Pasul 5: ce se întâmplă la apăsare.</b> <code>blocuri = blocuri + 1</code> = „ia ce e în blocuri, adaugă 1, pune înapoi”. Apoi <code>nr.textContent = blocuri</code> schimbă textul de pe ecran. Apasă butonul din dreapta!`,
+`<b>Pasul 6: o condiție.</b> <code>if (blocuri &gt;= 5)</code> = „dacă ai minat 5 blocuri sau mai multe”. Doar atunci rulează codul din acolade: numărul devine verde (<code>nr.style.color</code> schimbă culoarea, ca <code>color</code> din CSS). Așa faci jocurile: dacă scorul e destul de mare, se întâmplă ceva nou.`]};
+stepper('st3',CNT);
+/* CARUSEL */
+var CAR={css:[[0,'    body { font-family: Arial, sans-serif; text-align: center; padding: 10px; }'],[0,'    #slide { height: 150px; border-radius: 20px; color: white;'],[0,'      font-size: 80px; line-height: 150px; transition: 0.4s; }'],[0,'    #cap { font-size: 20px; font-weight: bold; }'],[0,'    button { font-size: 22px; padding: 8px 20px; border: 0;'],[0,'      border-radius: 12px; background: #4F46E5; color: white; cursor: pointer; }']],
+html:L(1,['  <div id="slide"></div>','  <p id="cap"></p>','  <button id="prev">◀</button>','  <button id="next">▶</button>']),
+js:[[2,'    var skins = ['],[2,'      { emoji: "⛏️", text: "Minerul",     color: "#0EA5E9" },'],[2,'      { emoji: "🧙", text: "Vrăjitorul", color: "#7C3AED" },'],[2,'      { emoji: "🐉", text: "Dragonul",   color: "#DC2626" }'],[2,'    ];'],[3,'    var i = 0;'],[3,'    var slide = document.getElementById("slide");'],[3,'    var cap = document.getElementById("cap");'],[4,'    function show() {'],[4,'      var s = skins[i];'],[4,'      slide.textContent = s.emoji;'],[4,'      slide.style.background = s.color;'],[4,'      cap.textContent = s.text + " (" + (i + 1) + "/" + skins.length + ")";'],[4,'    }'],[5,'    document.getElementById("next").onclick = function () {'],[5,'      i = (i + 1) % skins.length;'],[5,'      show();'],[5,'    };'],[5,'    document.getElementById("prev").onclick = function () {'],[5,'      i = (i - 1 + skins.length) % skins.length;'],[5,'      show();'],[5,'    };'],[6,'    show();']],
+say:[`<b>Pasul 1: HTML și CSS.</b> Un ecran mare (<code>slide</code>), o legendă și două butoane. Toate au <b>id</b>, fiindcă JavaScript le va schimba. Încă nu se întâmplă nimic.`,
+`<b>Pasul 2: lista de skin-uri.</b> <code>[ ]</code> (paranteze pătrate) înseamnă <b>listă</b>. Fiecare <code>{ … }</code> e o „fișă” cu trei informații: emoji, text, culoare. Între fișe pui virgulă (după ultima nu). Scriem datele o singură dată, la început.`,
+`<b>Pasul 3: poziția.</b> <code>i</code> e numărul skin-ului afișat acum. Numărătoarea începe de la <b>0</b>: <code>skins[0]</code> e primul, <code>skins[1]</code> al doilea. Apoi găsim cele două elemente după id, ca la contor.`,
+`<b>Pasul 4: funcția show().</b> O <b>funcție</b> e un grup de instrucțiuni cu nume, o „rețetă” pe care o rulezi când scrii <code>show();</code>. Ia fișa <code>skins[i]</code> și pune emoji-ul, culoarea și textul pe ecran. Atenție: aici doar am <b>scris</b> rețeta, nu am rulat-o încă.`,
+`<b>Pasul 5: butoanele.</b> La apăsare schimbăm <code>i</code> și apelăm <code>show()</code>. <code>%</code> = restul împărțirii: dacă ești la ultimul (2), <code>(2+1) % 3</code> dă 0 și te întorci la primul. La „înapoi” adunăm <code>skins.length</code> ca să nu ajungem la -1, care nu există.`,
+`<b>Pasul 6: pornirea.</b> <code>show();</code> la final afișează primul skin când se deschide pagina. Fără el, ecranul ar fi gol până la prima apăsare. Apasă ◀ ▶!`]};
+stepper('st4',CAR);
+/* MAGAZIN */
+var SHOP={css:L(2,['    body { font-family: Arial, sans-serif; margin: 0; background: #F3F6FF; }','    header {','      background: #4F46E5; color: white; padding: 12px 16px;','      display: flex; justify-content: space-between; align-items: center;','    }','    .prods { display: flex; flex-wrap: wrap; gap: 12px; padding: 14px; }','    .p {','      width: 130px; background: white; border-radius: 16px; padding: 12px;','      text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,.15); transition: 0.2s;','    }','    .p:hover { transform: translateY(-5px); }','    .e { font-size: 48px; }','    .p button {','      border: 0; background: #10B981; color: white; border-radius: 10px;','      padding: 8px 12px; cursor: pointer; margin-top: 6px;','    }']),
+html:L(1,['  <header>','    <b id="shop">🛒 Magazinul meu</b>','    <span>Obiecte: <b id="cnt">0</b> · Total: <b id="sum">0</b> 🪙</span>','  </header>','  <div class="prods">','    <div class="p"><div class="e">🗡️</div>Sabie<br><b>50 🪙</b><br><button data-price="50">Cumpără</button></div>','    <div class="p"><div class="e">🛡️</div>Scut<br><b>80 🪙</b><br><button data-price="80">Cumpără</button></div>','    <div class="p"><div class="e">🏎️</div>Mașină<br><b>200 🪙</b><br><button data-price="200">Cumpără</button></div>','  </div>']),
+js:L(3,['    var cnt = 0, sum = 0;','    var buttons = document.querySelectorAll(".p button");','    buttons.forEach(function (b) {','      b.onclick = function () {','        cnt = cnt + 1;','        sum = sum + Number(b.dataset.price);','        document.getElementById("cnt").textContent = cnt;','        document.getElementById("sum").textContent = sum;','      };','    });']),
+say:[`<b>Pasul 1: HTML = ce există.</b> Un antet (<code>header</code>) cu numele magazinului și coșul. Numerele din coș au <b>id</b> (<code>cnt</code> și <code>sum</code>), pentru că JavaScript le va schimba. Apoi un div <b>părinte</b> (<code>prods</code>) cu trei produse; fiecare produs e un div <b>copil</b> cu <code>class="p"</code>. Butoanele au <code>data-price="50"</code>: un atribut „inventat” de noi, ca o etichetă cu prețul, pe care JavaScript o va citi mai târziu.`,
+`<b>Pasul 2: CSS = cum arată.</b> Antetul e un părinte cu <code>display: flex</code>: numele rămâne la stânga, coșul la dreapta (<code>space-between</code>). Produsele sunt ca hotbar-ul: <code>.prods</code> e părintele flex, iar <code>.p</code> e „cardul” fiecărui produs, cu hover. <code>.p button</code> (cu spațiu) înseamnă „butoanele din interiorul unui produs”. Observă că pagina arată bine, dar butoanele încă nu fac nimic.`,
+`<b>Pasul 3: JavaScript = ce se întâmplă.</b> <code>cnt</code> = câte obiecte ai cumpărat, <code>sum</code> = total. <code>querySelectorAll(".p button")</code> găsește <b>toate</b> butoanele din produse (același selector ca în CSS!). <code>forEach</code> = „pentru fiecare buton”: îi dăm un <code>onclick</code>. La apăsare: creștem <code>cnt</code>, adunăm prețul citit din <code>b.dataset.price</code> (<code>Number(…)</code> îl face număr) și scriem totalul în antet, găsind elementele după id. De aceea merge și pentru produsele pe care le adaugi tu! Apasă pe <b>Cumpără</b>.`]};
+stepper('st5',SHOP);
+/* laborator */
+var total=0,doneN=0;
+function lab(id,o){total+=o.tasks.length;var host=$(id),ok=[],start=doc(o.d,o.d.say.length,false);host.className='lab';
+ host.innerHTML='<h3>🧪 '+o.title+'</h3><p>'+o.intro+'</p><div class="lg"><div><div class="lbl">✏️ Cod: modifică-l</div><textarea spellcheck="false" aria-label="Editor de cod"></textarea></div><div><div class="lbl">👀 Rezultat (încearcă-l!)</div><div class="mock"><iframe sandbox="allow-scripts" title="Rezultat"></iframe></div></div></div><ul class="tasks"></ul><div class="row"><button class="alt rs">↺ Cod original</button><button class="alt hb">💡 Indiciu</button></div><div class="hint"></div>';
+ var ta=host.querySelector('textarea'),fr=host.querySelector('iframe'),ul=host.querySelector('.tasks'),hn=host.querySelector('.hint');
+ var lis=o.tasks.map(function(t){var l=document.createElement('li');l.innerHTML=t.t;ul.appendChild(l);return l});
+ if(o.h)ta.style.height=fr.style.height=o.h+'px';
+ var tm;function up(){var c=ta.value,d=new DOMParser().parseFromString(c,'text/html');fr.srcdoc=BL+c;
+  o.tasks.forEach(function(t,k){var y=false;try{y=!!t.f(d,c)}catch(e){}lis[k].className=y?'d':'';if(y&&!ok[k]){ok[k]=1;doneN++}if(!y&&ok[k]){ok[k]=0;doneN--}});$('tc').textContent='🎯 '+doneN+'/'+total}
+ ta.value=start;ta.oninput=function(){clearTimeout(tm);tm=setTimeout(up,350)};ta.onkeydown=function(e){if(e.key==='Tab'){e.preventDefault();ta.setRangeText('  ',ta.selectionStart,ta.selectionEnd,'end');ta.oninput()}};
+ host.querySelector('.rs').onclick=function(){ta.value=start;hn.innerHTML='';up()};
+ host.querySelector('.hb').onclick=function(){var k=o.tasks.findIndex(function(t,j){return !ok[j]});hn.innerHTML=k<0?'🎉 Ai terminat toate provocările!':'💡 <b>Pasul '+(k+1)+':</b> '+o.tasks[k].h};
+ up()}
+var q1=function(d,t){return d.querySelector(t)},nc=function(c,s){return c.split(s).length-1};
+function r(c,sel,p){var css=[].map.call(new DOMParser().parseFromString(c,'text/html').querySelectorAll('style'),function(s){return s.textContent}).join('\n'),re=/([^{}]+)\{([^}]*)\}/g,m;while(m=re.exec(css)){if(m[1].split(',').map(function(x){return x.trim()}).indexOf(sel)>-1&&p.test(m[2]))return true}return false}
+lab('lab1',{d:CARD,title:'Laborator 1: cardul tău',intro:'Codul merge deja. Treci cu mouse-ul peste card, apoi schimbă-l. Modifici doar între <code>&lt;style&gt;</code> și <code>&lt;/style&gt;</code> (CSS) și în <code>body</code> (HTML).',tasks:[
+{t:'În regula <code>.card</code>, schimbă culoarea chenarului (<code>border</code>) din <code>#4F46E5</code> în alta.',h:'border: 4px solid #EC4899;',f:function(d,c){return r(c,'.card',/border:[^;]*solid\s+(?!#4F46E5)\S/i)}},
+{t:'Rotunjește colțurile mai mult: <code>border-radius</code> diferit de 20px (sau 0 pentru colțuri de bloc).',h:'border-radius: 40px;',f:function(d,c){return r(c,'.card',/border-radius:\s*(?!20px)[0-9]/)}},
+{t:'În HTML, schimbă numele <b>Steve</b> și emoji-ul ⛏️.',h:'<div class="emoji">🧙</div> și <h3>Alex</h3>',f:function(d,c){return c.indexOf('>Steve<')<0&&c.indexOf('⛏')<0}},
+{t:'Adaugă un al doilea card: copiază tot <code>&lt;div class="card"&gt;…&lt;/div&gt;</code> și lipește-l dedesubt, în <code>body</code>.',h:'copiază de la <div class="card"> până la </div> de sub el.',f:function(d,c){return nc(c,'class="card"')>=2}}]});
+lab('lab2',{d:HOT,title:'Laborator 2: bara ta de obiecte',intro:'Patru sloturi pe un rând. Micșorează fereastra sau trage de colțul editorului și vezi cum coboară cele de la capăt.',tasks:[
+{t:'Schimbă spațiul dintre sloturi: <code>gap</code> din regula <code>.hotbar</code> (nu 8px).',h:'gap: 20px;',f:function(d,c){return r(c,'.hotbar',/gap:\s*(?!8px)[0-9]/)}},
+{t:'Schimbă culoarea de fundal a sloturilor (<code>background</code> din <code>.slot</code>).',h:'background: #B45309;',f:function(d,c){return r(c,'.slot',/background:\s*(?!#8B8B8B)\S/i)}},
+{t:'Schimbă un emoji (🍖 sau 🧱) cu altceva.',h:'<div class="slot">💎</div>',f:function(d,c){return c.indexOf('🍖')<0||c.indexOf('🧱')<0}},
+{t:'Adaugă un al cincilea slot, în interiorul div-ului <code>hotbar</code>.',h:'<div class="slot">🏹</div>',f:function(d,c){return nc(c,'class="slot"')>=5}}]});
+lab('lab3',{d:CNT,title:'Laborator 3: contorul de blocuri',intro:'Apasă butonul. Până la 5 numărul e negru, apoi devine verde. Schimbă codul JavaScript (între <code>&lt;script&gt;</code> și <code>&lt;/script&gt;</code>).',tasks:[
+{t:'Fă contorul să sară din 10 în 10: schimbă <code>+ 1</code> din <code>blocuri = blocuri + 1</code>.',h:'blocuri = blocuri + 10;',f:function(d,c){return c.indexOf('blocuri + 1;')<0&&/blocuri\s*=\s*blocuri\s*\+\s*\d{1,3}\s*;/.test(c)}},
+{t:'Schimbă culoarea finală: în loc de <code>"green"</code>, scrie altă culoare.',h:'nr.style.color = "gold";',f:function(d,c){return c.indexOf('"green"')<0&&/nr\.style\.color\s*=/.test(c)}},
+{t:'Schimbă textul de pe buton, în HTML (în loc de „Sapă!”).',h:'<button id="btn">💥 Explodează!</button>',f:function(d,c){return c.indexOf('Sapă!')<0&&/<button id="btn"/.test(c)}},
+{t:'Schimbă pragul: în loc de <code>&gt;= 5</code>, alt număr.',h:'if (blocuri >= 3) {',f:function(d,c){return c.indexOf('>= 5')<0&&/if\s*\(\s*blocuri\s*>=\s*\d+/.test(c)}}]});
+lab('lab4',{d:CAR,title:'Laborator 4: caruselul de skin-uri',intro:'Apasă ◀ ▶. La ultimul skin, următorul te întoarce la primul. Modifică lista <code>skins</code>.',tasks:[
+{t:'Schimbă textul unui skin (de ex. „Minerul”).',h:'text: "Ninja"',f:function(d,c){return c.indexOf('Minerul')<0||c.indexOf('Vrăjitorul')<0||c.indexOf('Dragonul')<0}},
+{t:'Adaugă un al patrulea skin în listă (atenție la virgulă după cel de dinainte!).',h:'{ emoji: "🤖", text: "Robotul", color: "#475569" }',f:function(d,c){return nc(c,'emoji:')>=4}},
+{t:'Fă-l automat: adaugă la final un <code>setInterval</code> care schimbă skin-ul la 2 secunde.',h:'setInterval(function () { i = (i + 1) % skins.length; show(); }, 2000);',f:function(d,c){return /setInterval\s*\(/.test(c)}}]});
+lab('lab5',{d:SHOP,h:480,title:'Laborator 5: magazinul tău',intro:'Cumpără câteva obiecte și urmărește cum se schimbă numărul și totalul. Apoi personalizează magazinul.',tasks:[
+{t:'Pune numele tău magazinului (în loc de „Magazinul meu”).',h:'<b id="shop">🛒 Magazinul lui Ana</b>',f:function(d,c){return c.indexOf('Magazinul meu')<0&&/<b id="shop">/.test(c)}},
+{t:'Schimbă culoarea antetului: <code>background</code> din regula <code>header</code>.',h:'background: #EC4899;',f:function(d,c){return r(c,'header',/background:\s*(?!#4F46E5)\S/i)}},
+{t:'Schimbă un preț: și în text, și în <code>data-price</code> (ca să se aleagă și totalul).',h:'<b>90 🪙</b> ... <button data-price="90">',f:function(d,c){return c.indexOf('data-price="50"')<0||c.indexOf('data-price="80"')<0||c.indexOf('data-price="200"')<0}},
+{t:'Adaugă un produs nou: copiază un <code>div class="p"</code> întreg și schimbă-i emoji, nume și preț.',h:'<div class="p"><div class="e">👑</div>Coroană<br><b>300 🪙</b><br><button data-price="300">Cumpără</button></div>',f:function(d,c){return nc(c,'class="p"')>=4}}]});
+/* quiz */
+var Q=[["Care limbaj spune cum ARATĂ pagina?",["HTML","CSS","JavaScript"],1,"CSS = culori, mărimi, forme. HTML = ce există, JavaScript = ce se întâmplă."],["Unde se scriu regulile CSS?",["În body, între <p> și </p>","Între <style> și </style>, în head","În title"],1,"CSS stă în <style>, în head."],["Unde se pune <script> cu JavaScript?",["La sfârșitul lui body","În title","Înaintea lui <html>"],0,"Se pune după elementele HTML, ca ele să existe când JavaScript le caută."],["Ce este un div?",["O cutie goală în care pui alte elemente","Un fel de poză","O regulă CSS"],0,"Div = o cutie invizibilă, pe care o stilizezi cu CSS."],["Ai 10 elemente cu class=\"inamic\". Cum le schimbi pe toate dintr-o dată?",["O singură regulă .inamic { … }","10 reguli #inamic","Nu se poate"],0,"Clasa = etichetă de echipă. O regulă cu punct, .inamic, le schimbă pe toate."],["La ce ajută un id?",["Se repetă pe toate elementele","E numele unic al unui element: CSS cu # sau JavaScript îl găsesc după el","Face textul îngroșat"],1,"id e unic. JavaScript îl folosește în getElementById ca să găsească elementul."],["Ce face padding?",["Spațiu în interiorul cutiei, între margine și conținut","Spațiu între cutie și vecini","Colorează chenarul"],0,"Padding = în interior, margin = în exterior."],["Ce face display: flex pe un div părinte?",["Îi ascunde copiii","Îi așază pe același rând","Îi rotunjește"],1,"Flex pune copiii unul lângă altul. Se scrie pe părinte."],["Ce înseamnă btn.onclick = function () { … };?",["Rulează codul imediat","Când se apasă btn, rulează codul din acolade","Șterge butonul"],1,"onclick = „la apăsare”, ca pârghia din Minecraft."]];
+var done=0,good=0,qb=$('quiz');
+Q.forEach(function(q,qi){var d=document.createElement('div');d.className='q';d.innerHTML='<p>'+(qi+1)+'. '+esc(q[0])+'</p>';var w=document.createElement('div');w.className='w';var ans=false,tr=0;
+ q[1].forEach(function(o,k){var b=document.createElement('button');b.className='o';b.textContent=o;b.onclick=function(){if(ans)return;if(k==q[2]){ans=true;b.classList.add('ok');if(!tr)good++;w.style.color='var(--ok)';w.textContent='✅ Corect! '+q[3];done++;fin()}else{tr++;b.classList.add('no');b.disabled=true;w.style.color='var(--bad)';w.textContent='❌ Mai încearcă!'}};d.appendChild(b)});d.appendChild(w);qb.appendChild(d)});
+function fin(){if(done<Q.length)return;var s=$('score');s.hidden=false;s.innerHTML=(good>=8?'🏆':good>=6?'🎉':'💪')+' Corect din prima: '+good+' din '+Q.length+(good>=8?'. Ești gata de proiecte reale!':'. Mai recitește pașii și încearcă din nou.');s.scrollIntoView({block:'center'})}
+addEventListener('scroll',function(){var h=document.documentElement;$('pg').style.width=Math.min(100,h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+</script>
+</body>
+</html>
