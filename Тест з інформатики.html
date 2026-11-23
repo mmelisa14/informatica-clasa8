@@ -1,0 +1,145 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Тест з інформатики</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: single reading column, one question block per section, result panel at the end */
+:root{
+  --bg:#f5f7f4; --surface:#ffffff; --fg:#1c2a26; --muted:#5d6b66; --line:#d7dfda;
+  --accent:#0b6e5c; --accent-fg:#ffffff; --good:#1f7a3d; --good-bg:#e3f3e8; --bad:#b3261e; --bad-bg:#fbe7e5;
+  --font-body:'Inter',system-ui,sans-serif; --font-head:'Space Grotesk','Inter',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121a17; --surface:#1b2622; --fg:#e8efec; --muted:#9db0a9; --line:#2e3c37;
+  --accent:#4cc3a8; --accent-fg:#0c1713; --good:#6fd08c; --good-bg:#17301f; --bad:#ff8a80; --bad-bg:#3a1d1b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121a17; --surface:#1b2622; --fg:#e8efec; --muted:#9db0a9; --line:#2e3c37;
+  --accent:#4cc3a8; --accent-fg:#0c1713; --good:#6fd08c; --good-bg:#17301f; --bad:#ff8a80; --bad-bg:#3a1d1b; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.5;
+  padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-direction:column;gap:6px;padding-bottom:8px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--font-head);font-size:1.7rem;line-height:1.2;margin:0;text-wrap:balance}
+.meta{color:var(--muted);font-size:.9rem;margin:0}
+.note{color:var(--muted);font-size:.9rem;margin:0;border-top:1px solid var(--line);padding-top:10px}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.lang button{font:inherit;font-size:.85rem;padding:6px 12px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
+fieldset{margin:0;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:16px;min-width:0}
+legend{padding:0;float:left;width:100%;font-weight:600;margin-bottom:10px}
+legend small{font-weight:400;color:var(--muted);margin-left:6px;white-space:nowrap}
+fieldset .opts{clear:both;display:flex;flex-direction:column;gap:8px}
+label.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;cursor:pointer;min-width:0}
+label.opt:hover{border-color:var(--accent)}
+label.opt input{margin-top:4px;accent-color:var(--accent);flex:none}
+label.opt b{flex:none;color:var(--muted);font-weight:600}
+label.opt span{min-width:0;overflow-wrap:anywhere}
+label.opt.ok{background:var(--good-bg);border-color:var(--good)}
+label.opt.no{background:var(--bad-bg);border-color:var(--bad)}
+.mark{clear:both;margin:10px 0 0;font-size:.9rem;font-weight:600}
+.mark.ok{color:var(--good)} .mark.no{color:var(--bad)}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:600;padding:12px 20px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg);cursor:pointer}
+.btn.alt{background:transparent;color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#res{border:2px solid var(--accent);border-radius:12px;background:var(--surface);padding:20px;display:flex;flex-direction:column;gap:8px}
+#res .grade{font-family:var(--font-head);font-size:3.2rem;line-height:1;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+#res p{margin:0} .warn{color:var(--bad);font-weight:600}
+table{border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.9rem}
+.scroll{overflow-x:auto}
+</style>
+<div class="wrap">
+<header>
+  <div class="top"><h1 id="t"></h1>
+    <div class="lang" role="group" aria-label="Language"><button id="bu" aria-pressed="true">Українська</button><button id="br" aria-pressed="false">Română</button></div></div>
+  <p class="meta" id="m"></p>
+  <p class="note" id="ins"></p>
+</header>
+<form id="f"><div class="wrap" id="qs"></div>
+  <div class="actions" style="margin-top:16px"><button type="submit" class="btn" id="chk"></button><button type="button" class="btn alt" id="rst"></button></div>
+</form>
+<div id="res" hidden aria-live="polite"></div>
+</div>
+<script>
+var L={
+uk:{t:"Тест з інформатики та ІКТ",m:"Модуль 1 · 5 клас · № 2",
+ins:"Тест містить 9 запитань, кожне з однією правильною відповіддю. Один бал нараховується автоматично.",
+pt:"1 бал",chk:"Перевірити та отримати оцінку",rst:"Спочатку",
+ok:"Правильно",no:"Неправильно. Правильна відповідь: ",skip:"Без відповіді. Правильна відповідь: ",
+grade:"Оцінка",pts:"Правильних відповідей: {c} з 9 (+1 бал автоматично) = {p} з 10",
+unans:"Ви не відповіли на {n} запит. Усе одно оцінка вже пораховано; можна повернутися й доповнити.",
+q:[
+["Яке з наведених тверджень про комп'ютерний клас (лабораторію інформатики) є ПРАВДИВИМ?",["Можна користуватися інтернетом, коли захочеш, без жодних обмежень","Установлювати чи видаляти програми можна лише з дозволу вчителя","Можна бігати по класу, якщо дивишся, щоб нікого не зачепити"]],
+["Чи дозволено торкатися внутрішніх компонентів комп'ютера в класі?",["Так, у будь-який час","Ні, існує небезпека ураження електричним струмом"]],
+["Що слід робити під час перерви від комп'ютера, щоб захистити своє здоров'я?",["Залишатися сидіти, але дивитися в інший бік","Розім'яти плечі, витягнути ноги та випити води","Продовжувати дивитися в телефон"]],
+["Що спільного між ноутбуком, телефоном та ігровою консоллю?",["Усі є обчислювальними системами: приймають, обробляють і видають результат","Усі працюють без електрики","Усі використовуються лише для ігор"]],
+["Яка з наведених пар є правильною парою апаратне забезпечення (hardware) – програмне забезпечення (software)?",["Монітор – Клавіатура","Миша – Браузер","Процесор – Відеокарта"]],
+["Як виглядав ENIAC, перший електронний комп'ютер?",["Займав цілу кімнату та важив 27 тонн","Вміщався у холодильник","Був меншим за телефон"]],
+["Яку інформацію показує адресний рядок у вікні файлів?",["Розмір файлу","Повний шлях (розташування) до відкритого файлу","Дату створення файлу"]],
+["Що означає розширення файлу (наприклад, .docx або .png)?",["Тип файлу — показує, якою програмою він відкривається","Ім'я автора файлу","Дату, коли файл було видалено"]],
+["Чому для підключення вашого пристрою (клієнта) до інтернету через ISP потрібен провайдер?",["ISP — це компанія, яка надає доступ до глобальної мережі інтернет","ISP створює всі існуючі вебсайти","ISP — це різновид браузера"]]]},
+ro:{t:"Test de evaluare — Informatică și TIC",m:"Unitatea 1 · Clasa a V-a · NR. 2",
+ins:"Testul conține 9 întrebări tip grilă, fiecare cu o singură variantă corectă de răspuns. Se acordă un punct din oficiu.",
+pt:"1 punct",chk:"Verifică și calculează nota",rst:"De la început",
+ok:"Corect",no:"Greșit. Răspuns corect: ",skip:"Fără răspuns. Răspuns corect: ",
+grade:"Nota",pts:"Răspunsuri corecte: {c} din 9 (+1 punct din oficiu) = {p} din 10",
+unans:"Nu ai răspuns la {n} întrebări. Nota este calculată oricum; poți reveni și completa.",
+q:[
+["Care dintre următoarele afirmații despre laboratorul de informatică este ADEVĂRATĂ?",["Poți accesa internetul oricând dorești, fără nicio restricție","Instalarea sau ștergerea aplicațiilor se face doar cu acordul profesorului","Poți alerga prin laborator dacă ai grijă să nu lovești pe nimeni"]],
+["Este permis să atingi componentele interne ale calculatorului din laborator?",["Da, oricând","Nu, există pericol de electrocutare"]],
+["Ce ar trebui să faci în timpul unei pauze de la calculator, pentru a-ți proteja sănătatea?",["Să rămâi așezat, dar să privești în altă direcție","Să rotești umerii, să întinzi picioarele și să bei apă","Să continui să te uiți pe telefon"]],
+["Ce au în comun un laptop, un telefon și o consolă de jocuri?",["Toate sunt sisteme de calcul: recepționează, procesează și oferă un rezultat","Toate funcționează fără electricitate","Toate sunt folosite doar pentru jocuri"]],
+["Care dintre următoarele este o pereche corectă hardware – software?",["Monitor – Tastatură","Mouse – Browser de internet","Procesor – Placă video"]],
+["Cum arăta ENIAC, primul calculator electronic?",["Ocupa o cameră întreagă și cântărea 27 de tone","Încăpea într-un ghiozdan","Era mai mic decât un telefon"]],
+["Ce informație oferă bara de adresă dintr-o fereastră de fișiere?",["Dimensiunea fișierului","Calea completă (locul) până la fișierul deschis","Data creării fișierului"]],
+["Ce reprezintă extensia unui fișier (de exemplu .docx sau .png)?",["Tipul fișierului — arată cu ce program se deschide","Numele autorului fișierului","Data la care a fost șters fișierul"]],
+["De ce este necesar ca dispozitivul tău (clientul) să se conecteze la internet printr-un ISP?",["ISP-ul este firma care îți oferă acces la rețeaua globală de internet","ISP-ul creează toate site-urile web care există","ISP-ul este un tip de browser"]]]}
+};
+var ANS=[1,1,1,0,1,0,1,0,0], lang="uk", done=false, sel={};
+var $=function(i){return document.getElementById(i)};
+function render(){
+  var d=L[lang]; $("t").textContent=d.t; $("m").textContent=d.m; $("ins").textContent=d.ins;
+  $("chk").textContent=d.chk; $("rst").textContent=d.rst;
+  $("bu").setAttribute("aria-pressed",lang==="uk"); $("br").setAttribute("aria-pressed",lang==="ro");
+  document.documentElement.lang=lang;
+  var h="";
+  d.q.forEach(function(q,i){
+    h+='<fieldset id="q'+i+'"><legend>'+(i+1)+'. '+q[0]+' <small>('+d.pt+')</small></legend><div class="opts">';
+    q[1].forEach(function(o,j){
+      h+='<label class="opt" id="o'+i+'_'+j+'"><input type="radio" name="q'+i+'" value="'+j+'"'+(sel[i]===j?' checked':'')+(done?' disabled':'')+'><b>'+"ABC"[j]+'.</b><span>'+o+'</span></label>';
+    });
+    h+='</div><p class="mark" id="k'+i+'" hidden></p></fieldset>';
+  });
+  $("qs").innerHTML=h;
+  if(done)score();
+}
+function score(){
+  var d=L[lang],c=0,n=0;
+  d.q.forEach(function(q,i){
+    var a=sel[i],r=ANS[i];
+    document.getElementById("o"+i+"_"+r).classList.add("ok");
+    var k=$("k"+i); k.hidden=false;
+    if(a===r){c++;k.className="mark ok";k.textContent="✓ "+d.ok;}
+    else{
+      if(a===undefined){n++;} else document.getElementById("o"+i+"_"+a).classList.add("no");
+      k.className="mark no";k.textContent=(a===undefined?d.skip:d.no)+"ABC"[r]+".";
+    }
+  });
+  var p=c+1,res=$("res");
+  res.hidden=false;
+  res.innerHTML='<p>'+d.grade+'</p><div class="grade">'+p+' / 10</div><p>'+d.pts.replace("{c}",c).replace("{p}",p)+'</p>'+(n?'<p class="warn">'+d.unans.replace("{n}",n)+'</p>':'');
+}
+$("qs").addEventListener("change",function(e){
+  if(e.target.name){sel[+e.target.name.slice(1)]=+e.target.value;}
+});
+$("f").addEventListener("submit",function(e){
+  e.preventDefault(); done=true; render();
+  $("res").scrollIntoView({behavior:"smooth",block:"center"});
+});
+$("rst").addEventListener("click",function(){done=false;sel={};$("res").hidden=true;render();window.scrollTo(0,0)});
+$("bu").addEventListener("click",function(){lang="uk";render()});
+$("br").addEventListener("click",function(){lang="ro";render()});
+render();
+</script>
+
+</body></html>
