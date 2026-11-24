@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atelier HTML – scrie și vezi rezultatul</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#F3F6FF;--card:#fff;--fg:#1B2A4A;--mut:#5B6B8C;--line:#D6E0F5;--pri:#4F46E5;--pf:#fff;--okb:#DCFCE7;--sun:#FFC83D;--code:#17213A;--cf:#E7ECF7;
+--disp:'Baloo 2','Trebuchet MS',system-ui,sans-serif;--sans:'Nunito',system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--code:#0A0F1D}}
+:root[data-theme="dark"]{--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--code:#0A0F1D}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--fg);font:500 1.08rem/1.65 var(--sans)}
+.top{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:12px;align-items:center}
+.top b,.top span{font:800 1rem var(--disp);white-space:nowrap}
+.pbar{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4F46E5,#EC4899);transition:width .3s}
+.hero{text-align:center;padding:40px 18px 30px;background:linear-gradient(135deg,#4F46E5,#EC4899);color:#fff}
+.hero h1{font:800 clamp(2.2rem,8vw,3.6rem)/1.05 var(--disp);margin:6px 0}.hero p{max-width:38ch;margin:8px auto 0;font-size:1.15rem}
+main{max-width:900px;margin:0 auto;padding:18px 14px 60px;display:flex;flex-direction:column;gap:22px}
+section{background:var(--card);border-radius:24px;padding:22px;border-top:8px solid var(--ac);box-shadow:0 6px 0 var(--line);min-width:0}
+.n{display:inline-flex;width:42px;height:42px;border-radius:50%;background:var(--ac);color:#fff;font:800 1.3rem var(--disp);align-items:center;justify-content:center;margin-right:8px;vertical-align:middle}
+h2{font:800 1.6rem/1.15 var(--disp);margin:0 0 4px}p{margin:.5em 0}.sub{color:var(--mut);font-weight:700;margin:0 0 8px}
+code{font:700 .92em var(--mono);background:var(--bg);padding:.1em .4em;border-radius:6px}
+.tip{background:var(--bg);border-left:6px solid var(--sun);border-radius:12px;padding:10px 14px;margin:12px 0}
+.lbl{font:800 .78rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:10px 0 4px}
+.lg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}@media(max-width:700px){.lg{grid-template-columns:1fr}}.lg>div{min-width:0}
+textarea{width:100%;height:220px;font:600 .98rem/1.5 var(--mono);background:var(--code);color:var(--cf);border:0;border-radius:12px;padding:12px;resize:vertical;white-space:pre;tab-size:2}
+.mock{border:3px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}.mock .tab{background:#E3E8F5;padding:6px 12px;font:700 .85rem var(--sans);color:#333}.mock .tab span{background:#fff;padding:2px 12px;border-radius:8px 8px 0 0;display:inline-block;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+iframe{width:100%;height:178px;border:0;background:#fff;display:block}
+.tasks{list-style:none;padding:0;margin:12px 0}.tasks li{padding:8px 12px;border-radius:12px;background:var(--bg);margin:6px 0;font-weight:700}.tasks li.d{background:var(--okb)}.tasks li::before{content:"⬜ "}.tasks li.d::before{content:"✅ "}
+button{font:800 1rem var(--disp);cursor:pointer;border:3px solid var(--line);border-radius:14px;padding:8px 16px;background:var(--bg);color:var(--fg);min-height:44px}
+.row{display:flex;gap:10px;flex-wrap:wrap}.mod{background:var(--bg);border:3px dashed var(--ac);border-radius:14px;padding:10px 14px;margin:12px 0}.mod pre{background:var(--code);color:var(--cf);font:600 .98rem/1.5 var(--mono);padding:10px 12px;border-radius:12px;overflow-x:auto;margin:6px 0 0}.ex{border:3px solid var(--line);border-radius:18px;padding:14px;margin:14px 0}.ex>b{font:800 1.1rem var(--disp)}.ex .ch{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.ex .ch button.on{border-color:var(--ac);background:var(--sun);color:#111}.ex .ch button.ok{background:var(--okb)}.ex .afr{display:flex;gap:8px;align-items:center;margin:8px 0;flex-wrap:wrap}.ex .afr span{flex:1;min-width:200px;font-weight:700}.ex .r{font-weight:800;min-height:1.4em}.pal{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}.pal button{font:700 .9rem var(--mono);text-align:left;white-space:pre}.pal button.used{background:var(--okb);opacity:.55}.pm{font-weight:800;min-height:1.4em}.hint{font-weight:700;color:var(--mut);margin-top:8px}
+.hint pre{background:var(--code);color:var(--cf);font:600 .95rem/1.5 var(--mono);padding:10px 12px;border-radius:12px;overflow-x:auto;margin:6px 0 0}
+</style>
+</head>
+<body>
+<div class="top"><b>🌐 Atelier HTML</b><div class="pbar"><i id="pg"></i></div><span id="tc">🎯 0/0</span></div>
+<header class="hero"><div style="font-size:3.4rem">🌐</div><h1>Scrie HTML și vezi ce iese!</h1><p>Citește, scrie în editor codul din căsuța cu margine punctată și vezi rezultatul în dreapta.</p></header>
+<main id="m"></main>
+<script>
+var $=function(i){return document.getElementById(i)},q=function(d,s){return d.querySelector(s)},qa=function(d,s){return d.querySelectorAll(s).length},cnt=function(c,r){return (c.match(r)||[]).length};
+var SUN='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="24" fill="#FFC83D"/><g stroke="#FFC83D" stroke-width="6" stroke-linecap="round"><path d="M50 8v12M50 80v12M8 50h12M80 50h12M20 20l9 9M71 71l9 9M80 20l-9 9M29 71l-9 9"/></g></svg>');
+var COL=['#4F46E5','#EC4899','#F59E0B','#10B981','#0EA5E9'];
+var SK='<!DOCTYPE html>\n<html>\n<head>\n  <meta charset="UTF-8">\n  <title>Pagina mea</title>\n</head>\n<body>\n  <h1>Salut!</h1>\n  <p>Aceasta este pagina mea.</p>\n</body>\n</html>';
+var SK='<!DOCTYPE html>\n<html>\n<head>\n  <meta charset="UTF-8">\n  <title>Pagina mea</title>\n</head>\n<body>\n  <h1>Salut!</h1>\n  <p>Aceasta este pagina mea.</p>\n</body>\n</html>';
+var L=[
+{t:'Ce este HTML?',s:'Limbajul paginilor web',e:'<p><b>HTML</b> (ha-te-em-el) înseamnă <i>HyperText Markup Language</i>, „limbaj de marcare a textului”. El nu face calcule și nu este un joc: doar <b>descrie</b> ce este fiecare bucată din pagină (un titlu, o poză, un link).</p><p>Codul HTML este <b>rețeta</b>, iar <b>browserul</b> (Chrome, Edge, Firefox) este cofetarul care face tortul: citește codul și desenează pagina.</p><div class="tip">1️⃣ Scriem codul → 2️⃣ Browserul citește codul → 3️⃣ Vedem pagina pe ecran</div>',
+ m:'<h1>Salut!</h1>\n<p>Mă bucur să te cunosc!</p>',tk:[['Apare titlul mare',function(d){return !!q(d,'h1')}],['Apare paragraful de sub el',function(d){return !!q(d,'p')}]],
+ ex:{k:'order',q:'Pune în ordine! Apasă pașii în ordinea în care se întâmplă.',it:['Scriem codul HTML','Browserul citește codul','Vedem pagina pe ecran']}},
+{t:'Etichetele',s:'Cum scriem în HTML',e:'<p>O <b>etichetă</b> este un cuvânt între <code>&lt;</code> și <code>&gt;</code>. Vine de obicei în pereche, ca un sandviș: <code>&lt;p&gt;</code> (pâinea de sus) · <b>conținutul</b> (umplutura) · <code>&lt;/p&gt;</code> (pâinea de jos, cu bara <b>/</b>).</p><p>Eticheta de deschidere + conținut + eticheta de închidere = un <b>element</b>.</p><div class="tip">🔑 <b>Ce deschidem, închidem!</b> Fiecare etichetă de deschidere are o pereche de închidere.</div>',
+ m:'<p>Pisica mea</p>\n<p>Îmi place să se joace.</p>',tk:[['Primul paragraf este închis corect',function(d,c){return cnt(c,/<p>/g)>=1&&cnt(c,/<p>/g)==cnt(c,/<\/p>/g)}],['Ai scris două paragrafe',function(d,c){return cnt(c,/<p>/g)>=2&&cnt(c,/<p>/g)==cnt(c,/<\/p>/g)}]],
+ ex:{k:'circle',q:'Încercuiește etichetele de ÎNCHIDERE (au semnul /).',it:['<p>','</p>','<h1>','</h1>'],ok:[1,3]}},
+{t:'Scheletul paginii',s:'Orice pagină are aceleași părți',e:'<p>Cele trei părți mari: <code>html</code> (toată casa), <code>head</code> (plăcuța de pe ușă: <b>nu se vede</b> în pagină) și <code>body</code> (camerele: <b>se vede</b> în pagină).</p><p>În <code>head</code> stau <code>meta charset</code> (ca să se vadă <b>ă, î, ș, ț</b>) și <code>title</code> (numele din filă; nu e același lucru cu <code>h1</code>). Uită-te la fila din rezultat!</p>',
+ m:SK,tk:[['Prima linie: DOCTYPE',function(d,c){return /^\s*<!DOCTYPE html>/i.test(c)}],['Ai head cu title (apare numele în filă)',function(d,c){return /<head>[\s\S]*<title>[^<]+<\/title>[\s\S]*<\/head>/i.test(c)}],['Ai body cu titlu și paragraf',function(d,c){return /<\/head>[\s\S]*<body>[\s\S]*<\/body>/i.test(c)&&q(d,'body h1')&&q(d,'body p')}],['Pagina se închide cu </html>',function(d,c){return /<html[^>]*>[\s\S]*<\/html>/i.test(c)}]],
+ ex:{k:'af',q:'Adevărat sau fals?',it:[['Ce scriem în head se vede în pagină.',0],['Ce scriem în body se vede în pagină.',1],['Titlul din filă se scrie în title.',1]]}},
+{t:'Titluri și paragrafe',s:'Cum așezăm textul',e:'<p>Titlurile merg de la <code>h1</code> (cel mai important) la <code>h6</code> (cel mai mic). Alegem titlul după <b>importanță</b>, nu după cât de mare arată. Pentru text folosim <code>&lt;p&gt;</code>.</p><div class="tip">📖 Un singur <code>h1</code> pe pagină, ca la o carte. Capitolele sunt <code>h2</code>, părțile lor mai mici <code>h3</code>.</div>',
+ m:'<h1>Titlul 1</h1>\n<h2>Titlul 2</h2>\n<h3>Titlul 3</h3>\n<p>Mă numesc Ana.</p>',tk:[['Ai un h1, un h2 și un h3',function(d){return q(d,'h1')&&q(d,'h2')&&q(d,'h3')}],['Ai un paragraf',function(d){return !!q(d,'p')}]]},
+{t:'Text frumos',s:'Îngroșat, înclinat și rând nou',e:'<p>Browserul <b>ignoră spațiile în plus și rândurile goale</b>. Ca să formatăm textul:</p><p><code>&lt;strong&gt;</code> îngroșat · <code>&lt;em&gt;</code> înclinat · <code>&lt;br&gt;</code> rând nou · <code>&lt;hr&gt;</code> linie orizontală. <code>br</code> și <code>hr</code> <b>nu se închid</b>.</p><p>O notă pentru tine, care nu se vede: <code>&lt;!-- notă --&gt;</code></p>',
+ m:'<p>Eu sunt <strong>Ana</strong>.<br>\nÎmi place <em>desenul</em>.</p>\n<hr>\n<!-- Aceasta este o notă -->',tk:[['Cuvânt îngroșat (strong)',function(d){return !!q(d,'strong')}],['Cuvânt înclinat (em)',function(d){return !!q(d,'em')}],['Rând nou (br) și linie (hr)',function(d){return q(d,'br')&&q(d,'hr')}],['Notă ascunsă',function(d,c){return /<!--[\s\S]*-->/.test(c)}]]},
+{t:'Culorile',s:'Atributul style',e:'<p>Cu atributul <code>style</code> spunem <b>cum arată</b> ceva: <code>&lt;p style="color: red;"&gt;</code>. Aici <b>color</b> e proprietatea, <b>red</b> e valoarea, iar declarația se încheie cu <b>;</b></p><p>Culorile au nume în engleză: <b>red</b> roșu, <b>blue</b> albastru, <b>green</b> verde, <b>yellow</b> galben, <b>pink</b> roz, <b>orange</b> portocaliu.</p><div class="tip">🎨 <code>color</code> colorează <b>literele</b>. <code>background-color</code> colorează <b>fundalul</b>.</div>',
+ m:'<p style="color: red;">Salut!</p>\n<h1 style="background-color: yellow;">Soare</h1>',tk:[['Text roșu',function(d){var p=q(d,'p');return p&&p.style.color}],['Titlu cu fundal galben',function(d){var h=q(d,'h1');return h&&h.style.backgroundColor}]],
+ ex:{k:'af',q:'Adevărat sau fals?',it:[['color schimbă culoarea literelor.',1],['background-color schimbă culoarea literelor.',0],['yellow înseamnă galben.',1]]}},
+{t:'Mărime, aliniere, font',s:'Mai multe proprietăți style',e:'<p><b>font-size</b> schimbă mărimea literelor, în <b>px</b> (pixeli). <b>text-align</b> mută textul: <b>left</b>, <b>center</b>, <b>right</b>. <b>font-family</b> alege felul literelor, de exemplu <code>font-family: Arial;</code></p><p>Mai multe proprietăți se scriu una după alta, fiecare cu <b>;</b> la final.</p>',
+ m:'<p style="font-size: 32px;">Mare</p>\n<h2 style="text-align: center;">Titlu la mijloc</h2>\n<p style="font-family: Arial;">Text cu Arial</p>',tk:[['Litere mari (32px)',function(d){return !!q(d,'[style*="32px"]')}],['Titlu centrat',function(d){var h=q(d,'h2');return h&&h.style.textAlign=='center'}],['Font Arial',function(d){return !!q(d,'[style*="font-family"]')}]]},
+{t:'Liste',s:'Cu buline sau cu numere',e:'<p><code>&lt;ul&gt;</code> listă cu buline (ordinea nu contează: lista de cumpărături). <code>&lt;ol&gt;</code> listă cu numere (ordinea contează: pașii unei rețete). <code>&lt;li&gt;</code> este un punct din listă și se scrie <b>în interiorul</b> lui <code>ul</code> sau <code>ol</code>.</p>',
+ m:'<ul>\n  <li>Pâine</li>\n  <li>Lapte</li>\n  <li>Mere</li>\n</ul>',tk:[['Listă cu 3 buline',function(d){return qa(d,'ul li')>=3}]],
+ more:'Provocare: după ce o scrii, fă și tu o listă cu <b>numere</b> (<code>ol</code>) cu lucruri care îți plac.'},
+{t:'Linkuri și poze',s:'Ce se poate apăsa și ce se poate privi',e:'<p><b>Linkul</b> se scrie cu <code>&lt;a&gt;</code>, iar adresa în atributul <code>href</code>. <b>Poza</b> se pune cu <code>&lt;img&gt;</code>: <code>src</code> = fișierul, <code>alt</code> = ce se vede în poză, <code>width</code> = lățimea în pixeli.</p><div class="tip">🖼️ <code>img</code> nu are etichetă de închidere. Scrie <b>mereu</b> atributul <code>alt</code>. Aici poza <code>soare.png</code> este înlocuită automat cu un soare desenat.</div>',
+ m:'<a href="https://ro.wikipedia.org">Citește aici</a>\n<br>\n<img src="soare.png" alt="Un soare galben" width="120">',tk:[['Link cu href',function(d){var a=q(d,'a');return a&&a.getAttribute('href')}],['Poză cu alt și width',function(d){var i=q(d,'img');return i&&i.alt&&i.getAttribute('width')}]]}
+];
+var total=0,doneN=0;
+function ed(host,x,start){var ta=host.querySelector('textarea'),fr=host.querySelector('iframe'),ul=host.querySelector('.tasks'),mt=host.querySelector('.tab span'),ok=[],tk=x.tk||[];
+ var lis=tk.map(function(t){var l=document.createElement('li');l.textContent=t[0];ul.appendChild(l);return l});
+ function up(){var c=ta.value,d=new DOMParser().parseFromString(c,'text/html'),full=/<html|<!doctype/i.test(c);
+  mt.textContent=(full&&d.title.trim())||'pagina.html';
+  var shown=c.split('src="soare.png"').join('src="'+SUN+'"');
+  fr.srcdoc='<script>document.addEventListener("click",function(e){if(e.target.closest("a"))e.preventDefault()})<\/script>'+(full?shown:'<meta charset="utf-8"><body style="font-family:Georgia,serif;margin:12px;color:#111">'+shown);
+  tk.forEach(function(t,k){var y=false;try{y=!!t[1](d,c)}catch(e){}lis[k].className=y?'d':'';if(y&&!ok[k]){ok[k]=1;doneN++}if(!y&&ok[k]){ok[k]=0;doneN--}});
+  $('tc').textContent='🎯 '+doneN+'/'+total;$('pg').style.width=(total?doneN/total*100:0)+'%'}
+ ta.value=start;ta.oninput=up;
+ ta.onkeydown=function(e){if(e.key==='Tab'){e.preventDefault();ta.setRangeText('  ',ta.selectionStart,ta.selectionEnd,'end');up()}};
+ var pal=host.querySelector('.pal'),pm=host.querySelector('.pm'),idx=0;
+ function build(){idx=0;if(pm)pm.textContent='';if(!pal||!x.m)return;pal.innerHTML='';var pcs=x.m.split('\n'),ord=pcs.slice().reverse();if(ord.length>2)ord.push(ord.shift());
+  ord.forEach(function(p){var b=document.createElement('button');b.textContent=p.trim();b.onclick=function(){if(b.className=='used')return;
+   if(p===pcs[idx]){ta.value+=p+'\n';idx++;b.className='used';up();pm.textContent=idx==pcs.length?'✅ Gata! Uite rezultatul din dreapta.':'👍 Bine! Ce urmează?'}else pm.textContent='🤔 Nu încă. Ce vine mai întâi?'};pal.appendChild(b)})}
+ host.querySelector('.rs').onclick=function(){ta.value=start;build();up()};build();up()}
+var LAB='<div class="lg"><div><div class="lbl">✏️ Scrie aici</div><textarea spellcheck="false" aria-label="Editor de cod"></textarea></div><div><div class="lbl">👀 Rezultat</div><div class="mock"><div class="tab"><span></span></div><iframe sandbox="allow-scripts" title="Rezultat"></iframe></div></div></div><ul class="tasks"></ul><div class="row"><button class="rs">↺ Șterge și o iei de la capăt</button></div>';
+function exo(x,box){var e=x.ex,d=document.createElement('div');d.className='ex';d.innerHTML='<b>🎯 '+e.q+'</b>';var r=document.createElement('div');r.className='r';
+ if(e.k=='af'){e.it.forEach(function(it){var w=document.createElement('div');w.className='afr';w.innerHTML='<span>'+it[0]+'</span>';[['A',1],['F',0]].forEach(function(b){var bt=document.createElement('button');bt.textContent=b[0];bt.onclick=function(){bt.className=b[1]==it[1]?'ok':'';bt.textContent=b[1]==it[1]?b[0]+' ✅':b[0]+' ❌ încearcă iar'};w.appendChild(bt)});d.appendChild(w)})}
+ else{var ch=document.createElement('div');ch.className='ch';var pick=[];
+  e.it.slice().sort(function(a,b){return a<b?1:-1}).forEach(function(t){var bt=document.createElement('button');bt.textContent=t;ch.appendChild(bt);
+   bt.onclick=function(){if(e.k=='order'){var i=e.it.indexOf(t);if(i==pick.length){pick.push(t);bt.className='ok';bt.textContent=pick.length+'. '+t;r.textContent=pick.length==e.it.length?'✅ Bravo!':''}else r.textContent='❌ Nu e chiar acesta. Ce se întâmplă primul?'}else{bt.classList.toggle('on')}}});
+  d.appendChild(ch);
+  if(e.k=='circle'){var v=document.createElement('button');v.textContent='✅ Verifică';v.onclick=function(){var on=[].map.call(ch.children,function(b){return b.classList.contains('on')?e.it.indexOf(b.textContent):-1}).filter(function(i){return i>=0}).sort().join();r.textContent=on==e.ok.join()?'✅ Corect! Au semnul /':'❌ Mai încearcă. Caută semnul /'};d.appendChild(v)}}
+ d.appendChild(r);box.appendChild(d)}
+L.forEach(function(x,i){total+=x.tk.length;var s=document.createElement('section');s.style.setProperty('--ac',COL[i%5]);
+ s.innerHTML='<h2><span class="n">'+(i+1)+'</span>'+x.t+'</h2><p class="sub">'+x.s+'</p>'+x.e+'<div class="mod"><b>✍️ Scrie în editor exact asta. Poți tasta tu codul sau poți apăsa bucățile de mai jos:</b><pre></pre><div class="lbl">🧩 Apasă bucățile în ordinea corectă (apar singure în editor)</div><div class="pal"></div><div class="pm"></div>'+(x.more?'<p style="margin:8px 0 0">'+x.more+'</p>':'')+'</div>'+LAB;
+ s.querySelector('.mod pre').textContent=x.m;$('m').appendChild(s);ed(s,x,'');
+ if(x.ex)exo(x,s)});
+var z=document.createElement('section');z.style.setProperty('--ac','#EC4899');
+z.innerHTML='<h2><span class="n">🎮</span>Zona de joacă</h2><p class="sub">Aici scrii ce vrei tu!</p><p>Scheletul paginii este gata. Continuă tu: schimbă <code>title</code> în <b>head</b> și scrie în <b>body</b> titluri, paragrafe, liste, culori, linkuri, poze. Rezultatul se vede în dreapta.</p>'+LAB;
+$('m').appendChild(z);ed(z,{tk:[]},'<!DOCTYPE html>\n<html>\n<head>\n  <meta charset="UTF-8">\n  <title>Pagina mea</title>\n</head>\n<body>\n  \n</body>\n</html>');
+z.querySelector('iframe').style.height='260px';z.querySelector('textarea').style.height='300px';
+</script>
+</body>
+</html>
