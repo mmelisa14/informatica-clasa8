@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atelier: magazinul tău online</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#F3F6FF;--card:#fff;--fg:#1B2A4A;--mut:#5B6B8C;--line:#D6E0F5;--pri:#4F46E5;--pf:#fff;--ok:#16A34A;--okb:#DCFCE7;--sun:#FFC83D;--code:#17213A;--c1:#4F46E5;--c2:#EC4899;--c3:#F59E0B;--c4:#10B981;
+--disp:'Baloo 2','Trebuchet MS',system-ui,sans-serif;--sans:'Nunito',system-ui,-apple-system,sans-serif;--mono:ui-monospace,Menlo,Consolas,"DejaVu Sans Mono",monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--code:#0A0F1D}}
+:root[data-theme="dark"]{--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--code:#0A0F1D}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--fg);font:500 1.05rem/1.6 var(--sans)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:12px;align-items:center}
+.top b,.top span{font:800 1rem var(--disp);white-space:nowrap}
+.pbar{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--c1),var(--c2));transition:width .4s}
+.wrap{max-width:1600px;margin:0 auto;padding:14px}
+.intro{margin:2px 0 12px}.intro h1{font:800 clamp(1.5rem,4vw,2.1rem)/1.1 var(--disp);margin:0}.intro p{margin:4px 0 0;color:var(--mut)}
+button{font:800 1rem var(--disp);cursor:pointer;border:0;border-radius:14px;padding:9px 18px;background:var(--pri);color:var(--pf);box-shadow:0 4px 0 rgba(0,0,0,.22);min-height:44px}
+button:active{transform:translateY(3px);box-shadow:none}
+button.alt{background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none}
+button.sm{min-height:38px;padding:5px 12px;font-size:.95rem}
+.work{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;height:calc(100vh - 150px);min-height:560px}
+@media(max-width:900px){.work{grid-template-columns:1fr;height:auto}.pane{height:75vh;min-height:440px}}
+.pane{display:flex;flex-direction:column;background:var(--card);border-radius:20px;padding:12px;box-shadow:0 6px 0 var(--line);border-top:8px solid var(--c1);min-height:0;min-width:0}
+.pane.res{border-top-color:var(--c4)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}.bar h2{font:800 1.2rem var(--disp);margin:0;flex:1;white-space:nowrap}
+/* editor cu colorare */
+.ed{--fs:15px;flex:1;min-height:0;display:flex;background:var(--code);border-radius:14px;overflow:hidden}
+.gut,.hl,#code{font-family:var(--mono);font-weight:600;font-size:var(--fs);line-height:calc(var(--fs) * 1.6);letter-spacing:0;tab-size:2;white-space:pre}
+.gut{flex:none;width:3.4em;margin:0;padding:12px 10px 80px 0;text-align:right;color:#6B7A9C;overflow:hidden;user-select:none;border-right:1px solid #2B3858}
+.cw{position:relative;flex:1;min-width:0}
+.hl,#code{position:absolute;inset:0;margin:0;padding:12px 14px 80px;border:0;border-radius:0}
+.hl{color:#E7ECF7;overflow:hidden;pointer-events:none}
+#code{background:transparent;color:transparent;caret-color:#fff;resize:none;outline:none;overflow:auto;-webkit-appearance:none;appearance:none}
+#code::selection{background:rgba(129,140,248,.5);color:transparent}
+.hl .c{color:#7F8FB5}.hl .s{color:#8EE6B4}.hl .t{color:#FF8FA6}.hl .k{color:#FFD479}.hl .p{color:#7DD3FC}.hl .n{color:#FDBA74}
+iframe{flex:1;min-height:0;width:100%;border:3px solid var(--line);border-radius:12px;background:#fff;display:block}
+/* provocari */
+.card{background:var(--card);border-radius:24px;padding:22px;border-top:8px solid var(--c3);box-shadow:0 6px 0 var(--line);margin-top:20px}
+.card h2{font:800 1.7rem/1.15 var(--disp);margin:0 0 6px}
+code{font:700 .92em var(--mono);background:var(--bg);padding:.1em .4em;border-radius:6px;word-break:break-word}
+.tasks{list-style:none;padding:0;margin:14px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:10px}
+.tasks li{padding:10px 14px;border-radius:14px;background:var(--bg);font-weight:700;display:flex;gap:10px;border:3px solid var(--line)}
+.tasks li.d{background:var(--okb);border-color:var(--ok)}
+.tasks li .lv{flex:none;font:800 .8rem var(--mono);color:var(--mut);white-space:nowrap}
+.tasks li::before{content:"⬜";flex:none}.tasks li.d::before{content:"✅"}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hint{margin-top:12px;font-weight:700}
+.hint pre{background:var(--code);color:#E7ECF7;font:600 .92rem/1.55 var(--mono);padding:12px 14px;border-radius:14px;overflow-x:auto;margin:8px 0 0;white-space:pre}
+.win{margin-top:12px;font:800 1.3rem var(--disp);color:var(--ok)}
+</style>
+</head>
+<body>
+<div class="top"><b>🌐 Atelier HTML</b><div class="pbar"><i id="pg"></i></div><span id="tc">🎯 0/9</span></div>
+
+<div class="wrap">
+<div class="intro"><h1>🛍️ Atelier: magazinul tău online</h1><p>Un magazin ca cele adevărate: căutare, categorii, reduceri, coș lateral, transport gratuit și cod de reducere. În stânga e codul, în dreapta e rezultatul. Schimbă ceva și magazinul se schimbă singur.</p></div>
+
+<div class="work">
+  <section class="pane">
+    <div class="bar"><h2>📝 Codul</h2>
+      <button class="alt sm" id="fm" title="Litere mai mici">A−</button>
+      <button class="alt sm" id="fp" title="Litere mai mari">A+</button>
+      <button class="alt sm" id="cp">📋 Copiază</button>
+      <button class="alt sm" id="dl">💾 Salvează</button>
+      <button class="alt sm" id="rs">↺ Original</button>
+    </div>
+    <div class="ed" id="ed">
+      <div class="gut" id="gut"></div>
+      <div class="cw">
+        <pre class="hl" id="hl" aria-hidden="true"></pre>
+        <textarea id="code" wrap="off" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" aria-label="Editor de cod">
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Magazinul meu</title>
+
+  <style>
+    /* ============================================
+       🎨 CSS = cum arată magazinul
+       ============================================ */
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #F6F7FB;
+      color: #1F2937;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* --- Banda de sus --- */
+    .banda {
+      background: #111827;
+      color: white;
+      text-align: center;
+      font-size: 13px;
+      padding: 8px;
+    }
+
+    /* --- Antetul (rămâne lipit sus când derulezi) --- */
+    header {
+      background: white;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 20px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .logo {
+      margin: 0;
+      font-size: 22px;
+      color: #4F46E5;
+    }
+
+    .cauta {
+      flex: 1;
+      min-width: 0;
+      padding: 10px 16px;
+      border: 2px solid #E5E7EB;
+      border-radius: 999px;
+      font-size: 15px;
+    }
+
+    .buton-cos {
+      position: relative;
+      background: #4F46E5;
+      color: white;
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .insigna {
+      position: absolute;
+      top: -8px;
+      right: -6px;
+      background: #EF4444;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+    }
+
+    /* --- Bannerul mare --- */
+    .hero {
+      background: linear-gradient(135deg, #4F46E5, #EC4899);
+      color: white;
+      text-align: center;
+      padding: 34px 20px;
+    }
+
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    .hero p {
+      margin: 0;
+    }
+
+    /* --- Categoriile --- */
+    .categorii {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 16px 20px 0;
+    }
+
+    .chip {
+      border: 2px solid #E5E7EB;
+      background: white;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .chip.activ {
+      background: #111827;
+      color: white;
+      border-color: #111827;
+    }
+
+    /* --- Produsele --- */
+    .produse {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .produs {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: 0.2s;
+    }
+
+    .produs:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .poza {
+      position: relative;
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+    }
+
+    .reducere {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #EF4444;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .info {
+      padding: 12px;
+    }
+
+    .nume {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .stele {
+      color: #F59E0B;
+      font-size: 14px;
+    }
+
+    .pret {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 6px 0 10px;
+    }
+
+    .vechi {
+      margin-left: 6px;
+      color: #9CA3AF;
+      font-size: 13px;
+      font-weight: normal;
+      text-decoration: line-through;
+    }
+
+    .info button {
+      width: 100%;
+      border: 0;
+      background: #10B981;
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      color: #6B7280;
+      font-size: 13px;
+      padding: 24px;
+    }
+
+    /* --- Coșul: un panou care iese din dreapta --- */
+    .fundal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s;
+      z-index: 10;
+    }
+
+    .fundal.deschis {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .panou {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 340px;
+      max-width: 100%;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: 0.3s;
+      z-index: 11;
+    }
+
+    .panou.deschis {
+      transform: translateX(0);
+    }
+
+    .panou-cap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid #E5E7EB;
+    }
+
+    .panou-cap h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .inchide {
+      border: 0;
+      background: none;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .livrare {
+      background: #F0FDF4;
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+
+    .bara {
+      height: 8px;
+      background: #D1FAE5;
+      border-radius: 99px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    #progres {
+      height: 100%;
+      width: 0;
+      background: #10B981;
+      transition: 0.4s;
+    }
+
+    #lista {
+      list-style: none;
+      margin: 0;
+      padding: 0 16px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    #lista li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    #lista li.gol {
+      justify-content: center;
+      color: #6B7280;
+    }
+
+    .mini {
+      flex: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+    }
+
+    .detalii {
+      flex: 1;
+      min-width: 0;
+      font-size: 14px;
+    }
+
+    .cant {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 14px;
+    }
+
+    .cant button {
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      border: 1px solid #D1D5DB;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .panou-jos {
+      padding: 14px 16px;
+      border-top: 1px solid #E5E7EB;
+    }
+
+    .cod {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .cod input {
+      flex: 1;
+      min-width: 0;
+      padding: 8px 10px;
+      border: 2px solid #E5E7EB;
+      border-radius: 8px;
+    }
+
+    .cod button {
+      border: 0;
+      background: #111827;
+      color: white;
+      border-radius: 8px;
+      padding: 0 14px;
+      cursor: pointer;
+    }
+
+    .rand {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+      font-size: 14px;
+    }
+
+    .rand.total {
+      margin-top: 8px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    #plateste {
+      width: 100%;
+      border: 0;
+      background: #4F46E5;
+      color: white;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    #mesaj {
+      margin: 8px 0 0;
+      font-weight: bold;
+      color: #16A34A;
+    }
+
+    /* --- Mesajul mic care apare jos --- */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translate(-50%, 80px);
+      background: #111827;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      opacity: 0;
+      transition: 0.3s;
+      z-index: 20;
+    }
+
+    .toast.vizibil {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================
+       🧱 HTML = ce există în pagină
+       ============================================ -->
+
+  <div class="banda">🔥 Retur gratuit în 14 zile · Plată la livrare</div>
+
+  <header>
+    <h1 class="logo" id="titlu">🛍️ Magazinul meu</h1>
+    <input class="cauta" id="cauta" type="search" placeholder="🔍 Caută un produs...">
+    <button class="buton-cos" id="deschide">🛒 Coș <span class="insigna" id="nr">0</span></button>
+  </header>
+
+  <section class="hero">
+    <h2>Reduceri de iarnă ❄️</h2>
+    <p>Până la -30% la produsele alese</p>
+  </section>
+
+  <!-- Două cutii goale: JavaScript le umple -->
+  <div class="categorii" id="categorii"></div>
+  <main class="produse" id="produse"></main>
+
+  <footer>© 2026 Magazinul meu · Plată sigură · Livrare în toată țara</footer>
+
+  <!-- Coșul (panou lateral, ascuns până îl deschizi) -->
+  <div class="fundal" id="fundal"></div>
+
+  <aside class="panou" id="panou">
+    <div class="panou-cap">
+      <h2>🧺 Coșul tău</h2>
+      <button class="inchide" id="inchide">✕</button>
+    </div>
+
+    <div class="livrare">
+      <span id="textLivrare"></span>
+      <div class="bara"><div id="progres"></div></div>
+    </div>
+
+    <ul id="lista"></ul>
+
+    <div class="panou-jos">
+      <div class="cod">
+        <input id="cod" placeholder="Ai un cod? Încearcă ELEV10">
+        <button id="aplica">Aplică</button>
+      </div>
+      <div class="rand"><span>Produse</span><span id="subtotal">0 lei</span></div>
+      <div class="rand"><span>Reducere</span><span id="redu">0 lei</span></div>
+      <div class="rand"><span>Transport</span><span id="trans">0 lei</span></div>
+      <div class="rand total"><span>Total</span><span id="total">0 lei</span></div>
+      <button id="plateste">Finalizează comanda</button>
+      <p id="mesaj"></p>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ============================================
+    // ⚡ JavaScript = ce se întâmplă
+    // ============================================
+
+    // --- 1) DATELE MAGAZINULUI ---
+    var produse = [
+      { id: 1, emoji: "🎧", nume: "Căști wireless",    categorie: "Electronice", pret: 199, vechi: 299, rating: 5, culoare: "#DBEAFE" },
+      { id: 2, emoji: "⌚", nume: "Ceas inteligent",   categorie: "Electronice", pret: 349, vechi: 0,   rating: 4, culoare: "#E0E7FF" },
+      { id: 3, emoji: "👟", nume: "Adidași alergare",  categorie: "Sport",       pret: 259, vechi: 329, rating: 4, culoare: "#FEE2E2" },
+      { id: 4, emoji: "🎒", nume: "Rucsac școlar",     categorie: "Modă",        pret: 129, vechi: 0,   rating: 5, culoare: "#FEF3C7" },
+      { id: 5, emoji: "🕶️", nume: "Ochelari de soare", categorie: "Modă",        pret: 89,  vechi: 119, rating: 3, culoare: "#FCE7F3" },
+      { id: 6, emoji: "⚽", nume: "Minge de fotbal",   categorie: "Sport",       pret: 59,  vechi: 0,   rating: 5, culoare: "#DCFCE7" },
+      { id: 7, emoji: "🎮", nume: "Controller de joc", categorie: "Electronice", pret: 189, vechi: 229, rating: 4, culoare: "#EDE9FE" },
+      { id: 8, emoji: "🧢", nume: "Șapcă",             categorie: "Modă",        pret: 49,  vechi: 0,   rating: 4, culoare: "#FFEDD5" }
+    ];
+
+    var categorii = ["Toate", "Electronice", "Modă", "Sport"];
+
+    var pragTransport = 200;   // de la câți lei transportul e gratuit
+    var costTransport = 15;    // cât costă transportul altfel
+    var codBun = "ELEV10";     // codul de reducere care funcționează
+    var procentCod = 10;       // cât reducere dă codul (în procente)
+
+    // --- 2) CE ȘTIE MAGAZINUL ACUM ---
+    var cos = {};                  // coșul: id produs -> câte bucăți
+    var categorieAleasa = "Toate";
+    var textCautat = "";
+    var codAplicat = false;
+    var totalFinal = 0;
+    var nrObiecte = 0;
+
+    // --- 3) UNELTE MICI ---
+    function el(id) {
+      return document.getElementById(id);
+    }
+
+    function faButon(text, ceFace) {
+      var b = document.createElement("button");
+      b.textContent = text;
+      b.onclick = ceFace;
+      return b;
+    }
+
+    function gaseste(id) {
+      return produse.filter(function (p) { return p.id === id; })[0];
+    }
+
+    var timerToast;
+    function arataToast(text) {
+      el("toast").textContent = text;
+      el("toast").classList.add("vizibil");
+      clearTimeout(timerToast);
+      timerToast = setTimeout(function () {
+        el("toast").classList.remove("vizibil");
+      }, 1800);
+    }
+
+    // --- 4) CATEGORIILE ---
+    function deseneazaCategorii() {
+      el("categorii").innerHTML = "";
+
+      categorii.forEach(function (c) {
+        var b = faButon(c, function () {
+          categorieAleasa = c;
+          deseneazaCategorii();
+          deseneazaProduse();
+        });
+        b.className = "chip";
+        if (c === categorieAleasa) {
+          b.className = "chip activ";
+        }
+        el("categorii").appendChild(b);
+      });
+    }
+
+    // --- 5) VITRINA CU PRODUSE ---
+    function deseneazaProduse() {
+      el("produse").innerHTML = "";
+
+      produse.forEach(function (p) {
+        // filtrele: categoria aleasă și textul căutat
+        if (categorieAleasa !== "Toate" && p.categorie !== categorieAleasa) { return; }
+        if (p.nume.toLowerCase().indexOf(textCautat) === -1) { return; }
+
+        // dacă produsul are preț vechi, arătăm reducerea
+        var eticheta = "";
+        var vechi = "";
+        if (p.vechi > 0) {
+          var procent = Math.round((p.vechi - p.pret) / p.vechi * 100);
+          eticheta = '<span class="reducere">-' + procent + '%</span>';
+          vechi = '<span class="vechi">' + p.vechi + ' lei</span>';
+        }
+
+        var card = document.createElement("div");
+        card.className = "produs";
+        card.innerHTML =
+          '<div class="poza" style="background:' + p.culoare + '">' + eticheta + p.emoji + '</div>' +
+          '<div class="info">' +
+            '<div class="nume">' + p.nume + '</div>' +
+            '<div class="stele">' + "★".repeat(p.rating) + "☆".repeat(5 - p.rating) + '</div>' +
+            '<div class="pret">' + p.pret + ' lei' + vechi + '</div>' +
+          '</div>';
+
+        card.querySelector(".info").appendChild(
+          faButon("Adaugă în coș", function () {
+            adauga(p.id);
+            arataToast("✅ " + p.nume + " e în coș");
+          })
+        );
+        el("produse").appendChild(card);
+      });
+
+      if (el("produse").children.length === 0) {
+        el("produse").innerHTML = "<p>Niciun produs găsit 😕</p>";
+      }
+    }
+
+    // --- 6) ACȚIUNILE COȘULUI ---
+    function adauga(id) {
+      cos[id] = (cos[id] || 0) + 1;
+      deseneazaCos();
+    }
+
+    function scade(id) {
+      cos[id] = cos[id] - 1;
+      if (cos[id] <= 0) {
+        delete cos[id];
+      }
+      deseneazaCos();
+    }
+
+    function scoate(id) {
+      delete cos[id];
+      deseneazaCos();
+    }
+
+    // --- 7) DESENĂM COȘUL (după fiecare schimbare) ---
+    function deseneazaCos() {
+      el("lista").innerHTML = "";
+      el("mesaj").textContent = "";
+      var subtotal = 0;
+      nrObiecte = 0;
+
+      produse.forEach(function (p) {
+        var cant = cos[p.id];
+        if (!cant) { return; }
+
+        subtotal = subtotal + p.pret * cant;
+        nrObiecte = nrObiecte + cant;
+
+        var li = document.createElement("li");
+        li.innerHTML =
+          '<div class="mini" style="background:' + p.culoare + '">' + p.emoji + '</div>' +
+          '<div class="detalii"><b>' + p.nume + '</b><br>' + p.pret * cant + ' lei</div>';
+
+        var butoane = document.createElement("div");
+        butoane.className = "cant";
+        butoane.appendChild(faButon("−", function () { scade(p.id); }));
+        butoane.appendChild(document.createTextNode(cant));
+        butoane.appendChild(faButon("+", function () { adauga(p.id); }));
+        butoane.appendChild(faButon("🗑️", function () { scoate(p.id); }));
+        li.appendChild(butoane);
+
+        el("lista").appendChild(li);
+      });
+
+      if (nrObiecte === 0) {
+        el("lista").innerHTML = '<li class="gol">Coșul tău e gol 🕸️</li>';
+      }
+
+      // --- calculele: reducere, transport, total ---
+      var reducere = 0;
+      if (codAplicat) {
+        reducere = Math.round(subtotal * procentCod / 100);
+      }
+
+      var transport = 0;
+      if (nrObiecte > 0 && subtotal < pragTransport) {
+        transport = costTransport;
+      }
+
+      totalFinal = subtotal - reducere + transport;
+
+      // --- bara „transport gratuit” ---
+      var lipsa = pragTransport - subtotal;
+      if (lipsa > 0) {
+        el("textLivrare").textContent = "Mai ai de adăugat " + lipsa + " lei pentru transport gratuit 🚚";
+      } else {
+        el("textLivrare").textContent = "🎉 Ai transport gratuit!";
+      }
+      el("progres").style.width = Math.min(100, subtotal / pragTransport * 100) + "%";
+
+      // --- punem numerele pe ecran ---
+      el("nr").textContent = nrObiecte;
+      el("subtotal").textContent = subtotal + " lei";
+      if (reducere > 0) {
+        el("redu").textContent = "-" + reducere + " lei";
+      } else {
+        el("redu").textContent = "0 lei";
+      }
+      if (transport === 0) {
+        el("trans").textContent = "Gratuit";
+      } else {
+        el("trans").textContent = transport + " lei";
+      }
+      el("total").textContent = totalFinal + " lei";
+    }
+
+    // --- 8) BUTOANELE ȘI CÂMPURILE ---
+    function arataCos(da) {
+      el("panou").classList.toggle("deschis", da);
+      el("fundal").classList.toggle("deschis", da);
+    }
+
+    el("deschide").onclick = function () { arataCos(true); };
+    el("inchide").onclick = function () { arataCos(false); };
+    el("fundal").onclick = function () { arataCos(false); };
+
+    el("cauta").oninput = function () {
+      textCautat = el("cauta").value.toLowerCase();
+      deseneazaProduse();
+    };
+
+    el("aplica").onclick = function () {
+      var scris = el("cod").value.trim().toUpperCase();
+      if (scris === codBun) {
+        codAplicat = true;
+        arataToast("🎟️ Cod aplicat: -" + procentCod + "%");
+      } else {
+        codAplicat = false;
+        arataToast("❌ Cod invalid");
+      }
+      deseneazaCos();
+    };
+
+    el("plateste").onclick = function () {
+      if (nrObiecte === 0) {
+        el("mesaj").textContent = "Coșul e gol 🕸️";
+        return;
+      }
+      var platit = totalFinal;
+      cos = {};
+      codAplicat = false;
+      el("cod").value = "";
+      deseneazaCos();
+      el("mesaj").textContent = "✅ Comandă trimisă! Ai plătit " + platit + " lei. Mulțumim!";
+    };
+
+    // --- 9) PORNIM MAGAZINUL ---
+    deseneazaCategorii();
+    deseneazaProduse();
+    deseneazaCos();
+  </script>
+</body>
+</html>
+</textarea>
+      </div>
+    </div>
+  </section>
+
+  <section class="pane res">
+    <div class="bar"><h2>👀 Rezultat</h2><span style="color:var(--mut);font-weight:700">încearcă magazinul!</span></div>
+    <iframe id="fr" sandbox="allow-scripts" title="Rezultat"></iframe>
+  </section>
+</div>
+
+<section class="card" id="prov">
+  <h2>🎯 Provocări</h2>
+  <p>Modifică codul din stânga (<b>exact acolo unde e deja scris</b>) și bifa de la fiecare provocare se aprinde singură. Dacă te blochezi, apasă pe <b>Indiciu</b>.</p>
+  <ul class="tasks" id="tl"></ul>
+  <div class="row"><button id="hb">💡 Indiciu</button><button class="alt" id="up">↑ Înapoi la cod</button><button class="alt" id="rs2">↺ Cod original</button></div>
+  <div class="hint" id="hn"></div>
+  <div class="win" id="win" hidden>🏆 Bravo! Ai terminat toate provocările. Magazinul e al tău! Apasă „💾 Salvează” și deschide fișierul în browser.</div>
+</section>
+</div>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function hi(s){
+  var str=esc(s);
+  return str.replace(/(\/\*[\s\S]*?\*\/|\/\/[^\n]*|&lt;!--[\s\S]*?--&gt;)|("[^"\n]*"|'[^'\n]*')|(&lt;\/?[A-Za-z!][A-Za-z0-9]*|\/?&gt;)|^([ \t]+)([a-z-]+)(?=:)|\b(var|function|if|else|return|delete)\b|(#[0-9A-Fa-f]{3,8}\b)|\b(\d+(?:\.\d+)?)\b/gm,
+  function(m,c,s,t,ws,p,k,h,n,off){
+    if(c)return '<span class="c">'+c+'</span>';
+    if(s)return '<span class="s">'+s+'</span>';
+    if(t){
+      if(/^\/?&gt;$/.test(t)){
+        var seg=str.slice(str.lastIndexOf('\n',off-1)+1,off);
+        if(!(seg.lastIndexOf('&lt;')>seg.lastIndexOf('&gt;')))return m;
+      }
+      return '<span class="t">'+t+'</span>';
+    }
+    if(p)return ws+'<span class="p">'+p+'</span>';
+    if(k)return '<span class="k">'+k+'</span>';
+    if(h)return '<span class="n">'+h+'</span>';
+    if(n)return '<span class="n">'+n+'</span>';
+    return m;
+  });
+}
+var ta=$('code'),hl=$('hl'),gut=$('gut'),fr=$('fr'),ed=$('ed'),start=ta.value,fs=15,tm;
+
+function paint(){
+  hl.innerHTML=hi(ta.value)+'\n';
+  var n=ta.value.split('\n').length,g=[];
+  for(var i=1;i<=n;i++)g.push(i);
+  gut.textContent=g.join('\n');
+  sync();
+}
+function sync(){hl.scrollTop=ta.scrollTop;hl.scrollLeft=ta.scrollLeft;gut.scrollTop=ta.scrollTop}
+ta.addEventListener('scroll',sync,{passive:true});
+
+function ins(t){
+  if(!document.execCommand('insertText',false,t)){
+    ta.setRangeText(t,ta.selectionStart,ta.selectionEnd,'end');
+    update();
+  }
+}
+ta.onkeydown=function(e){
+  if(e.key==='Tab'){e.preventDefault();ins('  ');return}
+  if(e.key==='Enter'&&!e.ctrlKey&&!e.metaKey){
+    var v=ta.value,s=ta.selectionStart,ls=v.lastIndexOf('\n',s-1)+1,
+        ind=/^ */.exec(v.slice(ls,s))[0],
+        pc=v.slice(0,s).replace(/ +$/,'').slice(-1);
+    if(pc==='{'||pc==='['){ind+='  '}
+    e.preventDefault();ins('\n'+ind);
+  }
+};
+
+/* ---------- provocari ---------- */
+function nc(c,s){return c.split(s).length-1}
+function r(c,sel,p){
+  var d=new DOMParser().parseFromString(c,'text/html'),
+      css=[].map.call(d.querySelectorAll('style'),function(s){return s.textContent}).join('\n').replace(/\/\*[\s\S]*?\*\//g,''),
+      re=/([^{}]+)\{([^}]*)\}/g,m;
+  while(m=re.exec(css)){
+    if(m[1].split(',').map(function(x){return x.trim()}).indexOf(sel)>-1&&p.test(m[2]))return true;
+  }
+  return false;
+}
+var TS=[
+ {lv:'🟢 ușor',t:'Pune numele tău magazinului: în HTML, în <code>&lt;h1 class="logo"&gt;</code>, schimbă „Magazinul meu”.',
+  h:'<h1 class="logo" id="titlu">🛍️ Magazinul lui Ana</h1>',
+  f:function(c){var m=/<h1[^>]*id="titlu"[^>]*>([^<]*)<\/h1>/.exec(c);return !!m&&m[1].indexOf('Magazinul meu')<0}},
+ {lv:'🟢 ușor',t:'Schimbă culoarea logo-ului: în regula <code>.logo</code> din CSS, schimbă <code>color</code> (acum <code>#4F46E5</code>).',
+  h:'color: #EC4899;\n\n(poți scrie și un nume de culoare: purple, orange, teal...)',
+  f:function(c){return r(c,'.logo',/color:\s*(?!#4F46E5)\S/i)}},
+ {lv:'🟢 ușor',t:'Schimbă culoarea butonului „Coș”: în regula <code>.buton-cos</code>, schimbă <code>background</code>.',
+  h:'background: #0EA5E9;',
+  f:function(c){return r(c,'.buton-cos',/background:\s*(?!#4F46E5)\S/i)}},
+ {lv:'🟢 ușor',t:'Scrie alt mesaj în banda neagră de sus: în HTML, în <code>&lt;div class="banda"&gt;</code>.',
+  h:'<div class="banda">🎁 Cadou la orice comandă · Livrare în 24 de ore</div>',
+  f:function(c){var m=/<div class="banda">([^<]*)<\/div>/.exec(c);return !!m&&m[1].indexOf('Retur gratuit')<0}},
+ {lv:'🟡 mediu',t:'Schimbă prețul unui produs, în lista <code>produse</code> din JavaScript (la <code>pret:</code>).',
+  h:'{ id: 1, emoji: "🎧", nume: "Căști wireless", categorie: "Electronice", pret: 149, vechi: 299, ... },',
+  f:function(c){var a=(c.match(/pret:\s*(\d+)/g)||[]).map(function(x){return x.replace(/\D/g,'')});return a.length>=8&&a.slice(0,8).join()!=='199,349,259,129,89,59,189,49'}},
+ {lv:'🟡 mediu',t:'Adaugă un produs nou în listă. Copiază un rând, pune <code>id: 9</code> și <b>nu uita virgula</b> la rândul de dinainte!',
+  h:'Rândul cu Șapca trebuie să se termine cu virgulă, apoi adaugi:\n\n{ id: 9, emoji: "📚", nume: "Set de caiete", categorie: "Modă", pret: 25, vechi: 35, rating: 5, culoare: "#E0F2FE" }',
+  f:function(c){return nc(c,'emoji:')>=9}},
+ {lv:'🟡 mediu',t:'Inventează propriul cod de reducere: schimbă <code>var codBun = "ELEV10";</code> și testează-l în coș.',
+  h:'var codBun = "VARA20";\nvar procentCod = 20;\n\n(în coș, scrie noul cod și apasă Aplică)',
+  f:function(c){return c.indexOf('var codBun = "ELEV10";')<0&&/var codBun = "[^"]+";/.test(c)}},
+ {lv:'🟡 mediu',t:'Schimbă de la ce sumă e transportul gratuit: <code>var pragTransport = 200;</code>',
+  h:'var pragTransport = 100;\n\n(adaugă un produs în coș și urmărește bara verde)',
+  f:function(c){return c.indexOf('var pragTransport = 200;')<0&&/var pragTransport = \d+;/.test(c)}},
+ {lv:'🔴 provocare',t:'Adaugă o categorie nouă (de ex. „Casă”) în lista <code>categorii</code> și cel puțin un produs din ea.',
+  h:'1) var categorii = ["Toate", "Electronice", "Modă", "Sport", "Casă"];\n\n2) un produs nou, cu categoria asta:\n{ id: 9, emoji: "🪴", nume: "Ghiveci", categorie: "Casă", pret: 39, vechi: 0, rating: 5, culoare: "#DCFCE7" }',
+  f:function(c){var m=/var categorii = \[([^\]]*)\]/.exec(c);return !!m&&(m[1].match(/"[^"]*"/g)||[]).length>=5}}
+];
+var ok=[],tl=$('tl'),lis=TS.map(function(t){var l=document.createElement('li');l.innerHTML='<span class="lv">'+t.lv+'</span><span>'+t.t+'</span>';tl.appendChild(l);return l});
+function check(){
+  var c=ta.value,n=0;
+  TS.forEach(function(t,k){var y=false;try{y=!!t.f(c)}catch(e){}ok[k]=y;lis[k].className=y?'d':'';if(y)n++});
+  $('tc').textContent='🎯 '+n+'/'+TS.length;
+  $('pg').style.width=(n/TS.length*100)+'%';
+  $('win').hidden=n<TS.length;
+}
+function run(){fr.srcdoc=ta.value;check()}
+function update(){paint();clearTimeout(tm);tm=setTimeout(run,500)}
+ta.oninput=update;
+
+/* ---------- butoane ---------- */
+function setFs(v){fs=Math.max(11,Math.min(24,v));ed.style.setProperty('--fs',fs+'px');sync()}
+$('fm').onclick=function(){setFs(fs-1)};
+$('fp').onclick=function(){setFs(fs+1)};
+function reset(){ta.value=start;$('hn').innerHTML='';paint();run()}
+$('rs').onclick=reset;$('rs2').onclick=reset;
+$('up').onclick=function(){window.scrollTo({top:0,behavior:'smooth'});ta.focus()};
+$('cp').onclick=function(){
+  var b=$('cp'),done=false;ta.select();
+  try{done=document.execCommand('copy')}catch(e){}
+  if(!done&&navigator.clipboard){navigator.clipboard.writeText(ta.value)}
+  ta.setSelectionRange(0,0);b.textContent='✅ Copiat!';setTimeout(function(){b.textContent='📋 Copiază'},1500);
+};
+$('dl').onclick=function(){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([ta.value],{type:'text/html'}));
+  a.download='magazinul-meu.html';document.body.appendChild(a);a.click();a.remove();
+};
+$('hb').onclick=function(){
+  var k=ok.indexOf(false);
+  $('hn').innerHTML=k<0?'🎉 Ai terminat toate provocările!':'💡 <b>Provocarea '+(k+1)+':</b><pre>'+esc(TS[k].h)+'</pre>';
+};
+
+paint();run();
+</script>
+</body>
+</html>

@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Magazinul online explicat bucată cu bucată</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#F3F6FF;--card:#fff;--fg:#1B2A4A;--mut:#5B6B8C;--line:#D6E0F5;--pri:#4F46E5;--pf:#fff;--ok:#16A34A;--okb:#DCFCE7;--bad:#DC2626;--badb:#FEE2E2;--sun:#FFC83D;--code:#17213A;--cf:#E7ECF7;--c1:#4F46E5;--c2:#EC4899;--c3:#F59E0B;--c4:#10B981;--c5:#0EA5E9;
+--hh:#EA580C;--hc:#2563EB;--hj:#A16207;
+--disp:'Baloo 2','Trebuchet MS',system-ui,sans-serif;--sans:'Nunito',system-ui,-apple-system,sans-serif;--mono:ui-monospace,Menlo,Consolas,"DejaVu Sans Mono",monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--badb:#5B1A1A;--code:#0A0F1D;--hh:#FB923C;--hc:#60A5FA;--hj:#FACC15}}
+:root[data-theme="dark"]{--bg:#0E1424;--card:#18213A;--fg:#EDF1FB;--mut:#A3B0CC;--line:#2B3858;--pri:#818CF8;--pf:#0E1424;--okb:#13442A;--badb:#5B1A1A;--code:#0A0F1D;--hh:#FB923C;--hc:#60A5FA;--hj:#FACC15}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--fg);font:500 1.08rem/1.65 var(--sans)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:12px;align-items:center}
+.top b{font:800 1rem var(--disp);white-space:nowrap}
+.pbar{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--c1),var(--c2))}
+.hero{text-align:center;padding:42px 18px 32px;background:linear-gradient(135deg,#7C3AED,#EC4899);color:#fff}
+.hero h1{font:800 clamp(2rem,7vw,3.2rem)/1.05 var(--disp);margin:6px 0}.hero p{max-width:50ch;margin:8px auto 4px;font-size:1.15rem}.hero .e{font-size:3.4rem}
+button{font:800 1.02rem var(--disp);cursor:pointer;border:0;border-radius:14px;padding:9px 18px;background:var(--pri);color:var(--pf);box-shadow:0 4px 0 rgba(0,0,0,.22);min-height:44px}
+button:active{transform:translateY(3px);box-shadow:none}
+button.alt{background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none}
+main{max-width:1000px;margin:0 auto;padding:18px 14px 60px;display:flex;flex-direction:column;gap:22px}
+section{background:var(--card);border-radius:24px;padding:22px;border-top:8px solid var(--ac);box-shadow:0 6px 0 var(--line);--ac:var(--c1);min-width:0}
+.n{display:inline-flex;width:42px;height:42px;border-radius:50%;background:var(--ac);color:#fff;font:800 1.3rem var(--disp);align-items:center;justify-content:center;margin-right:8px;vertical-align:middle}
+h2{font:800 1.7rem/1.15 var(--disp);margin:0 0 8px}h3{font:800 1.25rem var(--disp);margin:20px 0 4px}p{margin:.55em 0}
+code{font:700 .92em var(--mono);background:var(--bg);padding:.1em .4em;border-radius:6px;word-break:break-word}
+.tip{background:var(--bg);border-left:6px solid var(--sun);border-radius:12px;padding:10px 14px;margin:14px 0}.tip.ok{border-color:var(--ok)}
+.code{background:var(--code);color:var(--cf);font:600 .92rem/1.6 var(--mono);padding:12px 14px;border-radius:14px;overflow-x:auto;margin:8px 0;white-space:pre}
+.code .c{color:#7F8FB5}.code .s{color:#8EE6B4}.code .t{color:#FF8FA6}.code .k{color:#FFD479}.code .p{color:#7DD3FC}.code .nm{color:#FDBA74}
+.lbl{font:800 .78rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:12px 0 4px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:12px 0}.g3>div{background:var(--bg);border-radius:16px;padding:12px;min-width:0}.g3 b{font:800 1.05rem var(--disp)}.g3 .e{font-size:2.2rem;display:block}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.tabs button{background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none;padding:6px 12px;font-size:.95rem}.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.say{background:var(--bg);border-radius:14px;padding:12px 14px;margin:10px 0;min-height:3.6em}
+.lg{display:grid;grid-template-columns:1.15fr 1fr;gap:14px;align-items:start}@media(max-width:820px){.lg{grid-template-columns:1fr}}.lg>div{min-width:0}
+iframe{width:100%;height:520px;border:3px solid var(--line);border-radius:14px;background:#fff;display:block}
+.lh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:16px 0 4px;font:800 1.05rem var(--disp)}
+.lh .b{padding:3px 14px;border-radius:999px;color:#fff}.lh .b.html{background:#EA580C}.lh .b.css{background:#2563EB}.lh .b.js{background:#A16207}
+.lh small{font:700 .88rem var(--sans);color:var(--mut)}
+.none{background:var(--bg);border:3px dashed var(--line);border-radius:14px;padding:10px 14px;color:var(--mut);font-weight:700}
+.mk{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--sun);color:#1B2A4A;font:800 .8rem var(--sans);align-items:center;justify-content:center;margin-left:10px;vertical-align:middle}
+.nt{list-style:none;padding:0;margin:8px 0}.nt li{display:flex;gap:10px;margin:7px 0;align-items:flex-start}.nt .mk{flex:none;margin:3px 0 0}
+.piece{border:3px solid var(--line);border-radius:18px;padding:14px;margin:16px 0}.piece>h3{margin:0 0 4px}
+.sim button{font-size:.92rem;min-height:36px;padding:5px 10px;margin:3px 3px 3px 0}.sim button.sm{padding:2px 9px;min-height:30px;box-shadow:none}
+.sim ul{list-style:none;padding:0;margin:0}.sim li{padding:5px 0;border-bottom:1px solid var(--line)}
+.sim input{font:700 1rem var(--mono);padding:6px 10px;border:3px solid var(--line);border-radius:10px;width:9em;background:var(--bg);color:var(--fg)}
+/* demo clasa */
+.dm{position:relative;height:150px;border:3px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg)}
+.dm .pn{position:absolute;top:0;right:0;bottom:0;width:55%;background:#4F46E5;color:#fff;display:flex;align-items:center;justify-content:center;font:800 1.1rem var(--disp);transform:translateX(100%);transition:.4s}
+.dm .pn.deschis{transform:translateX(0)}
+.q{border:3px solid var(--line);border-radius:18px;padding:14px;margin:14px 0}.q>p{font-weight:800;margin:0 0 6px}
+.q .row{display:flex;gap:8px;flex-wrap:wrap}.q .row button{background:var(--bg);color:var(--fg);border:3px solid var(--line);box-shadow:none}
+.q .row button.ok{background:var(--okb);border-color:var(--ok)}.q .row button.no{background:var(--badb);border-color:var(--bad)}
+.q .w{font-weight:700;margin-top:6px}
+.score{text-align:center;font:800 1.5rem var(--disp);padding:18px;border-radius:18px;background:var(--bg)}
+</style>
+</head>
+<body>
+<div class="top"><b>🔍 Magazinul explicat</b><div class="pbar"><i id="pg"></i></div></div>
+<header class="hero"><div class="e">🧩</div><h1>Magazinul online, bucată cu bucată</h1><p>În pagina Atelier ai un magazin ca cele adevărate. Aici îl desfacem ca pe un lego și vedem unde e 🧱 HTML, unde e 🎨 CSS și unde e ⚡ JavaScript.</p></header>
+
+<textarea id="full" style="display:none" aria-hidden="true" autocomplete="off"><!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Magazinul meu</title>
+
+  <style>
+    /* ============================================
+       🎨 CSS = cum arată magazinul
+       ============================================ */
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #F6F7FB;
+      color: #1F2937;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* --- Banda de sus --- */
+    .banda {
+      background: #111827;
+      color: white;
+      text-align: center;
+      font-size: 13px;
+      padding: 8px;
+    }
+
+    /* --- Antetul (rămâne lipit sus când derulezi) --- */
+    header {
+      background: white;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 20px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .logo {
+      margin: 0;
+      font-size: 22px;
+      color: #4F46E5;
+    }
+
+    .cauta {
+      flex: 1;
+      min-width: 0;
+      padding: 10px 16px;
+      border: 2px solid #E5E7EB;
+      border-radius: 999px;
+      font-size: 15px;
+    }
+
+    .buton-cos {
+      position: relative;
+      background: #4F46E5;
+      color: white;
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .insigna {
+      position: absolute;
+      top: -8px;
+      right: -6px;
+      background: #EF4444;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+    }
+
+    /* --- Bannerul mare --- */
+    .hero {
+      background: linear-gradient(135deg, #4F46E5, #EC4899);
+      color: white;
+      text-align: center;
+      padding: 34px 20px;
+    }
+
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    .hero p {
+      margin: 0;
+    }
+
+    /* --- Categoriile --- */
+    .categorii {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 16px 20px 0;
+    }
+
+    .chip {
+      border: 2px solid #E5E7EB;
+      background: white;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .chip.activ {
+      background: #111827;
+      color: white;
+      border-color: #111827;
+    }
+
+    /* --- Produsele --- */
+    .produse {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .produs {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: 0.2s;
+    }
+
+    .produs:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .poza {
+      position: relative;
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+    }
+
+    .reducere {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #EF4444;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .info {
+      padding: 12px;
+    }
+
+    .nume {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .stele {
+      color: #F59E0B;
+      font-size: 14px;
+    }
+
+    .pret {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 6px 0 10px;
+    }
+
+    .vechi {
+      margin-left: 6px;
+      color: #9CA3AF;
+      font-size: 13px;
+      font-weight: normal;
+      text-decoration: line-through;
+    }
+
+    .info button {
+      width: 100%;
+      border: 0;
+      background: #10B981;
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      color: #6B7280;
+      font-size: 13px;
+      padding: 24px;
+    }
+
+    /* --- Coșul: un panou care iese din dreapta --- */
+    .fundal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s;
+      z-index: 10;
+    }
+
+    .fundal.deschis {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .panou {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 340px;
+      max-width: 100%;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: 0.3s;
+      z-index: 11;
+    }
+
+    .panou.deschis {
+      transform: translateX(0);
+    }
+
+    .panou-cap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid #E5E7EB;
+    }
+
+    .panou-cap h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .inchide {
+      border: 0;
+      background: none;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .livrare {
+      background: #F0FDF4;
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+
+    .bara {
+      height: 8px;
+      background: #D1FAE5;
+      border-radius: 99px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    #progres {
+      height: 100%;
+      width: 0;
+      background: #10B981;
+      transition: 0.4s;
+    }
+
+    #lista {
+      list-style: none;
+      margin: 0;
+      padding: 0 16px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    #lista li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    #lista li.gol {
+      justify-content: center;
+      color: #6B7280;
+    }
+
+    .mini {
+      flex: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+    }
+
+    .detalii {
+      flex: 1;
+      min-width: 0;
+      font-size: 14px;
+    }
+
+    .cant {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 14px;
+    }
+
+    .cant button {
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      border: 1px solid #D1D5DB;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .panou-jos {
+      padding: 14px 16px;
+      border-top: 1px solid #E5E7EB;
+    }
+
+    .cod {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .cod input {
+      flex: 1;
+      min-width: 0;
+      padding: 8px 10px;
+      border: 2px solid #E5E7EB;
+      border-radius: 8px;
+    }
+
+    .cod button {
+      border: 0;
+      background: #111827;
+      color: white;
+      border-radius: 8px;
+      padding: 0 14px;
+      cursor: pointer;
+    }
+
+    .rand {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+      font-size: 14px;
+    }
+
+    .rand.total {
+      margin-top: 8px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    #plateste {
+      width: 100%;
+      border: 0;
+      background: #4F46E5;
+      color: white;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    #mesaj {
+      margin: 8px 0 0;
+      font-weight: bold;
+      color: #16A34A;
+    }
+
+    /* --- Mesajul mic care apare jos --- */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translate(-50%, 80px);
+      background: #111827;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      opacity: 0;
+      transition: 0.3s;
+      z-index: 20;
+    }
+
+    .toast.vizibil {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================
+       🧱 HTML = ce există în pagină
+       ============================================ -->
+
+  <div class="banda">🔥 Retur gratuit în 14 zile · Plată la livrare</div>
+
+  <header>
+    <h1 class="logo" id="titlu">🛍️ Magazinul meu</h1>
+    <input class="cauta" id="cauta" type="search" placeholder="🔍 Caută un produs...">
+    <button class="buton-cos" id="deschide">🛒 Coș <span class="insigna" id="nr">0</span></button>
+  </header>
+
+  <section class="hero">
+    <h2>Reduceri de iarnă ❄️</h2>
+    <p>Până la -30% la produsele alese</p>
+  </section>
+
+  <!-- Două cutii goale: JavaScript le umple -->
+  <div class="categorii" id="categorii"></div>
+  <main class="produse" id="produse"></main>
+
+  <footer>© 2026 Magazinul meu · Plată sigură · Livrare în toată țara</footer>
+
+  <!-- Coșul (panou lateral, ascuns până îl deschizi) -->
+  <div class="fundal" id="fundal"></div>
+
+  <aside class="panou" id="panou">
+    <div class="panou-cap">
+      <h2>🧺 Coșul tău</h2>
+      <button class="inchide" id="inchide">✕</button>
+    </div>
+
+    <div class="livrare">
+      <span id="textLivrare"></span>
+      <div class="bara"><div id="progres"></div></div>
+    </div>
+
+    <ul id="lista"></ul>
+
+    <div class="panou-jos">
+      <div class="cod">
+        <input id="cod" placeholder="Ai un cod? Încearcă ELEV10">
+        <button id="aplica">Aplică</button>
+      </div>
+      <div class="rand"><span>Produse</span><span id="subtotal">0 lei</span></div>
+      <div class="rand"><span>Reducere</span><span id="redu">0 lei</span></div>
+      <div class="rand"><span>Transport</span><span id="trans">0 lei</span></div>
+      <div class="rand total"><span>Total</span><span id="total">0 lei</span></div>
+      <button id="plateste">Finalizează comanda</button>
+      <p id="mesaj"></p>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ============================================
+    // ⚡ JavaScript = ce se întâmplă
+    // ============================================
+
+    // --- 1) DATELE MAGAZINULUI ---
+    var produse = [
+      { id: 1, emoji: "🎧", nume: "Căști wireless",    categorie: "Electronice", pret: 199, vechi: 299, rating: 5, culoare: "#DBEAFE" },
+      { id: 2, emoji: "⌚", nume: "Ceas inteligent",   categorie: "Electronice", pret: 349, vechi: 0,   rating: 4, culoare: "#E0E7FF" },
+      { id: 3, emoji: "👟", nume: "Adidași alergare",  categorie: "Sport",       pret: 259, vechi: 329, rating: 4, culoare: "#FEE2E2" },
+      { id: 4, emoji: "🎒", nume: "Rucsac școlar",     categorie: "Modă",        pret: 129, vechi: 0,   rating: 5, culoare: "#FEF3C7" },
+      { id: 5, emoji: "🕶️", nume: "Ochelari de soare", categorie: "Modă",        pret: 89,  vechi: 119, rating: 3, culoare: "#FCE7F3" },
+      { id: 6, emoji: "⚽", nume: "Minge de fotbal",   categorie: "Sport",       pret: 59,  vechi: 0,   rating: 5, culoare: "#DCFCE7" },
+      { id: 7, emoji: "🎮", nume: "Controller de joc", categorie: "Electronice", pret: 189, vechi: 229, rating: 4, culoare: "#EDE9FE" },
+      { id: 8, emoji: "🧢", nume: "Șapcă",             categorie: "Modă",        pret: 49,  vechi: 0,   rating: 4, culoare: "#FFEDD5" }
+    ];
+
+    var categorii = ["Toate", "Electronice", "Modă", "Sport"];
+
+    var pragTransport = 200;   // de la câți lei transportul e gratuit
+    var costTransport = 15;    // cât costă transportul altfel
+    var codBun = "ELEV10";     // codul de reducere care funcționează
+    var procentCod = 10;       // cât reducere dă codul (în procente)
+
+    // --- 2) CE ȘTIE MAGAZINUL ACUM ---
+    var cos = {};                  // coșul: id produs -> câte bucăți
+    var categorieAleasa = "Toate";
+    var textCautat = "";
+    var codAplicat = false;
+    var totalFinal = 0;
+    var nrObiecte = 0;
+
+    // --- 3) UNELTE MICI ---
+    function el(id) {
+      return document.getElementById(id);
+    }
+
+    function faButon(text, ceFace) {
+      var b = document.createElement("button");
+      b.textContent = text;
+      b.onclick = ceFace;
+      return b;
+    }
+
+    function gaseste(id) {
+      return produse.filter(function (p) { return p.id === id; })[0];
+    }
+
+    var timerToast;
+    function arataToast(text) {
+      el("toast").textContent = text;
+      el("toast").classList.add("vizibil");
+      clearTimeout(timerToast);
+      timerToast = setTimeout(function () {
+        el("toast").classList.remove("vizibil");
+      }, 1800);
+    }
+
+    // --- 4) CATEGORIILE ---
+    function deseneazaCategorii() {
+      el("categorii").innerHTML = "";
+
+      categorii.forEach(function (c) {
+        var b = faButon(c, function () {
+          categorieAleasa = c;
+          deseneazaCategorii();
+          deseneazaProduse();
+        });
+        b.className = "chip";
+        if (c === categorieAleasa) {
+          b.className = "chip activ";
+        }
+        el("categorii").appendChild(b);
+      });
+    }
+
+    // --- 5) VITRINA CU PRODUSE ---
+    function deseneazaProduse() {
+      el("produse").innerHTML = "";
+
+      produse.forEach(function (p) {
+        // filtrele: categoria aleasă și textul căutat
+        if (categorieAleasa !== "Toate" && p.categorie !== categorieAleasa) { return; }
+        if (p.nume.toLowerCase().indexOf(textCautat) === -1) { return; }
+
+        // dacă produsul are preț vechi, arătăm reducerea
+        var eticheta = "";
+        var vechi = "";
+        if (p.vechi > 0) {
+          var procent = Math.round((p.vechi - p.pret) / p.vechi * 100);
+          eticheta = '<span class="reducere">-' + procent + '%</span>';
+          vechi = '<span class="vechi">' + p.vechi + ' lei</span>';
+        }
+
+        var card = document.createElement("div");
+        card.className = "produs";
+        card.innerHTML =
+          '<div class="poza" style="background:' + p.culoare + '">' + eticheta + p.emoji + '</div>' +
+          '<div class="info">' +
+            '<div class="nume">' + p.nume + '</div>' +
+            '<div class="stele">' + "★".repeat(p.rating) + "☆".repeat(5 - p.rating) + '</div>' +
+            '<div class="pret">' + p.pret + ' lei' + vechi + '</div>' +
+          '</div>';
+
+        card.querySelector(".info").appendChild(
+          faButon("Adaugă în coș", function () {
+            adauga(p.id);
+            arataToast("✅ " + p.nume + " e în coș");
+          })
+        );
+        el("produse").appendChild(card);
+      });
+
+      if (el("produse").children.length === 0) {
+        el("produse").innerHTML = "<p>Niciun produs găsit 😕</p>";
+      }
+    }
+
+    // --- 6) ACȚIUNILE COȘULUI ---
+    function adauga(id) {
+      cos[id] = (cos[id] || 0) + 1;
+      deseneazaCos();
+    }
+
+    function scade(id) {
+      cos[id] = cos[id] - 1;
+      if (cos[id] <= 0) {
+        delete cos[id];
+      }
+      deseneazaCos();
+    }
+
+    function scoate(id) {
+      delete cos[id];
+      deseneazaCos();
+    }
+
+    // --- 7) DESENĂM COȘUL (după fiecare schimbare) ---
+    function deseneazaCos() {
+      el("lista").innerHTML = "";
+      el("mesaj").textContent = "";
+      var subtotal = 0;
+      nrObiecte = 0;
+
+      produse.forEach(function (p) {
+        var cant = cos[p.id];
+        if (!cant) { return; }
+
+        subtotal = subtotal + p.pret * cant;
+        nrObiecte = nrObiecte + cant;
+
+        var li = document.createElement("li");
+        li.innerHTML =
+          '<div class="mini" style="background:' + p.culoare + '">' + p.emoji + '</div>' +
+          '<div class="detalii"><b>' + p.nume + '</b><br>' + p.pret * cant + ' lei</div>';
+
+        var butoane = document.createElement("div");
+        butoane.className = "cant";
+        butoane.appendChild(faButon("−", function () { scade(p.id); }));
+        butoane.appendChild(document.createTextNode(cant));
+        butoane.appendChild(faButon("+", function () { adauga(p.id); }));
+        butoane.appendChild(faButon("🗑️", function () { scoate(p.id); }));
+        li.appendChild(butoane);
+
+        el("lista").appendChild(li);
+      });
+
+      if (nrObiecte === 0) {
+        el("lista").innerHTML = '<li class="gol">Coșul tău e gol 🕸️</li>';
+      }
+
+      // --- calculele: reducere, transport, total ---
+      var reducere = 0;
+      if (codAplicat) {
+        reducere = Math.round(subtotal * procentCod / 100);
+      }
+
+      var transport = 0;
+      if (nrObiecte > 0 && subtotal < pragTransport) {
+        transport = costTransport;
+      }
+
+      totalFinal = subtotal - reducere + transport;
+
+      // --- bara „transport gratuit” ---
+      var lipsa = pragTransport - subtotal;
+      if (lipsa > 0) {
+        el("textLivrare").textContent = "Mai ai de adăugat " + lipsa + " lei pentru transport gratuit 🚚";
+      } else {
+        el("textLivrare").textContent = "🎉 Ai transport gratuit!";
+      }
+      el("progres").style.width = Math.min(100, subtotal / pragTransport * 100) + "%";
+
+      // --- punem numerele pe ecran ---
+      el("nr").textContent = nrObiecte;
+      el("subtotal").textContent = subtotal + " lei";
+      if (reducere > 0) {
+        el("redu").textContent = "-" + reducere + " lei";
+      } else {
+        el("redu").textContent = "0 lei";
+      }
+      if (transport === 0) {
+        el("trans").textContent = "Gratuit";
+      } else {
+        el("trans").textContent = transport + " lei";
+      }
+      el("total").textContent = totalFinal + " lei";
+    }
+
+    // --- 8) BUTOANELE ȘI CÂMPURILE ---
+    function arataCos(da) {
+      el("panou").classList.toggle("deschis", da);
+      el("fundal").classList.toggle("deschis", da);
+    }
+
+    el("deschide").onclick = function () { arataCos(true); };
+    el("inchide").onclick = function () { arataCos(false); };
+    el("fundal").onclick = function () { arataCos(false); };
+
+    el("cauta").oninput = function () {
+      textCautat = el("cauta").value.toLowerCase();
+      deseneazaProduse();
+    };
+
+    el("aplica").onclick = function () {
+      var scris = el("cod").value.trim().toUpperCase();
+      if (scris === codBun) {
+        codAplicat = true;
+        arataToast("🎟️ Cod aplicat: -" + procentCod + "%");
+      } else {
+        codAplicat = false;
+        arataToast("❌ Cod invalid");
+      }
+      deseneazaCos();
+    };
+
+    el("plateste").onclick = function () {
+      if (nrObiecte === 0) {
+        el("mesaj").textContent = "Coșul e gol 🕸️";
+        return;
+      }
+      var platit = totalFinal;
+      cos = {};
+      codAplicat = false;
+      el("cod").value = "";
+      deseneazaCos();
+      el("mesaj").textContent = "✅ Comandă trimisă! Ai plătit " + platit + " lei. Mulțumim!";
+    };
+
+    // --- 9) PORNIM MAGAZINUL ---
+    deseneazaCategorii();
+    deseneazaProduse();
+    deseneazaCos();
+  </script>
+</body>
+</html>
+</textarea>
+
+<main>
+
+<section id="s1"><h2><span class="n">1</span>Apasă pe magazin și vezi codul din spate</h2>
+<p>Alege o piesă din listă. O vezi <b>încercuită cu roz</b> în magazin, iar dedesubt apare codul ei. Fiecare piesă are până la trei părți: 🧱 <b>HTML</b> (ce există), 🎨 <b>CSS</b> (cum arată), ⚡ <b>JavaScript</b> (ce se întâmplă). Poți apăsa și tu pe produse și pe coș, magazinul chiar merge!</p>
+<div class="tabs" id="map"></div>
+<div class="lg">
+  <div><iframe id="shop" sandbox="allow-scripts" title="Magazinul"></iframe></div>
+  <div><div class="say" id="msay">Alege o piesă din listă 👆</div></div>
+</div>
+<div id="mcode"></div>
+<div class="tip">💡 <b>Observă:</b> cardurile de produs, categoriile și rândurile din coș <b>nu sunt scrise în HTML</b>. Le face JavaScript, din lista de produse. De aceea adaugi un produs nou scriind un singur rând de date.</div>
+</section>
+
+<section id="s2" style="--ac:var(--c2)"><h2><span class="n">2</span>Unde stă fiecare limbaj în fișier?</h2>
+<p>Tot magazinul e <b>un singur fișier</b> cu trei zone. Apasă pe butoane ca să vezi zonele:</p>
+<div class="tabs" id="sk"></div><div class="code" id="skc"></div><div class="say" id="sksay"></div>
+</section>
+
+<section id="s3" style="--ac:var(--c3)"><h2><span class="n">3</span>JavaScript, piesă cu piesă</h2>
+<p>JavaScript e partea cea mai lungă, așa că o luăm <b>în ordinea din fișier</b>. Cifrele galbene din cod 🟡 se potrivesc cu explicațiile de sub el.</p>
+<div id="story"></div>
+</section>
+
+<section id="s4" style="--ac:var(--c5)"><h2><span class="n">4</span>Încearcă: ce se întâmplă la un click? 🔬</h2>
+<h3>A. Trucul coșului care iese din lateral</h3>
+<p>Coșul din magazin nu apare și nu dispare: stă mereu acolo, doar că e împins în afara ecranului. Apăsarea pe butonul 🛒 doar <b>adaugă sau scoate o etichetă</b> (<code>deschis</code>). CSS face restul. Apasă și vezi:</p>
+<div class="lg"><div><div class="dm"><div class="pn" id="dpn">🧺 Coșul</div></div><button id="dbtn" style="margin-top:8px">🛒 Deschide / închide</button></div>
+<div><div class="code" id="dcode"></div></div></div>
+
+<h3>B. Cum se schimbă datele, pas cu pas</h3>
+<p>O copie mică a coșului. Urmărește <b>trei lucruri</b>: ce funcție rulează, ce știe JavaScript (variabilele) și ce apare pe ecran. Încearcă și codul <code>ELEV10</code>!</p>
+<div class="g3 sim" id="sim"></div>
+</section>
+
+<section id="s5" style="--ac:var(--c4)"><h2><span class="n">5</span>Cine face ce? Rezumat</h2>
+<div class="g3">
+<div><span class="e">🧱</span><b>HTML = ce există</b><br>Banda, antetul cu căutare, butonul de coș, bannerul, cutiile goale pentru categorii și produse, panoul coșului cu câmpurile lui.</div>
+<div><span class="e">🎨</span><b>CSS = cum arată</b><br>Culorile, colțurile rotunde, umbrele, grila de produse, antetul lipit sus, panoul care iese din lateral, bara verde, mesajul mic de jos.</div>
+<div><span class="e">⚡</span><b>JavaScript = ce se întâmplă</b><br>Desenează categoriile și produsele, filtrează după căutare, schimbă coșul, calculează reducerea, transportul și totalul.</div>
+</div>
+<div class="tip ok">✅ <b>Ideea de aur:</b> când se schimbă ceva, JavaScript schimbă variabilele (<code>cos</code>, <code>codAplicat</code>) și apoi <b>redesenează</b> coșul. Totalul nu „se actualizează singur”: se calculează din nou, de fiecare dată, din ce e în coș.</div>
+</section>
+
+<section id="s6" style="--ac:var(--c2)"><h2><span class="n">6</span>Unde se scrie? Test 🎯</h2>
+<p>Pentru fiecare rând de cod, alege limbajul.</p>
+<div id="quiz"></div><div class="score" id="score" hidden></div>
+</section>
+
+</main>
+<script>
+var $=function(i){return document.getElementById(i)};
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function hi(s){
+  var str=esc(s);
+  return str.replace(/(\/\*[\s\S]*?\*\/|\/\/[^\n]*|&lt;!--[\s\S]*?--&gt;)|("[^"\n]*"|'[^'\n]*')|(&lt;\/?[A-Za-z!][A-Za-z0-9]*|\/?&gt;)|^([ \t]+)([a-z-]+)(?=:)|\b(var|function|if|else|return|delete)\b|(#[0-9A-Fa-f]{3,8}\b)|\b(\d+(?:\.\d+)?)\b/gm,
+  function(m,c,s,t,ws,p,k,h,n,off){
+    if(c)return '<span class="c">'+c+'</span>';
+    if(s)return '<span class="s">'+s+'</span>';
+    if(t){
+      if(/^\/?&gt;$/.test(t)){
+        var seg=str.slice(str.lastIndexOf('\n',off-1)+1,off);
+        if(!(seg.lastIndexOf('&lt;')>seg.lastIndexOf('&gt;')))return m;
+      }
+      return '<span class="t">'+t+'</span>';
+    }
+    if(p)return ws+'<span class="p">'+p+'</span>';
+    if(k)return '<span class="k">'+k+'</span>';
+    if(h)return '<span class="nm">'+h+'</span>';
+    if(n)return '<span class="nm">'+n+'</span>';
+    return m;
+  });
+}
+function tabs(id,items,fn){var b=$(id);items.forEach(function(t,k){var e=document.createElement('button');e.innerHTML=t;e.onclick=function(){[].forEach.call(b.children,function(x){x.classList.remove('on')});e.classList.add('on');fn(k)};b.appendChild(e)});b.children[0].click()}
+
+/* cod cu cifre galbene: o linie care se termina cu §3 primeste insigna 3 */
+function cb(code,notes){
+  var lines=code.replace(/^\n+|\n+$/g,'').split('\n');
+  var out=lines.map(function(l){var m=/\s*§(\d+)\s*$/.exec(l),mk='';if(m){l=l.slice(0,m.index);mk='<span class="mk">'+m[1]+'</span>'}return hi(l)+mk}).join('\n');
+  var h='<div class="code">'+out+'</div>';
+  if(notes&&notes.length)h+='<ol class="nt">'+notes.map(function(x,i){return '<li><span class="mk">'+(i+1)+'</span><span>'+x+'</span></li>'}).join('')+'</ol>';
+  return h;
+}
+var LG={html:['🧱 HTML','se scrie în body'],css:['🎨 CSS','se scrie între &lt;style&gt; și &lt;/style&gt;, în head'],js:['⚡ JavaScript','se scrie între &lt;script&gt; și &lt;/script&gt;, la sfârșitul lui body']};
+function lh(l){return '<div class="lh"><span class="b '+l+'">'+LG[l][0]+'</span><small>'+LG[l][1]+'</small></div>'}
+
+/* ---------- 1: harta ---------- */
+var FULL=$('full').value;
+var INJ='<script>(function(){var last=null;window.addEventListener("message",function(e){var m=e.data||{};if(last){last.style.outline="";last.style.outlineOffset=""}last=null;var P=document.getElementById("panou");if(m.open){P.classList.add("deschis")}else{P.classList.remove("deschis")}if(m.add&&!document.querySelector("#lista li:not(.gol)")){var b=document.querySelector(".info button");if(b)b.click()}if(!m.sel)return;var el=document.querySelector(m.sel);if(el){if(!m.open)el.scrollIntoView({block:"center"});el.style.outline="4px dashed #EC4899";el.style.outlineOffset="-4px";last=el}})})()<\/script>';
+$('shop').srcdoc=FULL.replace('</body>',INJ+'</body>');
+
+var PARTS=[
+{n:'📢 Banda',sel:'.banda',
+ say:'Banda neagră de sus, ca la magazinele reale: retur, livrare, oferte.',
+ html:`<div class="banda">🔥 Retur gratuit în 14 zile · Plată la livrare</div>`,
+ hn:'O cutie (<code>div</code>) cu text. Atât. Eticheta <code>class="banda"</code> e „numele de echipă” pe care îl caută CSS-ul.',
+ css:`.banda {
+  background: #111827;
+  color: white;
+  text-align: center;
+  font-size: 13px;
+  padding: 8px;
+}`,
+ cn:'Fundal aproape negru, litere albe, text la mijloc, puțin aer în interior (<code>padding</code>).',
+ js:null,jn:'Niciun rând de JavaScript! Banda stă pe loc. Nu orice piesă are nevoie de toate cele trei limbaje.'},
+{n:'🔝 Antetul',sel:'header',
+ say:'Logo, căutare și butonul de coș. Derulează pagina: antetul rămâne lipit sus, ca pe site-urile adevărate.',
+ html:`<header>
+  <h1 class="logo" id="titlu">🛍️ Magazinul meu</h1>
+  <input class="cauta" id="cauta" type="search" placeholder="🔍 Caută un produs...">
+  <button class="buton-cos" id="deschide">🛒 Coș …</button>
+</header>`,
+ hn:'Un <code>header</code> cu trei copii: titlul, câmpul de căutare (<code>input</code>) și butonul. Câmpul și butonul au <b>id</b>, ca JavaScript să le găsească.',
+ css:`header {
+  background: white;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.cauta {
+  flex: 1;
+  border-radius: 999px;
+}`,
+ cn:'<code>display: flex</code> pune cei trei copii pe un rând. <code>flex: 1</code> la căutare = „ia tot spațiul rămas”. <code>position: sticky; top: 0</code> = „când derulezi, rămâi lipit sus”. <code>z-index</code> îl ține deasupra produselor.',
+ js:`el("cauta").oninput = function () {
+  textCautat = el("cauta").value.toLowerCase();
+  deseneazaProduse();
+};`,
+ jn:'<code>oninput</code> = „de fiecare dată când se scrie o literă în câmp”. Păstrăm ce s-a scris în <code>textCautat</code> și desenăm vitrina din nou. Încearcă în magazin să scrii „ceas”!'},
+{n:'🛒 Butonul de coș',sel:'.buton-cos',
+ say:'Butonul albastru cu cifra roșie. Adaugă un produs și vezi cum crește cifra.',
+ html:`<button class="buton-cos" id="deschide">
+  🛒 Coș <span class="insigna" id="nr">0</span>
+</button>`,
+ hn:'Cifra roșie e un <code>span</code> <b>în interiorul</b> butonului, cu id-ul <code>nr</code>. Scrie 0 doar la început.',
+ css:`.buton-cos {
+  position: relative;
+  background: #4F46E5;
+  border-radius: 999px;
+}
+
+.insigna {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  background: #EF4444;
+  border-radius: 999px;
+}`,
+ cn:'Trucul insignei: butonul are <code>position: relative</code> (e „punctul de pornire”), iar insigna are <code>position: absolute</code> și se așază față de buton: puțin în afara colțului dreapta-sus.',
+ js:`el("nr").textContent = nrObiecte;
+
+el("deschide").onclick = function () { arataCos(true); };`,
+ jn:'La fiecare redesenare a coșului, scriem numărul de obiecte în insignă. Iar când apeși pe buton, deschidem panoul coșului.'},
+{n:'🖼️ Bannerul',sel:'.hero',
+ say:'Bannerul mare cu reduceri. E o piesă fără niciun rând de JavaScript.',
+ html:`<section class="hero">
+  <h2>Reduceri de iarnă ❄️</h2>
+  <p>Până la -30% la produsele alese</p>
+</section>`,
+ hn:'Un titlu <code>h2</code> și un paragraf, într-o cutie <code>section</code>. Pur și simplu text.',
+ css:`.hero {
+  background: linear-gradient(135deg, #4F46E5, #EC4899);
+  color: white;
+  text-align: center;
+  padding: 34px 20px;
+}
+
+.hero h2 {
+  margin: 0 0 8px;
+  font-size: 30px;
+}`,
+ cn:'<code>linear-gradient</code> face un <b>degrade</b>: de la albastru la roz, pe diagonală (135 de grade). <code>.hero h2</code> (cu spațiu) = „titlul din interiorul bannerului”.',
+ js:null,jn:'Niciun rând de JavaScript. Dacă vrei un banner nou, schimbi doar HTML-ul și culorile din CSS.'},
+{n:'🏷️ Categoriile',sel:'.categorii',
+ say:'Butoanele rotunde de sub banner. Apasă pe „Sport” și vezi cum se filtrează produsele.',
+ html:`<!-- o cutie goală: JavaScript o umple -->
+<div class="categorii" id="categorii"></div>`,
+ hn:'Surpriză: în HTML nu există niciun buton de categorie! Există doar cutia goală. Butoanele le face JavaScript din lista <code>categorii</code>.',
+ css:`.chip {
+  border: 2px solid #E5E7EB;
+  background: white;
+  border-radius: 999px;
+  padding: 8px 16px;
+}
+
+.chip.activ {
+  background: #111827;
+  color: white;
+}`,
+ cn:'<code>.chip.activ</code> (<b>fără spațiu</b> între ele) înseamnă „elementul care are și clasa chip, și clasa activ”. Doar categoria aleasă primește clasa <code>activ</code> și devine neagră.',
+ js:`var categorii = ["Toate", "Electronice", "Modă", "Sport"];
+
+categorii.forEach(function (c) {
+  var b = faButon(c, function () {
+    categorieAleasa = c;
+    deseneazaCategorii();
+    deseneazaProduse();
+  });
+  b.className = "chip";
+  if (c === categorieAleasa) {
+    b.className = "chip activ";
+  }
+  el("categorii").appendChild(b);
+});`,
+ jn:'Pentru fiecare nume din listă facem un buton. La apăsare reținem categoria aleasă și desenăm din nou și categoriile (ca să se mute culoarea neagră), și produsele (ca să se filtreze). Butonul ales primește clasa <code>activ</code>.'},
+{n:'📦 Cardul de produs',sel:'.produs',
+ say:'Fiecare produs: poză (aici emoji), insignă de reducere, stele, preț vechi tăiat. Treci cu mouse-ul peste el!',
+ html:`<main class="produse" id="produse"></main>`,
+ hn:'Din nou o cutie goală. Cardurile nu sunt în HTML: le construiește JavaScript pentru fiecare produs din listă.',
+ css:`.produse {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.produs:hover {
+  transform: translateY(-4px);
+}
+
+.reducere {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #EF4444;
+}
+
+.vechi {
+  text-decoration: line-through;
+}`,
+ cn:'<code>display: grid</code> cu <code>auto-fill, minmax(180px, 1fr)</code> = „pune câte carduri încap pe rând, fiecare de minim 180px”. De aceea pe telefon sunt 2, pe laptop 5. <code>line-through</code> taie prețul vechi cu o linie.',
+ js:`if (p.vechi > 0) {
+  var procent = Math.round((p.vechi - p.pret) / p.vechi * 100);
+  eticheta = '<span class="reducere">-' + procent + '%</span>';
+}
+
+"★".repeat(p.rating) + "☆".repeat(5 - p.rating)`,
+ jn:'Dacă produsul are preț vechi, calculăm cât la sută s-a redus: (vechi − nou) / vechi × 100. Stelele: <code>repeat(4)</code> scrie ★ de 4 ori, iar restul până la 5 sunt ☆ goale.'},
+{n:'🧺 Panoul coșului',sel:'.panou',open:true,add:true,
+ say:'Coșul se deschide din dreapta, ca la magazinele adevărate. (Am apăsat „Adaugă” pentru tine, ca să nu fie gol.)',
+ html:`<div class="fundal" id="fundal"></div>
+
+<aside class="panou" id="panou">
+  <div class="panou-cap">
+    <h2>🧺 Coșul tău</h2>
+    <button class="inchide" id="inchide">✕</button>
+  </div>
+  <ul id="lista"></ul>
+  …
+</aside>`,
+ hn:'Două piese: <code>fundal</code> (stratul întunecat din spate) și <code>aside</code> (panoul). Lista <code>ul</code> e goală: rândurile vin din JavaScript.',
+ css:`.panou {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 340px;
+  transform: translateX(100%);
+  transition: 0.3s;
+}
+
+.panou.deschis {
+  transform: translateX(0);
+}`,
+ cn:'<code>position: fixed</code> = lipit de ecran. <code>translateX(100%)</code> îl împinge cu lățimea lui spre dreapta, deci iese din ecran. Cu clasa <code>deschis</code> se întoarce la 0. <code>transition</code> face mișcarea lină. Același truc ca la demo-ul din secțiunea 4!',
+ js:`function arataCos(da) {
+  el("panou").classList.toggle("deschis", da);
+  el("fundal").classList.toggle("deschis", da);
+}
+
+el("deschide").onclick = function () { arataCos(true); };
+el("inchide").onclick  = function () { arataCos(false); };
+el("fundal").onclick   = function () { arataCos(false); };`,
+ jn:'<code>classList.toggle("deschis", da)</code> = „pune eticheta dacă <code>da</code> e adevărat, scoate-o dacă nu”. Trei locuri deschid sau închid coșul: butonul 🛒, ✕ și click pe fundalul întunecat.'},
+{n:'📋 Un rând din coș',sel:'#lista li',open:true,add:true,
+ say:'Produsul, prețul lui și butoanele − + 🗑️. (Am apăsat „Adaugă” dacă coșul era gol.)',
+ html:`<ul id="lista"></ul>`,
+ hn:'Doar lista goală! Fiecare rând din coș e desenat de JavaScript, după ce e în variabila <code>cos</code>.',
+ css:`#lista li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.detalii {
+  flex: 1;
+}`,
+ cn:'Fiecare rând e un <code>flex</code>: poza mică, detaliile și butoanele. <code>.detalii { flex: 1 }</code> îi dă detaliilor tot spațiul rămas, deci butoanele rămân lipite de dreapta.',
+ js:`var li = document.createElement("li");
+li.innerHTML =
+  '<div class="mini">' + p.emoji + '</div>' +
+  '<div class="detalii"><b>' + p.nume + '</b></div>';
+
+butoane.appendChild(faButon("−", function () { scade(p.id); }));
+butoane.appendChild(faButon("+", function () { adauga(p.id); }));
+butoane.appendChild(faButon("🗑️", function () { scoate(p.id); }));
+el("lista").appendChild(li);`,
+ jn:'Facem rândul, apoi trei butoane cu aceeași „fabrică” <code>faButon</code>. Fiecare buton știe id-ul produsului lui: − scade o bucată, + adaugă una, 🗑️ scoate tot produsul.'},
+{n:'🚚 Transport gratuit',sel:'.livrare',open:true,add:true,
+ say:'Mesajul și bara verde care se umple. Adaugă mai multe produse și o să vezi bara crescând.',
+ html:`<div class="livrare">
+  <span id="textLivrare"></span>
+  <div class="bara"><div id="progres"></div></div>
+</div>`,
+ hn:'O cutie cu un text gol și o bară în două straturi: <code>bara</code> (fundalul deschis) și <code>progres</code> (partea care se umple), una în alta.',
+ css:`.bara {
+  height: 8px;
+  background: #D1FAE5;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+#progres {
+  height: 100%;
+  width: 0;
+  background: #10B981;
+  transition: 0.4s;
+}`,
+ cn:'Bara mare are 8px înălțime și ascunde ce iese din ea (<code>overflow: hidden</code>). Cea verde începe la lățime 0 și o să fie făcută mai lată de JavaScript. <code>transition</code> face umplerea lină.',
+ js:`var lipsa = pragTransport - subtotal;
+if (lipsa > 0) {
+  el("textLivrare").textContent =
+    "Mai ai de adăugat " + lipsa + " lei pentru transport gratuit 🚚";
+} else {
+  el("textLivrare").textContent = "🎉 Ai transport gratuit!";
+}
+el("progres").style.width =
+  Math.min(100, subtotal / pragTransport * 100) + "%";`,
+ jn:'Dacă ai sub 200 lei, calculăm cât mai lipsește. Lățimea barei = ce ai împărțit la prag, în procente. <code>Math.min(100, …)</code> nu lasă bara să treacă de 100%.'},
+{n:'🎟️ Cod și total',sel:'.panou-jos',open:true,add:true,
+ say:'Câmpul pentru cod de reducere și cele patru rânduri cu calcule. Scrie ELEV10 și apasă Aplică!',
+ html:`<div class="cod">
+  <input id="cod" placeholder="Ai un cod? Încearcă ELEV10">
+  <button id="aplica">Aplică</button>
+</div>
+<div class="rand"><span>Produse</span><span id="subtotal">0 lei</span></div>
+<div class="rand"><span>Reducere</span><span id="redu">0 lei</span></div>
+<div class="rand"><span>Transport</span><span id="trans">0 lei</span></div>
+<div class="rand total"><span>Total</span><span id="total">0 lei</span></div>`,
+ hn:'Fiecare sumă e într-un <code>span</code> cu <b>id</b>. Scrie „0 lei” doar la început; JavaScript le înlocuiește de fiecare dată.',
+ css:`.rand {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+}
+
+.rand.total {
+  font-size: 18px;
+  font-weight: bold;
+}`,
+ cn:'<code>space-between</code> împinge cele două <code>span</code>-uri la capete: eticheta la stânga, suma la dreapta. <code>.rand.total</code> (fără spațiu) = rândul care are <b>și</b> clasa total, deci e mai mare și îngroșat.',
+ js:`el("aplica").onclick = function () {
+  var scris = el("cod").value.trim().toUpperCase();
+  if (scris === codBun) {
+    codAplicat = true;
+  } else {
+    codAplicat = false;
+  }
+  deseneazaCos();
+};
+
+totalFinal = subtotal - reducere + transport;
+el("total").textContent = totalFinal + " lei";`,
+ jn:'Citim ce ai scris, tăiem spațiile (<code>trim</code>) și facem literele mari (<code>toUpperCase</code>), ca „elev10” să meargă și el. Dacă e codul bun, ținem minte asta în <code>codAplicat</code> și redesenăm coșul, care calculează reducerea.'}
+];
+function showPart(k){
+  var p=PARTS[k];
+  var fw=$('shop').contentWindow;
+  if(fw)fw.postMessage({sel:p.sel,open:!!p.open,add:!!p.add},'*');
+  $('msay').innerHTML='<b>'+p.n+'</b><br>'+p.say;
+  var h='';
+  h+=lh('html')+(p.html?cb(p.html):'<div class="none">— nimic aici —</div>')+'<p>'+p.hn+'</p>';
+  h+=lh('css')+cb(p.css)+'<p>'+p.cn+'</p>';
+  h+=lh('js')+(p.js?cb(p.js):'<div class="none">— nimic aici —</div>')+'<p>'+p.jn+'</p>';
+  $('mcode').innerHTML=h;
+}
+var shopReady=false,pend=null;
+$('shop').addEventListener('load',function(){shopReady=true;if(pend!==null)setTimeout(function(){showPart(pend)},150)});
+tabs('map',PARTS.map(function(p){return p.n}),function(k){pend=k;showPart(k)});
+
+/* ---------- 2: schelet ---------- */
+var SKL=['<!DOCTYPE html>','<html lang="ro">','<head>','  <meta charset="utf-8">','  <title>Magazinul meu</title>','  <style>','    .banda { … }','    header { … }','    .produs { … }','    .panou { … }','  </style>','</head>','<body>','  <div class="banda"> … </div>','  <header> … </header>','  <section class="hero"> … </section>','  <div class="categorii" id="categorii"></div>','  <main class="produse" id="produse"></main>','  <aside class="panou" id="panou"> … </aside>','  <script>','    var produse = [ … ];','    function adauga(id) { … }','    function deseneazaCos() { … }','  <\/script>','</body>','</html>'];
+var SK=[['📜 Tot fișierul',[],'Un singur fișier, trei zone. <code>head</code> ține setările (aici stă CSS-ul), <code>body</code> ține ce se vede (aici stă HTML-ul și, la sfârșit, JavaScript).'],
+['🧱 HTML',[13,14,15,16,17,18],'🧱 <b>HTML</b> se scrie în <b>body</b>: banda, antetul, bannerul, cutiile goale pentru categorii și produse, panoul coșului. Aici scrii <b>ce există</b>. Vezi că vitrina e goală: produsele vin din JavaScript.'],
+['🎨 CSS',[5,6,7,8,9,10],'🎨 <b>CSS</b> se scrie între <code>&lt;style&gt;</code> și <code>&lt;/style&gt;</code>, în <b>head</b>. Browserul citește head primul, ca să știe de la început cum să deseneze pagina.'],
+['⚡ JavaScript',[19,20,21,22,23],'⚡ <b>JavaScript</b> se scrie între <code>&lt;script&gt;</code> și <code>&lt;/script&gt;</code>, la <b>sfârșitul lui body</b>. De ce acolo? JavaScript caută elemente după id. Dacă ar rula înainte să existe elementele, nu le-ar găsi.']];
+tabs('sk',SK.map(function(x){return x[0]}),function(k){
+  $('skc').innerHTML=SKL.map(function(l,j){var on=SK[k][1].indexOf(j)>-1;return '<span style="display:block;'+(on?'background:rgba(255,212,121,.28);border-radius:6px':(SK[k][1].length?'opacity:.4':''))+'">'+hi(l)+'</span>'}).join('');
+  $('sksay').innerHTML=SK[k][2];
+});
+
+/* ---------- 3: povestea JavaScript ---------- */
+var ST=[
+{t:'Piesa 1: datele magazinului',say:'Înainte de orice, magazinul trebuie să știe ce vinde și ce reguli are. Totul se află în câteva variabile, ca să le poți schimba ușor.',
+ code:`var produse = [ §1
+  { id: 1, emoji: "🎧", nume: "Căști wireless", categorie: "Electronice", pret: 199, vechi: 299, rating: 5, culoare: "#DBEAFE" }, §2
+  { id: 2, emoji: "⌚", nume: "Ceas inteligent", categorie: "Electronice", pret: 349, vechi: 0, rating: 4, culoare: "#E0E7FF" }
+];
+
+var pragTransport = 200; §3
+var costTransport = 15;
+var codBun = "ELEV10"; §4
+var procentCod = 10;`,
+ notes:['<code>[ ]</code> = o listă. Ține toate produsele magazinului, ca inventarul din joc. (În fișier sunt 8, aici arătăm 2.)','Fiecare <code>{ }</code> e o „fișă” de produs, cu informații: id unic, emoji, nume, categorie, preț, preț vechi (0 = nu e redus), stele și culoarea pozei. Între fișe pui virgulă, mai puțin după ultima.','Regulile transportului: gratuit de la 200 lei, altfel costă 15.','Codul de reducere și cât la sută scade. Poți schimba oricând aceste valori.']},
+{t:'Piesa 2: ce știe magazinul acum',say:'Variabilele care se schimbă cât timp folosești magazinul. Gândește-te la ele ca la tabloul de bord dintr-un joc.',
+ code:`var cos = {}; §1
+var categorieAleasa = "Toate"; §2
+var textCautat = "";
+var codAplicat = false; §3
+var totalFinal = 0;
+var nrObiecte = 0;`,
+ notes:['<code>cos</code> începe gol: <code>{}</code>. Va ține perechi „id → câte bucăți”: <code>{ 1: 2, 3: 1 }</code> înseamnă 2 căști și 1 pereche de adidași.','Ce categorie e aleasă și ce ai scris în căutare. Din ele se hotărăște ce produse apar.','<code>false</code> = „nu”, <code>true</code> = „da”. Ține minte dacă ai aplicat un cod bun.']},
+{t:'Piesa 3: uneltele mici',say:'Funcții scurte pe care le folosim peste tot. În loc să scriem același cod de zeci de ori, îl scriem o singură dată.',
+ code:`function el(id) { §1
+  return document.getElementById(id);
+}
+
+function faButon(text, ceFace) { §2
+  var b = document.createElement("button");
+  b.textContent = text;
+  b.onclick = ceFace;
+  return b;
+}
+
+function arataToast(text) { §3
+  el("toast").textContent = text;
+  el("toast").classList.add("vizibil");
+  setTimeout(function () {
+    el("toast").classList.remove("vizibil");
+  }, 1800);
+}`,
+ notes:['O scurtătură: <code>el("nr")</code> în loc de <code>document.getElementById("nr")</code>. <code>return</code> = întoarce rezultatul.','Fabrica de butoane. Primește textul și ce să facă la apăsare, și întoarce un buton gata făcut. <code>createElement</code> îl face doar în memorie; apare pe pagină abia când îl pui undeva cu <code>appendChild</code>.','Mesajul mic de jos. Îi punem clasa <code>vizibil</code> (CSS îl face să apară), iar <code>setTimeout</code> o scoate după 1800 milisecunde (aproape 2 secunde).']},
+{t:'Piesa 4: desenăm vitrina',say:'Face câte un card pentru fiecare produs care trece de filtre. Se rulează din nou la fiecare schimbare de categorie sau căutare.',
+ code:`function deseneazaProduse() {
+  el("produse").innerHTML = ""; §1
+
+  produse.forEach(function (p) { §2
+    if (categorieAleasa !== "Toate" && p.categorie !== categorieAleasa) { return; } §3
+    if (p.nume.toLowerCase().indexOf(textCautat) === -1) { return; } §4
+
+    var card = document.createElement("div"); §5
+    card.className = "produs";
+    card.innerHTML = '<div class="nume">' + p.nume + '</div>';
+
+    card.querySelector(".info").appendChild( §6
+      faButon("Adaugă în coș", function () {
+        adauga(p.id);
+        arataToast("✅ " + p.nume + " e în coș");
+      })
+    );
+    el("produse").appendChild(card); §7
+  });
+}`,
+ notes:['Ștergem vitrina veche. E mai simplu să o refacem toată decât să căutăm ce s-a schimbat.','<code>forEach</code> = „pentru fiecare”. Repetă ce e între acolade pentru fiecare produs; <code>p</code> e produsul de acum.','Filtrul de categorie. <code>!==</code> = „nu e egal cu”, <code>&amp;&amp;</code> = „și”. Dacă nu e „Toate” și produsul e din altă categorie, <code>return</code> sare peste el.','Filtrul de căutare. <code>indexOf</code> caută textul în nume; <code>-1</code> înseamnă „nu l-am găsit”. Cu <code>toLowerCase</code> nu contează dacă scrii cu litere mari sau mici.','Facem cardul. Îi punem clasa <code>produs</code>: aici se leagă JavaScript de CSS! (În fișier, <code>innerHTML</code> scrie și poza, stelele și prețul.)','Punem în card butonul „Adaugă în coș”. La apăsare adaugă produsul și arată mesajul mic.','Pune cardul în vitrină. Abia acum apare pe ecran.']},
+{t:'Piesa 5: acțiunile coșului',say:'Trei funcții mici schimbă variabila <code>cos</code>. Orice ar face, la sfârșit cer redesenarea coșului.',
+ code:`function adauga(id) {
+  cos[id] = (cos[id] || 0) + 1; §1
+  deseneazaCos(); §2
+}
+
+function scade(id) {
+  cos[id] = cos[id] - 1; §3
+  if (cos[id] <= 0) {
+    delete cos[id]; §4
+  }
+  deseneazaCos();
+}
+
+function scoate(id) {
+  delete cos[id]; §5
+  deseneazaCos();
+}`,
+ notes:['Dacă produsul nu e în coș, <code>cos[id]</code> nu există. <code>|| 0</code> = „sau 0”, deci pornim de la 0 și adunăm 1.','După orice schimbare, redesenăm coșul. Așa se actualizează lista, totalul și cifra roșie.','Scădem o bucată.','Dacă a ajuns la 0, ștergem produsul din coș, ca să nu rămână „Căști ×0”.','🗑️ șterge produsul din coș dintr-o dată, oricâte bucăți ar fi.']},
+{t:'Piesa 6: desenăm coșul (lista)',say:'Funcția cea mai importantă. Se rulează după fiecare schimbare și <b>reface coșul de la zero</b>.',
+ code:`function deseneazaCos() {
+  el("lista").innerHTML = ""; §1
+  var subtotal = 0;
+  nrObiecte = 0;
+
+  produse.forEach(function (p) { §2
+    var cant = cos[p.id]; §3
+    if (!cant) { return; } §4
+
+    subtotal = subtotal + p.pret * cant; §5
+    nrObiecte = nrObiecte + cant;
+
+    var li = document.createElement("li"); §6
+    // ... poza mică, numele și cele trei butoane ...
+    el("lista").appendChild(li); §7
+  });
+
+  if (nrObiecte === 0) { §8
+    el("lista").innerHTML = '<li class="gol">Coșul tău e gol 🕸️</li>';
+  }
+  // ... continuă în piesa următoare ...
+}`,
+ notes:['Ștergem lista veche și pornim de la zero.','Parcurgem toate produsele din magazin, în ordine.','Câte bucăți din acest produs sunt în coș? Dacă nu e deloc, rezultatul e „nimic”.','<code>!cant</code> = „nu există”. Atunci <code>return</code> sare la produsul următor.','Adunăm la subtotal: preț × cantitate. Numărăm și obiectele.','Facem un rând de listă pentru acest produs.','Punem rândul în listă. Acum se vede în panou.','Dacă nu e niciun obiect (<code>===</code> compară două valori), scriem mesajul „Coșul tău e gol”.']},
+{t:'Piesa 7: reducere, transport, total',say:'Ultima parte din <code>deseneazaCos</code>: calculăm cât ai de plătit și scriem totul pe ecran. Aici se „actualizează totalul”.',
+ code:`var reducere = 0; §1
+if (codAplicat) {
+  reducere = Math.round(subtotal * procentCod / 100);
+}
+
+var transport = 0; §2
+if (nrObiecte > 0 && subtotal < pragTransport) {
+  transport = costTransport;
+}
+
+totalFinal = subtotal - reducere + transport; §3
+
+el("nr").textContent = nrObiecte; §4
+el("subtotal").textContent = subtotal + " lei";
+el("total").textContent = totalFinal + " lei";`,
+ notes:['Reducerea e 0, în afară de cazul în care ai aplicat codul. Atunci e procentul din subtotal. <code>Math.round</code> rotunjește la număr întreg.','Transportul e 0 (gratuit). Costă 15 doar dacă ai ceva în coș <b>și</b> ai sub pragul de 200.','Formula finală: produse, minus reducerea, plus transportul.','Scriem numerele pe ecran, fiecare în elementul lui după id. (În fișier se actualizează și bara verde, mesajul de transport și rândurile „Reducere” și „Transport”.)']},
+{t:'Piesa 8: câmpul de cod, plata și pornirea',say:'Mai rămân butoanele din partea de jos a coșului și pornirea magazinului.',
+ code:`el("plateste").onclick = function () { §1
+  if (nrObiecte === 0) { §2
+    el("mesaj").textContent = "Coșul e gol 🕸️";
+    return;
+  }
+  var platit = totalFinal; §3
+  cos = {}; §4
+  codAplicat = false;
+  deseneazaCos();
+  el("mesaj").textContent = "✅ Comandă trimisă! Ai plătit " + platit + " lei.";
+};
+
+deseneazaCategorii(); §5
+deseneazaProduse();
+deseneazaCos();`,
+ notes:['Când se apasă „Finalizează comanda”, rulează ce e între acolade.','Dacă coșul e gol, mesaj și <code>return</code>: ieșim din funcție, nu facem nimic mai departe.','Ținem minte cât ai plătit <b>înainte</b> să golim coșul. Altfel, după golire, totalul ar fi 0.','Golim coșul și codul, apoi redesenăm.','La sfârșit pornim magazinul: desenăm categoriile, vitrina și coșul (gol). Fără aceste trei rânduri, pagina ar fi goală.']}
+];
+$('story').innerHTML=ST.map(function(s){return '<div class="piece"><h3>'+s.t+'</h3><p>'+s.say+'</p>'+lh('js')+cb(s.code,s.notes)+'</div>'}).join('');
+
+/* ---------- 4A: demo clasa ---------- */
+var dopen=false;
+function dshow(){
+  $('dpn').classList.toggle('deschis',dopen);
+  $('dcode').innerHTML=hi('<aside class="panou'+(dopen?' deschis':'')+'">\n\n.panou {\n  transform: translateX(100%);\n}\n\n.panou.deschis {\n  transform: translateX(0);\n}');
+}
+$('dbtn').onclick=function(){dopen=!dopen;dshow()};dshow();
+
+/* ---------- 4B: simulator ---------- */
+var SP=[{id:1,e:'🎧',n:'Căști',p:199},{id:2,e:'🎒',n:'Rucsac',p:129},{id:3,e:'🧢',n:'Șapcă',p:49},{id:4,e:'⌚',n:'Ceas',p:349}];
+var sc={},slog=['(apasă un buton din vitrină)'],scod=false,sinp='';
+function sadd(id){var pv=sc[id];sc[id]=(pv||0)+1;slog=['adauga('+id+')','  cos['+id+'] = ('+(pv===undefined?'nimic':pv)+' || 0) + 1   // → '+sc[id],'  deseneazaCos()'];srender()}
+function sdec(id){var pv=sc[id];sc[id]=pv-1;slog=['scade('+id+')','  cos['+id+'] = '+pv+' - 1   // → '+sc[id]];if(sc[id]<=0){delete sc[id];slog.push('  delete cos['+id+']   // a ajuns la 0')}slog.push('  deseneazaCos()');srender()}
+function sdel(id){delete sc[id];slog=['scoate('+id+')','  delete cos['+id+']','  deseneazaCos()'];srender()}
+function mkb(t,f,c){var b=document.createElement('button');b.textContent=t;b.onclick=f;if(c)b.className=c;return b}
+function srender(){
+  var h=$('sim');h.innerHTML='';
+  var c1=document.createElement('div'),c2=document.createElement('div'),c3=document.createElement('div');
+  c1.innerHTML='<div class="lbl">🧱 Vitrina</div>';
+  SP.forEach(function(x){c1.appendChild(mkb(x.e+' '+x.n+' ('+x.p+' lei) ➕',function(){sadd(x.id)}))});
+  c1.appendChild(mkb('↺ De la capăt',function(){sc={};scod=false;sinp='';slog=['(apasă un buton din vitrină)'];srender()},'alt'));
+  c2.innerHTML='<div class="lbl">🧺 Coșul de pe ecran</div>';
+  var ul=document.createElement('ul'),sub=0,nr=0;
+  SP.forEach(function(x){var q=sc[x.id];if(!q)return;sub+=x.p*q;nr+=q;
+    var li=document.createElement('li');li.appendChild(document.createTextNode(x.e+' '+x.n+' ×'+q+' = '+x.p*q+' lei '));
+    li.appendChild(mkb('−',function(){sdec(x.id)},'sm'));li.appendChild(mkb('+',function(){sadd(x.id)},'sm'));li.appendChild(mkb('🗑️',function(){sdel(x.id)},'sm'));ul.appendChild(li)});
+  if(!nr){ul.innerHTML='<li>Coșul tău e gol 🕸️</li>'}
+  c2.appendChild(ul);
+  var red=scod?Math.round(sub*10/100):0,tr=(nr>0&&sub<200)?15:0,tf=sub-red+tr;
+  var cd=document.createElement('div');cd.style.margin='8px 0';
+  var inp=document.createElement('input');inp.placeholder='ELEV10';inp.value=sinp;inp.setAttribute('aria-label','Cod de reducere');
+  cd.appendChild(inp);
+  cd.appendChild(mkb('Aplică',function(){sinp=inp.value;var s=inp.value.trim().toUpperCase();scod=(s==='ELEV10');slog=['aplica.onclick','  scris = "'+s+'"','  codAplicat = '+scod,'  deseneazaCos()'];srender()}));
+  c2.appendChild(cd);
+  var p=document.createElement('p');p.innerHTML='Produse: <b>'+sub+' lei</b><br>Reducere: <b>'+(red?'-'+red:'0')+' lei</b><br>Transport: <b>'+(tr?tr+' lei':'Gratuit')+'</b><br><b style="font-size:1.15em">Total: '+tf+' lei</b>'+(sub<200&&nr>0?'<br>🚚 Mai ai de adăugat <b>'+(200-sub)+' lei</b> pentru transport gratuit':'')+(nr>0&&sub>=200?'<br>🎉 Ai transport gratuit!':'');c2.appendChild(p);
+  var st=Object.keys(sc).map(function(k){return k+': '+sc[k]}).join(', ');
+  c3.innerHTML='<div class="lbl">⚡ Ce a rulat</div><div class="code">'+hi(slog.join('\n'))+'</div><div class="lbl">🗃️ Ce știe JavaScript</div><div class="code">'+hi('cos = { '+st+(st?' }':'}')+'\nnrObiecte = '+nr+'\nsubtotal = '+sub+'\ncodAplicat = '+scod+'\nreducere = '+red+'\ntransport = '+tr+'\ntotalFinal = '+tf)+'</div>';
+  h.appendChild(c1);h.appendChild(c2);h.appendChild(c3);
+}
+srender();
+
+/* ---------- 6: test ---------- */
+var Q=[
+ ['.produs { width: 120px; }',1,'Are selector și acolade: e o regulă de aspect, deci CSS.'],
+ ['<aside class="panou" id="panou">',0,'E o etichetă: spune ce există în pagină. HTML.'],
+ ['var pragTransport = 200;',2,'<code>var</code> creează o variabilă. JavaScript.'],
+ ['transform: translateX(100%);',1,'O proprietate care mută elementul. E o declarație CSS.'],
+ ['el("lista").appendChild(li);',2,'Pune un rând în listă, din cod. JavaScript.'],
+ ['<button id="aplica">Aplică</button>',0,'Un buton scris cu etichete: HTML.'],
+ ['.hero { background: linear-gradient(135deg, #4F46E5, #EC4899); }',1,'Selector + acolade + proprietăți: CSS. Degradeul e tot o culoare de fundal.'],
+ ['if (codAplicat) {',2,'<code>if</code> = „dacă”: o decizie. JavaScript.'],
+ ['<span class="insigna" id="nr">0</span>',0,'Un element cu clasă și id, scris cu etichete: HTML. (Cifra 0 o schimbă apoi JavaScript.)'],
+ ['el("panou").classList.toggle("deschis", da);',2,'Pune sau scoate eticheta „deschis”. E o comandă de JavaScript, chiar dacă ea provoacă o schimbare de aspect.']
+];
+var LN=['🧱 HTML','🎨 CSS','⚡ JavaScript'],done=0,good=0,qb=$('quiz');
+Q.forEach(function(q,qi){
+  var d=document.createElement('div');d.className='q';
+  d.innerHTML='<p>'+(qi+1)+'.</p><div class="code">'+hi(q[0])+'</div>';
+  var row=document.createElement('div');row.className='row';var w=document.createElement('div');w.className='w';var ans=false,tr=0;
+  LN.forEach(function(o,k){
+    var b=document.createElement('button');b.textContent=o;
+    b.onclick=function(){
+      if(ans)return;
+      if(k==q[1]){ans=true;b.classList.add('ok');if(!tr)good++;w.style.color='var(--ok)';w.innerHTML='✅ Corect! '+q[2];done++;fin()}
+      else{tr++;b.classList.add('no');b.disabled=true;w.style.color='var(--bad)';w.textContent='❌ Mai încearcă!'}
+    };
+    row.appendChild(b);
+  });
+  d.appendChild(row);d.appendChild(w);qb.appendChild(d);
+});
+function fin(){
+  if(done<Q.length)return;
+  var s=$('score');s.hidden=false;
+  s.innerHTML=(good>=8?'🏆':good>=6?'🎉':'💪')+' Corect din prima: '+good+' din '+Q.length+(good>=8?'. Știi unde se scrie fiecare limbaj!':'. Mai citește secțiunea 2 și încearcă din nou.');
+  s.scrollIntoView({block:'center'});
+}
+addEventListener('scroll',function(){var h=document.documentElement;$('pg').style.width=Math.min(100,h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+</script>
+</body>
+</html>
